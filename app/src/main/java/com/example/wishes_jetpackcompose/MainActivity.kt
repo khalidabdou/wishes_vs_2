@@ -4,11 +4,16 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material3.*
@@ -22,7 +27,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import com.example.wishes_jetpackcompose.ui.theme.Wishes_jetpackComposeTheme
 import androidx.compose.material3.Card
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.platform.LocalContext
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import com.example.wishes_jetpackcompose.runtime.NavBarItems
+import com.example.wishes_jetpackcompose.runtime.NavRoutes
+import com.example.wishes_jetpackcompose.runtime.NavigationHost
 import com.example.wishes_jetpackcompose.ui.theme.Inter
 import com.example.wishes_jetpackcompose.utlis.AppUtil
 import java.util.Locale.Category
@@ -35,26 +48,71 @@ class MainActivity : ComponentActivity() {
         setContent {
             Wishes_jetpackComposeTheme {
                 // A surface container using the 'background' color from the theme
+
+                val navController = rememberNavController()
+                val navBackStackEntry by navController.currentBackStackEntryAsState()
+
+                val bottomBarState = rememberSaveable { (mutableStateOf(false)) }
+                val topBarState = rememberSaveable { (mutableStateOf(true)) }
+
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
                     contentColor = MaterialTheme.colorScheme.background,
                     topBar = {
                         TopBar()
                     },
-
-                ) {
-                    Column(modifier = Modifier.fillMaxSize().padding(it)) {
-                        LazyRow(content = {
-                            items(10) { Category() }
-                        })
+                    bottomBar = {
+                        if (currentRoute(navController) != "viewPager")
+                        BottomNavigationBar(navController = navController)
                     }
-
+                )
+                  {
+                    Column(modifier = Modifier.padding(it)) {
+                        NavigationHost(navController = navController)
+                    }
                 }
             }
         }
     }
 }
 
+@Composable
+fun BottomNavigationBar(navController: NavHostController) {
+
+    BottomNavigation(modifier =  Modifier.background(MaterialTheme.colorScheme.surfaceVariant),
+       ) {
+        val backStackEntry by navController.currentBackStackEntryAsState()
+        val currentRoute = backStackEntry?.destination?.route
+
+        NavBarItems.BarItems.forEach { navItem ->
+            BottomNavigationItem(
+                selected = currentRoute == navItem.route,
+                modifier = Modifier.background(MaterialTheme.colorScheme.primary),
+                onClick = {
+                    navController.navigate(navItem.route) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                },
+
+                icon = {
+                    Icon(imageVector = navItem.image,
+                        tint = MaterialTheme.colorScheme.onPrimary,
+                        contentDescription = navItem.title)
+                },
+                label = {
+                    Text(text = navItem.title,color = MaterialTheme.colorScheme.onPrimary,
+                        style = MaterialTheme.typography.titleMedium.copy(
+                            fontFamily = Inter
+                        ))
+                },
+            )
+        }
+    }
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -71,7 +129,8 @@ fun TopBar(){
             style = MaterialTheme.typography.titleMedium.copy(
                 fontFamily = Inter
             )
-        )},
+        )
+        },
         navigationIcon = {
             IconButton(
                 onClick = {
@@ -131,7 +190,11 @@ fun TopBar(){
     )
 }
 
-
+@Composable
+fun currentRoute(navController: NavHostController): String? {
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    return navBackStackEntry?.destination?.route
+}
 @Composable
 fun MoreOptionPopup(
     options: List<String>,
@@ -169,11 +232,4 @@ fun MoreOptionPopup(
     }
 }
 
-@Composable
-fun Category(){
-    Card(modifier = Modifier
-        .size(90.dp)
-        .background(MaterialTheme.colorScheme.onSurface)) {
-        Image(painter = painterResource(id = R.drawable.ic_setting), contentDescription = "")
-    }
-}
+
