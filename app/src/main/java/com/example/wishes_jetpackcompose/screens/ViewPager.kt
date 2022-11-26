@@ -5,9 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.outlined.KeyboardArrowDown
 import androidx.compose.material3.Icon
@@ -28,7 +26,7 @@ import com.google.accompanist.pager.HorizontalPager
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun ViewPager() {
-    val context= LocalContext.current
+    val context = LocalContext.current
     val imageLoader = ImageLoader.Builder(context)
         .diskCache {
             DiskCache.Builder()
@@ -48,34 +46,47 @@ fun ViewPager() {
     Column() {
         HorizontalPager(
             modifier = Modifier.weight(9f),
-            count = 10) { page ->
-            Box(modifier = Modifier.fillMaxSize()){
+            count = 10
+        ) { page ->
+            Box(modifier = Modifier.fillMaxSize()) {
                 Image(
                     painter = painter, contentDescription = null,
                     modifier = Modifier.fillMaxSize()
                 )
             }
         }
-        Row(horizontalArrangement = Arrangement.SpaceEvenly,
+        Row(
+            horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-            .fillMaxWidth()
-            .height(80.dp)
-            .background(MaterialTheme.colorScheme.primary)) {
+                .fillMaxWidth()
+                .height(80.dp)
+                .background(MaterialTheme.colorScheme.primary)
+        ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Icon(Icons.Default.Favorite, contentDescription = "Fav")
-                Text(text = "Favorite", style = MaterialTheme.typography.titleMedium)
+                Text(
+                    text = "Favorite", style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onPrimary
+                )
             }
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Icon(Icons.Outlined.KeyboardArrowDown, contentDescription = "Download")
-                Text(text = "Download", style = MaterialTheme.typography.titleMedium)
+                Text(
+                    text = "Download",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onPrimary
+                )
             }
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Icon(Icons.Default.Share, contentDescription = "share")
-                Text(text = "share", style = MaterialTheme.typography.titleMedium)
+                Text(
+                    text = "share", style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onPrimary
+                )
             }
 
         }
     }
-   
+
 }
