@@ -3,4 +3,7 @@
     <string name="rate">rate app</string>
     <string name="share">share app</string>
     <string name="send_to">best app good morning</string>
+    <string name="rate_title">rate us</string>
+    <string name="sure">are you sure you want to quit</string>
+    <string name="quit">Quit</string>
 </resources>

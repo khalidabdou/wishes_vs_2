@@ -53,7 +53,12 @@ object AppUtil {
         }
     }
 
+    fun sendEmail(context: Context) {
 
+    }
+    fun openUrl(context: Context) {
+
+    }
 
 
     fun share(context: Context){
