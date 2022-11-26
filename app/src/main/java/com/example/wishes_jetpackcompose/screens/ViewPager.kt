@@ -4,8 +4,16 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.outlined.KeyboardArrowDown
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -48,10 +56,24 @@ fun ViewPager() {
                 )
             }
         }
-        Row(modifier = Modifier
+        Row(horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
             .fillMaxWidth()
             .height(80.dp)
             .background(MaterialTheme.colorScheme.primary)) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Icon(Icons.Default.Favorite, contentDescription = "Fav")
+                Text(text = "Favorite", style = MaterialTheme.typography.titleMedium)
+            }
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Icon(Icons.Outlined.KeyboardArrowDown, contentDescription = "Download")
+                Text(text = "Download", style = MaterialTheme.typography.titleMedium)
+            }
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Icon(Icons.Default.Share, contentDescription = "share")
+                Text(text = "share", style = MaterialTheme.typography.titleMedium)
+            }
 
         }
     }

@@ -53,20 +53,19 @@ fun Home(navHostController: NavHostController) {
                 navHostController.navigate(NavRoutes.ViewPager.route)
             } }
         })
-
 }
 
 
-@Composable
-fun Category(onClick: () -> Unit) {
-    Card(
-        modifier = Modifier
-            .size(90.dp)
-            .background(MaterialTheme.colorScheme.onSurface)
-    ) {
-        Image(painter = painterResource(id = R.drawable.ic_setting), contentDescription = "")
-    }
-}
+//@Composable
+//fun Category(onClick: () -> Unit) {
+//    Card(
+//        modifier = Modifier
+//            .size(90.dp)
+//            .background(MaterialTheme.colorScheme.onSurface)
+//    ) {
+//        Image(painter = painterResource(id = R.drawable.ic_setting), contentDescription = "")
+//    }
+//}
 
 @Composable
 fun Image(painter: AsyncImagePainter, onClick: () -> Unit) {
@@ -91,4 +90,5 @@ fun Image(painter: AsyncImagePainter, onClick: () -> Unit) {
 
     }
 }
+
 
