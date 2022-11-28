@@ -3,6 +3,10 @@ package com.example.wishes_jetpackcompose.viewModel
 
 import android.app.Application
 import android.util.Log
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.*
 import com.example.wishes_jetpackcompose.data.entities.Categories
 import com.example.wishes_jetpackcompose.data.entities.Category
@@ -18,6 +22,10 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import javax.inject.Inject
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import java.util.*
+
 
 @HiltViewModel
 class ImagesViewModel @Inject constructor(
@@ -28,11 +36,31 @@ class ImagesViewModel @Inject constructor(
 
     /** RETROFIT **/
     var categories: MutableLiveData<NetworkResults<Categories>> = MutableLiveData()
-    var imagesData: MutableLiveData<NetworkResults<Images>> = MutableLiveData()
+    var images: MutableLiveData<NetworkResults<Images>> = MutableLiveData()
+
+
 
     /**ROOM DATABASE**/
     var catId: Int = 0
-    val readImages: LiveData<List<Image>> = imageRepo.local.getImages(LANGUAGE_ID).asLiveData()
+    var imageslist by mutableStateOf(emptyList<Image>())
+    var categoriesList by mutableStateOf(emptyList<Category>())
+    fun getImagesRoom()=viewModelScope.launch(Dispatchers.IO){
+        imageRepo.local.getImages(LANGUAGE_ID).collect{
+            imageslist=it.shuffled(Random(100))
+            if (it.isEmpty()){
+                getImages()
+            }
+        }
+    }
+    fun getCategoriesRoom()=viewModelScope.launch(Dispatchers.IO){
+        imageRepo.local.readCategories("image", LANGUAGE_ID).collect{
+            categoriesList=it.shuffled(Random(100))
+            if (it.isEmpty()){
+                getCategories()
+            }
+        }
+    }
+    //val readImages: LiveData<List<Image>> = imageRepo.local.getImages(LANGUAGE_ID).asLiveData()
     val readCategories: LiveData<List<Category>> =
         imageRepo.local.readCategories("image", LANGUAGE_ID).asLiveData()
     val favorites: LiveData<List<Image>> = imageRepo.local.getFavoriteImages().asLiveData()
@@ -117,18 +145,19 @@ class ImagesViewModel @Inject constructor(
         if (hasInternetConnection()) {
             try {
                 val imagesResponse = imageRepo.remot.getImages()
-                imagesData.value = handlImagesResponse(imagesResponse)
-                val imageCache = imagesData.value!!.data
+                images.value = handlImagesResponse(imagesResponse)
+                val imageCache = images.value!!.data
                 if (imageCache != null) {
                     offlineCacheImages(imageCache.results)
+                    Log.d("Tag_quotes", imageCache.results.toString())
                 }
             } catch (ex: Exception) {
                 Log.d(LOG_IMAGE, ex.toString())
-                imagesData.value = NetworkResults.Error(ex.message)
+                images.value = NetworkResults.Error(ex.message)
             }
 
         } else {
-            imagesData.value = NetworkResults.Error("No Internet Connection")
+            images.value = NetworkResults.Error("No Internet Connection")
             //FirebaseCrashlytics.getInstance().log("Images : No Internet Connection")
         }
 

@@ -56,7 +56,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             Wishes_jetpackComposeTheme {
 
-                val viewModel: ImagesViewModel = hiltViewModel()
+
                 // A surface container using the 'background' color from the theme
                 val context = LocalContext.current
                 val navController = rememberNavController()
@@ -65,7 +65,7 @@ class MainActivity : ComponentActivity() {
                 BackHandler {
                     showAlertDialog = true
                 }
-
+                val viewModel: ImagesViewModel = hiltViewModel()
 
 
                 Surface() {
@@ -110,7 +110,7 @@ class MainActivity : ComponentActivity() {
                         )
                     {
                         Column(modifier = Modifier.padding(it)) {
-                            NavigationHost(navController = navController)
+                            NavigationHost(viewModel = viewModel,navController = navController)
                         }
                         if (showAlertDialog) {
                             AlertDialog(

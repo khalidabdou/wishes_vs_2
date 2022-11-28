@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -19,7 +20,6 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import coil.ImageLoader
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
@@ -29,34 +29,29 @@ import com.example.wishes_jetpackcompose.viewModel.ImagesViewModel
 
 
 @Composable
-fun Categories() {
+fun Categories(viewModel: ImagesViewModel) {
     val scaffoldState = rememberScaffoldState()
 
     val context = LocalContext.current
-    val viewModel: ImagesViewModel = hiltViewModel()
+
 
     var cats = viewModel.categories.value
 
-    LaunchedEffect(scaffoldState) {
-        if (viewModel.categories.value?.data?.listCategory.isNullOrEmpty())
-            try {
-                viewModel.getCategories()
-            } catch (ex: Exception) {
-                Toast.makeText(context, "Please try again", Toast.LENGTH_LONG).show()
-            }
+    LaunchedEffect(Unit) {
+        viewModel.getCategoriesRoom()
     }
+    val categories =viewModel.categoriesList
 
     LazyColumn(modifier = Modifier.fillMaxSize()) {
-        if (viewModel.categories.value?.data?.listCategory.isNullOrEmpty()) {
+        if (categories.isEmpty()) {
             item {
-                repeat(5) {
+                repeat(10) {
                     LoadingShimmerEffect()
                 }
             }
         } else {
-
-            items(viewModel.categories.value?.data?.listCategory!!.size) {
-                val ca = viewModel.categories.value?.data?.listCategory!![it]
+            items(categories.size) {
+                val category = categories[it]
                 val imageLoader = ImageLoader.Builder(context)
                     .diskCache {
                         DiskCache.Builder()
@@ -67,15 +62,13 @@ fun Categories() {
                     .build()
 
                 val painter = rememberAsyncImagePainter(
-                    model = "${directoryUploadCat + ca.image}",
+                    model = "${directoryUploadCat + category.image}",
                     imageLoader = imageLoader,
                     contentScale = ContentScale.Inside
                 )
-                ItemCategory(ca.name, painter)
-
+                ItemCategory(category.name, painter)
             }
         }
-
     }
 
 }
@@ -97,12 +90,12 @@ fun ItemCategory(text: String, painter: AsyncImagePainter) {
             val context = LocalContext.current
             androidx.compose.foundation.Image(
                 painter = painter, contentDescription = null,
-                contentScale=ContentScale.Crop,
+                contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize()
             )
         }
         Spacer(modifier = Modifier.width(20.dp))
-        androidx.compose.material3.Text(
+        Text(
             text = "$text",
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onBackground

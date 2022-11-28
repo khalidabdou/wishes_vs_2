@@ -8,24 +8,25 @@ import com.example.wishes_jetpackcompose.Categories
 import com.example.wishes_jetpackcompose.Favorites
 import com.example.wishes_jetpackcompose.Home
 import com.example.wishes_jetpackcompose.screens.ViewPager
+import com.example.wishes_jetpackcompose.viewModel.ImagesViewModel
 
 
 @Composable
-fun NavigationHost(navController: NavHostController) {
+fun NavigationHost(viewModel: ImagesViewModel,navController: NavHostController) {
 
     NavHost(
         navController = navController,
         startDestination = NavRoutes.Home.route,
     ) {
         composable(NavRoutes.Home.route) {
-            Home(navController)
+            Home(viewModel,navController)
         }
 
         composable(NavRoutes.Favorites.route) {
             Favorites()
         }
         composable(NavRoutes.Categories.route) {
-            Categories()
+            Categories(viewModel)
         }
 
         composable(NavRoutes.ViewPager.route) {
