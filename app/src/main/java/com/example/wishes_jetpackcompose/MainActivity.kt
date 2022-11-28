@@ -6,7 +6,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -20,7 +19,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -40,17 +38,12 @@ import com.example.wishes_jetpackcompose.runtime.NavBarItems
 import com.example.wishes_jetpackcompose.runtime.NavigationHost
 import com.example.wishes_jetpackcompose.ui.theme.Inter
 import com.example.wishes_jetpackcompose.ui.theme.Wishes_jetpackComposeTheme
-import com.example.wishes_jetpackcompose.utlis.AppUtil
 import com.example.wishes_jetpackcompose.utlis.AppUtil.openStore
 import com.example.wishes_jetpackcompose.utlis.AppUtil.openUrl
 import com.example.wishes_jetpackcompose.utlis.AppUtil.sendEmail
 import com.example.wishes_jetpackcompose.utlis.AppUtil.share
 import com.example.wishes_jetpackcompose.viewModel.ImagesViewModel
-
-import androidx.lifecycle.viewmodel.compose.viewModel
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.HiltAndroidApp
-import dagger.hilt.android.lifecycle.HiltViewModel
 
 
 @AndroidEntryPoint
@@ -63,9 +56,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             Wishes_jetpackComposeTheme {
 
-                val viewModel:ImagesViewModel = hiltViewModel()
+                val viewModel: ImagesViewModel = hiltViewModel()
                 // A surface container using the 'background' color from the theme
-                val context= LocalContext.current
+                val context = LocalContext.current
                 val navController = rememberNavController()
                 var showAlertDialog by remember { mutableStateOf(false) }
 
@@ -73,9 +66,7 @@ class MainActivity : ComponentActivity() {
                     showAlertDialog = true
                 }
 
-                if (viewModel.readCategories.value.isNullOrEmpty()){
-                    viewModel.getCategories()
-                }
+
 
                 Surface() {
                     var navigateClick by remember { mutableStateOf(false) }
@@ -104,9 +95,7 @@ class MainActivity : ComponentActivity() {
                             .scale(scaleAnim)
                             .offset(x = offSetAnim)
                             .clip(RoundedCornerShape(clipDp))
-                            .clickable {
-                                navigateClick = false
-                            },
+                        ,
                         contentColor = MaterialTheme.colorScheme.background,
                         topBar = {
                             TopBar() {
@@ -153,14 +142,12 @@ class MainActivity : ComponentActivity() {
                                     Button(
                                         onClick = {
                                             //showAlertDialog=false
-                                            (context as Activity)?.finish()
+                                            (context as Activity).finish()
                                         }) {
                                         Text(stringResource(R.string.quit))
                                     }
                                 },
-
-
-                                )
+                            )
                         }
                     }
                 }
@@ -362,11 +349,13 @@ fun NavigationDrawer(onClick: () -> Unit) {
             ItemDrawer("Privacy Policy", Icons.Default.Info) {
                 openUrl(context)
             }
-            Column(modifier = Modifier
-                .fillMaxWidth()
-                .clickable {
-                    onClick()
-                }, horizontalAlignment = Alignment.CenterHorizontally) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable {
+                        onClick()
+                    }, horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 Spacer(modifier = Modifier.height(20.dp))
                 Icon(Icons.Default.ArrowBack, contentDescription = "")
             }

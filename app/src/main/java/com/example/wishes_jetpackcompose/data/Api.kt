@@ -1,7 +1,6 @@
 package com.example.wishes_jetpackcompose.data
 
 
-
 import com.example.wishes_jetpackcompose.data.entities.Ads
 import com.example.wishes_jetpackcompose.data.entities.Apps
 import com.example.wishes_jetpackcompose.data.entities.Categories
@@ -55,8 +54,6 @@ interface Api {
     ): Response<Categories>
 
 
-
-
     @Headers("Content-Type: application/json")
     @PUT("incShareQuote")
     suspend fun incShareQuote(
@@ -80,7 +77,7 @@ interface Api {
     @Headers("Content-Type: application/json")
     @PUT("incrementStickerViews")
     suspend fun incrementStickerViews(
-        @Query("id") id: Int=7
+        @Query("id") id: Int = 7
     )
 
     @Headers("Content-Type: application/json")
@@ -92,7 +89,6 @@ interface Api {
     @GET("apps")
     suspend fun getApps(): Response<Apps>
     //get Lnaguages
-
 
 
     @GET("ads")

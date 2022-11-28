@@ -21,7 +21,7 @@ data class Category(
     @SerializedName("category_image", alternate = ["image"])
     val image: String,
     val color: String,
-    var type:String?,
+    var type: String?,
     val total_wallpaper: String?,
     val language_app: Int
 

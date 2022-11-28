@@ -1,12 +1,9 @@
-
 package com.example.wishes_jetpackcompose.data
-import android.animation.FloatEvaluator
+
+
 import com.example.wishes_jetpackcompose.data.entities.Category
 import com.example.wishes_jetpackcompose.data.entities.Image
-
-
 import kotlinx.coroutines.flow.Flow
-import org.intellij.lang.annotations.Language
 import javax.inject.Inject
 
 class LocalDataSource @Inject constructor(
@@ -26,8 +23,8 @@ class LocalDataSource @Inject constructor(
         return WallDao.getFavoriteImages()
     }
 
-    fun getImagesByCat(id: Int,language: Int): Flow<List<Image>> {
-        return WallDao.getImagesByCat(id,language)
+    fun getImagesByCat(id: Int, language: Int): Flow<List<Image>> {
+        return WallDao.getImagesByCat(id, language)
     }
 
     suspend fun insertImages(images: List<Image>) {
@@ -38,8 +35,8 @@ class LocalDataSource @Inject constructor(
         WallDao.insertImage(image)
     }
 
-    fun readCategories(type: String,language: Int): Flow<List<Category>> {
-        return WallDao.readCategories(type,language)
+    fun readCategories(type: String, language: Int): Flow<List<Category>> {
+        return WallDao.readCategories(type, language)
     }
 
     suspend fun insertCategories(categories: List<Category>) {
@@ -51,8 +48,8 @@ class LocalDataSource @Inject constructor(
         WallDao.addToFav(id, fav)
     }
 
-    fun readImageByCategory(catID: Int,language: Int): Flow<List<Image>> {
-        return WallDao.readImagesByCategory(catID,language)
+    fun readImageByCategory(catID: Int, language: Int): Flow<List<Image>> {
+        return WallDao.readImagesByCategory(catID, language)
     }
 
 }

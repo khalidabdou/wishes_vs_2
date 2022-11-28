@@ -14,13 +14,14 @@ import com.example.wishes_jetpackcompose.utlis.Const.Companion.DATABASE_NAME
     entities = [
         Image::class,
         Category::class,
-      ],
+    ],
     version = 16,
     exportSchema = false
 )
 @TypeConverters(imageTypeConverter::class)
 abstract class WallDatabase : RoomDatabase() {
     abstract fun imageDao(): IDao
+
     companion object {
         // Singleton prevents multiple instances of database opening at the
         // same time.

@@ -13,9 +13,9 @@ data class Ad(
 
 data class Setting(
     @SerializedName("package")
-    val package_name : String,
-    val dynamic_link:String,
-    val email :String
+    val package_name: String,
+    val dynamic_link: String,
+    val email: String
 )
 
 

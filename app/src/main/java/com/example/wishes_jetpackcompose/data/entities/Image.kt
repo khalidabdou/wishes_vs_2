@@ -17,14 +17,15 @@ data class Image(
     val cat_id: Int,
     val count_view: Int,
     val download_count: Int,
-    val count_shared:Int,
+    val count_shared: Int,
     var isfav: Int?,
     val count_fav: Int?,
-    val language_app:Int,
+    val language_app: Int,
     @SerializedName("language")
-    val languageLable:String
+    val languageLable: String
 
 ) : Parcelable
+
 data class Images(
     @SerializedName("latest")
     val results: List<Image>

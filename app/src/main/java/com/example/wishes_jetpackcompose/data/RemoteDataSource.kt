@@ -4,12 +4,10 @@ package com.example.wishes_jetpackcompose.data
 import com.example.wishes_jetpackcompose.data.entities.Ads
 import com.example.wishes_jetpackcompose.data.entities.Apps
 import com.example.wishes_jetpackcompose.data.entities.Categories
-
 import com.example.wishes_jetpackcompose.data.entities.Images
 import com.example.wishes_jetpackcompose.utlis.Const.Companion.LANGUAGE_ID
-import javax.inject.Inject
 import retrofit2.Response
-import retrofit2.http.*
+import javax.inject.Inject
 
 class RemoteDataSource @Inject constructor(
     private val wallApi: Api

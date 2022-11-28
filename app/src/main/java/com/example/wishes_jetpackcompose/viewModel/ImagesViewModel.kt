@@ -1,12 +1,8 @@
 package com.example.wishes_jetpackcompose.viewModel
 
+
 import android.app.Application
-import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.*
 import com.example.wishes_jetpackcompose.data.entities.Categories
 import com.example.wishes_jetpackcompose.data.entities.Category
@@ -16,18 +12,12 @@ import com.example.wishes_jetpackcompose.repo.ImagesRepo
 import com.example.wishes_jetpackcompose.utlis.Const.Companion.LANGUAGE_ID
 import com.example.wishes_jetpackcompose.utlis.Const.Companion.hasConnection
 import com.example.wishes_jetpackcompose.utlis.NetworkResults
-
-
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
-import org.intellij.lang.annotations.Language
 import retrofit2.Response
 import javax.inject.Inject
-import kotlin.math.log
 
 @HiltViewModel
 class ImagesViewModel @Inject constructor(
@@ -80,7 +70,7 @@ class ImagesViewModel @Inject constructor(
             try {
                 val categoriesResponse = imageRepo.remot.getCategories()
                 categories.value = handCategoriesResponse(categoriesResponse)
-                Log.d("Tag_quote",categoriesResponse.body().toString())
+                Log.d("Tag_quote", categoriesResponse.body().toString())
             } catch (ex: Exception) {
                 categories.value = NetworkResults.Error(ex.message)
             }
@@ -102,7 +92,9 @@ class ImagesViewModel @Inject constructor(
             categoriesResponse.isSuccessful -> {
                 val categories = categoriesResponse.body()
                 categories!!.listCategory.forEach { cat -> cat.type = "image" }
-                cacheCategories(categories!!.listCategory)
+                cacheCategories(categories.listCategory)
+                Log.d("Tag_quotes", readCategories.value.toString())
+
                 return NetworkResults.Success(categories)
             }
             else -> return NetworkResults.Error(categoriesResponse.message())
@@ -164,15 +156,15 @@ class ImagesViewModel @Inject constructor(
         }
     }
 
-    fun deleteCategories(id :Int){
+    fun deleteCategories(id: Int) {
         viewModelScope.launch {
             //imageRepo.local.deleteCategory(id)
         }
     }
 
-    fun deleteImage(id :Int){
+    fun deleteImage(id: Int) {
         viewModelScope.launch {
-           // imageRepo.local.deleteImage(id)
+            // imageRepo.local.deleteImage(id)
         }
     }
 
