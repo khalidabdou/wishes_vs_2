@@ -48,8 +48,6 @@ fun Home(viewModel: ImagesViewModel, navHostController: NavHostController) {
     val lazyGridState = LazyGridState
     val lifecycleOwner: LifecycleOwner
     LaunchedEffect(Unit) {
-        //if (viewModel.readImages.value.isNullOrEmpty())
-            //viewModel.getImages()
         viewModel.getImagesRoom()
     }
 
@@ -77,12 +75,14 @@ fun Home(viewModel: ImagesViewModel, navHostController: NavHostController) {
             }else{
                 items(30) {
                     val painter = rememberAsyncImagePainter(
-                        model = "${directoryUpload + images[it].languageLable + "/" + images[it].image_upload}",
+                        model = directoryUpload + images[it].languageLable + "/" + images[it].image_upload,
                         imageLoader = imageLoader,
                         filterQuality= FilterQuality.Low
 
                     )
-                    ImageItem( painter = painter){}
+                    ImageItem( painter = painter){
+                        navHostController.navigate(NavRoutes.ViewPager.route+"/"+it)
+                    }
                 }
             }
         })

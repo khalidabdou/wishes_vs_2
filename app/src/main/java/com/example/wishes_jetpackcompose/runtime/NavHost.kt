@@ -1,5 +1,6 @@
 package com.example.wishes_jetpackcompose.runtime
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -29,8 +30,12 @@ fun NavigationHost(viewModel: ImagesViewModel,navController: NavHostController) 
             Categories(viewModel)
         }
 
-        composable(NavRoutes.ViewPager.route) {
-            ViewPager()
+        composable(NavRoutes.ViewPager.route+"/{page}") {
+             it.arguments?.getString("page").let {page->
+                ViewPager(viewModel, page)
+            }
+
+
         }
 
     }

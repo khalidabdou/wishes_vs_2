@@ -130,7 +130,7 @@ class ImagesViewModel @Inject constructor(
     }
 
     fun addToFav(id: Int, fav: Int) {
-        GlobalScope.launch {
+        viewModelScope.launch {
             imageRepo.local.addToFav(id, fav)
         }
     }
