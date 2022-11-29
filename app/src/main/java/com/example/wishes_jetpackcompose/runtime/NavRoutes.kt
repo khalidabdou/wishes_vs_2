@@ -11,6 +11,7 @@ sealed class NavRoutes(val route: String) {
     object Favorites : NavRoutes("favorites")
     object Categories : NavRoutes("categories")
     object ViewPager : NavRoutes("viewPager")
+    object ByCat : NavRoutes("byCat")
 }
 
 data class BarItem(

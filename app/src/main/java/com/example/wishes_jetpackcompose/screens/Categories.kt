@@ -3,6 +3,7 @@ package com.example.wishes_jetpackcompose
 import android.widget.Toast
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
@@ -20,16 +21,18 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import coil.ImageLoader
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.disk.DiskCache
+import com.example.wishes_jetpackcompose.runtime.NavRoutes
 import com.example.wishes_jetpackcompose.utlis.Const.Companion.directoryUploadCat
 import com.example.wishes_jetpackcompose.viewModel.ImagesViewModel
 
 
 @Composable
-fun Categories(viewModel: ImagesViewModel) {
+fun Categories(viewModel: ImagesViewModel, navHostController: NavHostController) {
     val scaffoldState = rememberScaffoldState()
 
     val context = LocalContext.current
@@ -62,23 +65,26 @@ fun Categories(viewModel: ImagesViewModel) {
                     .build()
 
                 val painter = rememberAsyncImagePainter(
-                    model = "${directoryUploadCat + category.image}",
+                    model = directoryUploadCat + category.image,
                     imageLoader = imageLoader,
                     contentScale = ContentScale.Inside
                 )
-                ItemCategory(category.name, painter)
+                ItemCategory(category.name, painter){
+                    navHostController.navigate(NavRoutes.ByCat.route+"/"+category.id)
+                }
             }
         }
     }
-
 }
 
 
 @Composable
-fun ItemCategory(text: String, painter: AsyncImagePainter) {
+fun ItemCategory(text: String, painter: AsyncImagePainter,onClick:()->Unit) {
     Row(
-        modifier = Modifier.padding(10.dp),
-        horizontalArrangement = Arrangement.Center,
+        modifier = Modifier.padding(10.dp).fillMaxWidth().clickable {
+                       onClick()
+        },
+
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(

@@ -40,18 +40,25 @@ class ImagesViewModel @Inject constructor(
 
 
 
+
     /**ROOM DATABASE**/
     var catId: Int = 0
     var imageslist by mutableStateOf(emptyList<Image>())
     var categoriesList by mutableStateOf(emptyList<Category>())
+    var favoritesList by mutableStateOf(emptyList<Image>())
+    var imagesByCategory by mutableStateOf(emptyList<Image>())
+
+
+
     fun getImagesRoom()=viewModelScope.launch(Dispatchers.IO){
         imageRepo.local.getImages(LANGUAGE_ID).collect{
-            imageslist=it.shuffled(Random(100))
+            imageslist=it.shuffled(Random(100)).subList(0,30)
             if (it.isEmpty()){
                 getImages()
             }
         }
     }
+
     fun getCategoriesRoom()=viewModelScope.launch(Dispatchers.IO){
         imageRepo.local.readCategories("image", LANGUAGE_ID).collect{
             categoriesList=it.shuffled(Random(100))
@@ -60,6 +67,19 @@ class ImagesViewModel @Inject constructor(
             }
         }
     }
+
+    fun getFavoritesRoom()=viewModelScope.launch(Dispatchers.IO){
+        imageRepo.local.getFavoriteImages().collect{
+            favoritesList=it
+        }
+    }
+
+    fun getByCatRoom(id:Int)=viewModelScope.launch(Dispatchers.IO){
+        imageRepo.local.getImagesByCat(id, LANGUAGE_ID).collect{
+            imagesByCategory=it
+        }
+    }
+
     //val readImages: LiveData<List<Image>> = imageRepo.local.getImages(LANGUAGE_ID).asLiveData()
     val readCategories: LiveData<List<Category>> =
         imageRepo.local.readCategories("image", LANGUAGE_ID).asLiveData()

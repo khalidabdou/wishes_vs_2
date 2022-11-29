@@ -1,30 +1,21 @@
 package com.example.wishes_jetpackcompose
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color.Companion.Blue
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavHostController
 import coil.ImageLoader
 import coil.compose.rememberAsyncImagePainter
 import coil.disk.DiskCache
+import com.example.wishes_jetpackcompose.data.entities.Page
 import com.example.wishes_jetpackcompose.runtime.NavRoutes
+import com.example.wishes_jetpackcompose.screens.ImagesFrom
 import com.example.wishes_jetpackcompose.utlis.Const
 import com.example.wishes_jetpackcompose.utlis.DEFAULT_RECIPE_IMAGE
 import com.example.wishes_jetpackcompose.utlis.loadPicture
@@ -32,14 +23,13 @@ import com.example.wishes_jetpackcompose.viewModel.ImagesViewModel
 
 
 @Composable
-fun Favorites(viewModel: ImagesViewModel, navHostController: NavHostController) {
+fun ByCat(viewModel: ImagesViewModel, navHostController: NavHostController,catId:Int) {
 
     val context = LocalContext.current
     val scrollState = rememberLazyGridState()
-    val lazyGridState = LazyGridState
-    val lifecycleOwner: LifecycleOwner
+
     LaunchedEffect(Unit) {
-        viewModel.getFavoritesRoom()
+        viewModel.getByCatRoom(catId)
     }
 
     val imageLoader = ImageLoader.Builder(context)
@@ -51,11 +41,11 @@ fun Favorites(viewModel: ImagesViewModel, navHostController: NavHostController) 
         }
         .build()
 
-    val images =viewModel.favoritesList
+    val images =viewModel.imagesByCategory
     LazyVerticalGrid(
         state = scrollState,
         columns = GridCells.Adaptive(128.dp),
-        // content padding
+
         content = {
             if (images.isEmpty()){
                 items(10) {
@@ -78,11 +68,29 @@ fun Favorites(viewModel: ImagesViewModel, navHostController: NavHostController) 
                         ImageItem(
                             img.asImageBitmap(),
                         ){
-                            navHostController.navigate(NavRoutes.ViewPager.route+"/"+it)
+                            val page= Page(
+                                page = it,
+                                imagesList = ImagesFrom.ByCat.route,
+                                cat =images[it].cat_id
+                            )
+                            navHostController.currentBackStackEntry?.savedStateHandle?.set(
+                                key="page",
+                                value = page
+                            )
+                            navHostController.navigate(NavRoutes.ViewPager.route)
                         }
                     }
-                   /* ImageItem( painter = painter){
-                        navHostController.navigate(NavRoutes.ViewPager.route+"/"+it)
+                  /*  ImageItem( painter = painter){
+                        val page= Page(
+                            page = it,
+                            imagesList = ImagesFrom.ByCat.route,
+                            cat =images[it].cat_id
+                        )
+                        navHostController.currentBackStackEntry?.savedStateHandle?.set(
+                            key="page",
+                            value = page
+                        )
+                        navHostController.navigate(NavRoutes.ViewPager.route)
                     }*/
                 }
             }

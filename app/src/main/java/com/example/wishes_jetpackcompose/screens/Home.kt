@@ -1,5 +1,6 @@
 package com.example.wishes_jetpackcompose
 
+import android.graphics.Bitmap
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.animation.core.*
@@ -38,8 +39,18 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.FilterQuality
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asImageBitmap
 import coil.request.ImageRequest
+import com.example.wishes_jetpackcompose.data.entities.Page
+import com.example.wishes_jetpackcompose.screens.ImagesFrom
+import com.example.wishes_jetpackcompose.utlis.DEFAULT_RECIPE_IMAGE
+import com.example.wishes_jetpackcompose.utlis.loadPicture
 
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+
+
+@ExperimentalCoroutinesApi
 @Composable
 fun Home(viewModel: ImagesViewModel, navHostController: NavHostController) {
     val scrollState = rememberLazyGridState()
@@ -67,22 +78,51 @@ fun Home(viewModel: ImagesViewModel, navHostController: NavHostController) {
         // content padding
         content = {
             if (images.isEmpty()){
-                items(10) {
+                items(images.size) {
                     repeat(10){
                         LoadingShimmerEffectImage()
                     }
                 }
             }else{
                 items(30) {
-                    val painter = rememberAsyncImagePainter(
-                        model = directoryUpload + images[it].languageLable + "/" + images[it].image_upload,
-                        imageLoader = imageLoader,
-                        filterQuality= FilterQuality.Low
+                    val image =loadPicture(url =  directoryUpload + images[it].languageLable + "/" + images[it].image_upload,
+                        defaultImage = DEFAULT_RECIPE_IMAGE).value
+                    image?.let { img ->
+                        ImageItem(
+                             img.asImageBitmap(),
+                        ){
+                            val page=Page(
+                            page = it,
+                            imagesList = ImagesFrom.Latest.route,
+                            null
+                        )
+                        navHostController.currentBackStackEntry?.savedStateHandle?.set(
+                            key="page",
+                            value = page
+                        )
 
-                    )
-                    ImageItem( painter = painter){
-                        navHostController.navigate(NavRoutes.ViewPager.route+"/"+it)
+                        navHostController.navigate(NavRoutes.ViewPager.route)
+                        }
                     }
+//                    val painter = rememberAsyncImagePainter(
+//                        model = directoryUpload + images[it].languageLable + "/" + images[it].image_upload,
+//                        imageLoader = imageLoader,
+//                        filterQuality= FilterQuality.Low
+//
+//                    )
+//                    ImageItem( painter = painter){
+//                        val page=Page(
+//                            page = it,
+//                            imagesList = ImagesFrom.Latest.route,
+//                            null
+//                        )
+//                        navHostController.currentBackStackEntry?.savedStateHandle?.set(
+//                            key="page",
+//                            value = page
+//                        )
+//
+//                        navHostController.navigate(NavRoutes.ViewPager.route)
+//                    }
                 }
             }
         })
@@ -90,7 +130,7 @@ fun Home(viewModel: ImagesViewModel, navHostController: NavHostController) {
 
 
 @Composable
-fun ImageItem(painter: AsyncImagePainter, onClick: () -> Unit) {
+fun ImageItem(painter: ImageBitmap, onClick: () -> Unit) {
     val context = LocalContext.current
     Card(
         modifier = Modifier
@@ -103,7 +143,7 @@ fun ImageItem(painter: AsyncImagePainter, onClick: () -> Unit) {
 
         ) {
         Image(
-            painter = painter, contentDescription = null,
+            bitmap = painter , contentDescription = null,
             modifier = Modifier.fillMaxWidth(),
             contentScale= ContentScale.Crop
             )
