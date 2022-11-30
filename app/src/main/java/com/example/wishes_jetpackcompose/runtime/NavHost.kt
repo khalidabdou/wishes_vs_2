@@ -1,6 +1,7 @@
 package com.example.wishes_jetpackcompose.runtime
 
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -14,8 +15,8 @@ import com.example.wishes_jetpackcompose.viewModel.ImagesViewModel
 
 
 @Composable
-fun NavigationHost(viewModel: ImagesViewModel, navController: NavHostController) {
-
+fun NavigationHost(navController: NavHostController) {
+    val viewModel: ImagesViewModel = hiltViewModel()
     NavHost(
         navController = navController,
         startDestination = NavRoutes.Home.route,

@@ -19,32 +19,34 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.FilterQuality
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import coil.ImageLoader
-import coil.compose.rememberAsyncImagePainter
-import coil.disk.DiskCache
+
 import com.example.wishes_jetpackcompose.data.entities.Image
 import com.example.wishes_jetpackcompose.utlis.Const.Companion.directoryUpload
+import com.example.wishes_jetpackcompose.utlis.DEFAULT_RECIPE_IMAGE
+import com.example.wishes_jetpackcompose.utlis.loadPicture
 import com.example.wishes_jetpackcompose.viewModel.ImagesViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalPagerApi::class, ExperimentalCoroutinesApi::class)
 @Composable
 fun ViewPager(viewModel: ImagesViewModel, page: Int?, route: String?, CatId: Int?) {
     val context = LocalContext.current
-    val imageLoader = ImageLoader.Builder(context)
-        .diskCache {
-            DiskCache.Builder()
-                .directory(context.cacheDir.resolve("image_cache"))
-                .maxSizePercent(0.02)
-                .build()
-        }
-        .build()
+//    val imageLoader = ImageLoader.Builder(context)
+//        .diskCache {
+//            DiskCache.Builder()
+//                .directory(context.cacheDir.resolve("image_cache"))
+//                .maxSizePercent(0.02)
+//                .build()
+//        }
+//        .build()
 
 
 
@@ -87,19 +89,27 @@ fun ViewPager(viewModel: ImagesViewModel, page: Int?, route: String?, CatId: Int
             count = images.size,
             state = pagerState
         ) { page ->
+            val url=directoryUpload + images[page].languageLable + "/" + images[page].image_upload
             //Toast.makeText(context,state.toString(),Toast.LENGTH_LONG).show()
-            val painter = rememberAsyncImagePainter(
-                model = directoryUpload + images[page].languageLable + "/" + images[page].image_upload,
-                imageLoader = imageLoader,
-                filterQuality = FilterQuality.Low
-
-            )
-            Box(modifier = Modifier.fillMaxSize()) {
-                Image(
-                    painter = painter, contentDescription = null,
-                    modifier = Modifier.fillMaxSize()
-                )
+//            val painter = rememberAsyncImagePainter(
+//                model = directoryUpload + images[page].languageLable + "/" + images[page].image_upload,
+//                imageLoader = imageLoader,
+//                filterQuality = FilterQuality.Low
+//
+//            )
+            val image = loadPicture(
+                url = url,
+                defaultImage = DEFAULT_RECIPE_IMAGE
+            ).value
+            image.let {img->
+                Box(modifier = Modifier.fillMaxSize()) {
+                    Image(
+                        bitmap = img!!.asImageBitmap(), contentDescription = null,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
             }
+
         }
         Row(
             horizontalArrangement = Arrangement.SpaceEvenly,

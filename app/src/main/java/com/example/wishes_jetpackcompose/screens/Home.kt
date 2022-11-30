@@ -1,6 +1,5 @@
 package com.example.wishes_jetpackcompose
 
-import android.graphics.Bitmap
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.animation.core.*
@@ -8,45 +7,33 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.grid.*
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridState
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
-import androidx.navigation.NavHostController
-import coil.ImageLoader
-import coil.compose.AsyncImagePainter
-import coil.compose.rememberAsyncImagePainter
-import coil.disk.DiskCache
-import com.example.wishes_jetpackcompose.data.entities.Images
-import com.example.wishes_jetpackcompose.runtime.NavRoutes
-import com.example.wishes_jetpackcompose.utlis.Const
-import com.example.wishes_jetpackcompose.utlis.Const.Companion.directoryUpload
-import com.example.wishes_jetpackcompose.utlis.NetworkResults
-import com.example.wishes_jetpackcompose.viewModel.ImagesViewModel
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
-import coil.request.ImageRequest
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.LifecycleOwner
+import androidx.navigation.NavHostController
 import com.example.wishes_jetpackcompose.data.entities.Page
+import com.example.wishes_jetpackcompose.runtime.NavRoutes
 import com.example.wishes_jetpackcompose.screens.ImagesFrom
+import com.example.wishes_jetpackcompose.utlis.Const.Companion.directoryUpload
 import com.example.wishes_jetpackcompose.utlis.DEFAULT_RECIPE_IMAGE
 import com.example.wishes_jetpackcompose.utlis.loadPicture
-
+import com.example.wishes_jetpackcompose.viewModel.ImagesViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
@@ -59,49 +46,61 @@ fun Home(viewModel: ImagesViewModel, navHostController: NavHostController) {
     val lazyGridState = LazyGridState
     val lifecycleOwner: LifecycleOwner
     LaunchedEffect(Unit) {
+        if(viewModel.imageslist.isEmpty())
         viewModel.getImagesRoom()
     }
 
-    val imageLoader = ImageLoader.Builder(context)
-        .diskCache {
-            DiskCache.Builder()
-                .directory(context.cacheDir.resolve("image_cache"))
-                .maxSizePercent(0.02)
-                .build()
-        }
-        .build()
+//    val imageLoader = ImageLoader.Builder(context)
+//        .diskCache {
+//            DiskCache.Builder()
+//                .directory(context.cacheDir.resolve("image_cache"))
+//                .maxSizePercent(0.02)
+//                .build()
+//        }
+//        .build()
 
-    val images =viewModel.imageslist
+    val firstItemVisible by remember {
+        derivedStateOf {
+            scrollState.firstVisibleItemIndex == 18
+        }
+    }
+
+    val images = viewModel.imageslist
     LazyVerticalGrid(
         state = scrollState,
         columns = GridCells.Adaptive(128.dp),
         // content padding
         content = {
-            if (images.isEmpty()){
-                items(images.size) {
-                    repeat(10){
-                        LoadingShimmerEffectImage()
-                    }
+            Log.d("scroll",scrollState.firstVisibleItemIndex.toString())
+            if (firstItemVisible) {
+                viewModel.offset=40
+                Toast.makeText(context,"last",Toast.LENGTH_LONG).show()
+            }
+            if (images.isEmpty()) {
+                items(10) {
+                    LoadingShimmerEffectImage()
                 }
-            }else{
-                items(30) {
-                    val image =loadPicture(url =  directoryUpload + images[it].languageLable + "/" + images[it].image_upload,
-                        defaultImage = DEFAULT_RECIPE_IMAGE).value
+            } else {
+                items(viewModel.offset) {
+                    val image = loadPicture(
+                        url = directoryUpload + images[it].languageLable + "/" + images[it].image_upload,
+                        defaultImage = DEFAULT_RECIPE_IMAGE
+                    ).value
                     image?.let { img ->
                         ImageItem(
-                             img.asImageBitmap(),
-                        ){
-                            val page=Page(
-                            page = it,
-                            imagesList = ImagesFrom.Latest.route,
-                            null
-                        )
-                        navHostController.currentBackStackEntry?.savedStateHandle?.set(
-                            key="page",
-                            value = page
-                        )
+                            img.asImageBitmap(),
+                        ) {
+                            val page = Page(
+                                page = it,
+                                imagesList = ImagesFrom.Latest.route,
+                                null
+                            )
+                            navHostController.currentBackStackEntry?.savedStateHandle?.set(
+                                key = "page",
+                                value = page
+                            )
 
-                        navHostController.navigate(NavRoutes.ViewPager.route)
+                            navHostController.navigate(NavRoutes.ViewPager.route)
                         }
                     }
 //                    val painter = rememberAsyncImagePainter(
@@ -143,10 +142,10 @@ fun ImageItem(painter: ImageBitmap, onClick: () -> Unit) {
 
         ) {
         Image(
-            bitmap = painter , contentDescription = null,
+            bitmap = painter, contentDescription = null,
             modifier = Modifier.fillMaxWidth(),
-            contentScale= ContentScale.Crop
-            )
+            contentScale = ContentScale.Crop
+        )
     }
 }
 
@@ -192,7 +191,8 @@ fun ShimmerGridItemImage(brush: Brush) {
         Spacer(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(200.dp).clip(RoundedCornerShape(6.dp))
+                .height(200.dp)
+                .clip(RoundedCornerShape(6.dp))
                 .background(brush)
         )
     }

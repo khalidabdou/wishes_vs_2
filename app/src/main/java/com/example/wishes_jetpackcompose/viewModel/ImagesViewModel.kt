@@ -3,10 +3,7 @@ package com.example.wishes_jetpackcompose.viewModel
 
 import android.app.Application
 import android.util.Log
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.lifecycle.*
 import com.example.wishes_jetpackcompose.data.entities.Categories
 import com.example.wishes_jetpackcompose.data.entities.Category
@@ -22,8 +19,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import javax.inject.Inject
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
+import com.example.wishes_jetpackcompose.utlis.Const.Companion.RANDOM
 import java.util.*
 
 
@@ -38,6 +34,7 @@ class ImagesViewModel @Inject constructor(
     var categories: MutableLiveData<NetworkResults<Categories>> = MutableLiveData()
     var images: MutableLiveData<NetworkResults<Images>> = MutableLiveData()
 
+    var offset by mutableStateOf(30)
 
 
 
@@ -52,10 +49,9 @@ class ImagesViewModel @Inject constructor(
 
     fun getImagesRoom()=viewModelScope.launch(Dispatchers.IO){
         imageRepo.local.getImages(LANGUAGE_ID).collect{
-            imageslist=it.shuffled(Random(100)).subList(0,30)
             if (it.isEmpty()){
                 getImages()
-            }
+            }else imageslist=it.shuffled(Random(RANDOM)).subList(0,400)
         }
     }
 

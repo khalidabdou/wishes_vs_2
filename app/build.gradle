@@ -84,7 +84,7 @@ dependencies {
     implementation "androidx.compose.material:material-ripple:$compose_version"
 
     //implementation("io.coil-kt:coil-compose:2.2.2")
-    implementation("io.coil-kt:coil-compose:2.2.2")
+    //implementation("io.coil-kt:coil-compose:2.2.2")
 
     //viewpager
     implementation "com.google.accompanist:accompanist-pager:0.24.13-rc"

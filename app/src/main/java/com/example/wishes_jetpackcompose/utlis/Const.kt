@@ -5,6 +5,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import com.example.wishes_jetpackcompose.BuildConfig
+import kotlin.random.Random
 
 class Const {
 
@@ -19,6 +20,7 @@ class Const {
         val directoryUploadCat: String = BuildConfig.api + "category/"
 
         var LANGUAGE_ID: Int = 5
+        val RANDOM= Random.nextLong(12345,92345678)
 
 
         fun hasConnection(application: Application): Boolean {

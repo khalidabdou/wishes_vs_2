@@ -65,8 +65,6 @@ class MainActivity : ComponentActivity() {
                 BackHandler {
                     showAlertDialog = true
                 }
-                val viewModel: ImagesViewModel = hiltViewModel()
-
 
                 Surface() {
                     var navigateClick by remember { mutableStateOf(false) }
@@ -110,7 +108,7 @@ class MainActivity : ComponentActivity() {
                         )
                     {
                         Column(modifier = Modifier.padding(it)) {
-                            NavigationHost(viewModel = viewModel,navController = navController)
+                            NavigationHost(navController = navController)
                         }
                         if (showAlertDialog) {
                             AlertDialog(

@@ -1,6 +1,5 @@
 package com.example.wishes_jetpackcompose
 
-import android.widget.Toast
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -18,16 +17,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import coil.ImageLoader
-import coil.compose.AsyncImagePainter
-import coil.compose.rememberAsyncImagePainter
-import coil.disk.DiskCache
 import com.example.wishes_jetpackcompose.runtime.NavRoutes
 import com.example.wishes_jetpackcompose.utlis.Const.Companion.directoryUploadCat
+import com.example.wishes_jetpackcompose.utlis.DEFAULT_RECIPE_IMAGE
+import com.example.wishes_jetpackcompose.utlis.loadPicture
 import com.example.wishes_jetpackcompose.viewModel.ImagesViewModel
 
 
@@ -43,7 +42,7 @@ fun Categories(viewModel: ImagesViewModel, navHostController: NavHostController)
     LaunchedEffect(Unit) {
         viewModel.getCategoriesRoom()
     }
-    val categories =viewModel.categoriesList
+    val categories = viewModel.categoriesList
 
     LazyColumn(modifier = Modifier.fillMaxSize()) {
         if (categories.isEmpty()) {
@@ -55,22 +54,28 @@ fun Categories(viewModel: ImagesViewModel, navHostController: NavHostController)
         } else {
             items(categories.size) {
                 val category = categories[it]
-                val imageLoader = ImageLoader.Builder(context)
-                    .diskCache {
-                        DiskCache.Builder()
-                            .directory(context.cacheDir.resolve("image_cache"))
-                            .maxSizePercent(0.02)
-                            .build()
-                    }
-                    .build()
+//                val imageLoader = ImageLoader.Builder(context)
+//                    .diskCache {
+//                        DiskCache.Builder()
+//                            .directory(context.cacheDir.resolve("image_cache"))
+//                            .maxSizePercent(0.02)
+//                            .build()
+//                    }
+//                    .build()
 
-                val painter = rememberAsyncImagePainter(
-                    model = directoryUploadCat + category.image,
-                    imageLoader = imageLoader,
-                    contentScale = ContentScale.Inside
-                )
-                ItemCategory(category.name, painter){
-                    navHostController.navigate(NavRoutes.ByCat.route+"/"+category.id)
+//                val painter = rememberAsyncImagePainter(
+//                    model = directoryUploadCat + category.image,
+//                    imageLoader = imageLoader,
+//                    contentScale = ContentScale.Inside
+//                )
+                val image = loadPicture(
+                    url = directoryUploadCat + category.image,
+                    defaultImage = DEFAULT_RECIPE_IMAGE
+                ).value
+                image?.let { img ->
+                    ItemCategory(category.name, img.asImageBitmap()) {
+                        navHostController.navigate(NavRoutes.ByCat.route + "/" + category.id)
+                    }
                 }
             }
         }
@@ -79,11 +84,14 @@ fun Categories(viewModel: ImagesViewModel, navHostController: NavHostController)
 
 
 @Composable
-fun ItemCategory(text: String, painter: AsyncImagePainter,onClick:()->Unit) {
+fun ItemCategory(text: String, painter: ImageBitmap, onClick: () -> Unit) {
     Row(
-        modifier = Modifier.padding(10.dp).fillMaxWidth().clickable {
-                       onClick()
-        },
+        modifier = Modifier
+            .padding(10.dp)
+            .fillMaxWidth()
+            .clickable {
+                onClick()
+            },
 
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -95,7 +103,7 @@ fun ItemCategory(text: String, painter: AsyncImagePainter,onClick:()->Unit) {
         ) {
             val context = LocalContext.current
             androidx.compose.foundation.Image(
-                painter = painter, contentDescription = null,
+                bitmap = painter, contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize()
             )

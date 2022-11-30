@@ -21,16 +21,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavHostController
-import coil.ImageLoader
-import coil.compose.rememberAsyncImagePainter
-import coil.disk.DiskCache
 import com.example.wishes_jetpackcompose.runtime.NavRoutes
 import com.example.wishes_jetpackcompose.utlis.Const
 import com.example.wishes_jetpackcompose.utlis.DEFAULT_RECIPE_IMAGE
 import com.example.wishes_jetpackcompose.utlis.loadPicture
 import com.example.wishes_jetpackcompose.viewModel.ImagesViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun Favorites(viewModel: ImagesViewModel, navHostController: NavHostController) {
 
@@ -42,14 +41,14 @@ fun Favorites(viewModel: ImagesViewModel, navHostController: NavHostController) 
         viewModel.getFavoritesRoom()
     }
 
-    val imageLoader = ImageLoader.Builder(context)
-        .diskCache {
-            DiskCache.Builder()
-                .directory(context.cacheDir.resolve("image_cache"))
-                .maxSizePercent(0.02)
-                .build()
-        }
-        .build()
+//    val imageLoader = ImageLoader.Builder(context)
+//        .diskCache {
+//            DiskCache.Builder()
+//                .directory(context.cacheDir.resolve("image_cache"))
+//                .maxSizePercent(0.02)
+//                .build()
+//        }
+//        .build()
 
     val images =viewModel.favoritesList
     LazyVerticalGrid(
@@ -65,12 +64,12 @@ fun Favorites(viewModel: ImagesViewModel, navHostController: NavHostController) 
                 }
             }else{
                 items(images.size) {
-                    val painter = rememberAsyncImagePainter(
-                        model = Const.directoryUpload + images[it].languageLable + "/" + images[it].image_upload,
-                        imageLoader = imageLoader,
-                        filterQuality= FilterQuality.Low
-
-                    )
+//                    val painter = rememberAsyncImagePainter(
+//                        model = Const.directoryUpload + images[it].languageLable + "/" + images[it].image_upload,
+//                        imageLoader = imageLoader,
+//                        filterQuality= FilterQuality.Low
+//
+//                    )
                     val image = loadPicture(url =  Const.directoryUpload + images[it].languageLable + "/" + images[it].image_upload,
                         defaultImage = DEFAULT_RECIPE_IMAGE
                     ).value
