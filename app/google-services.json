@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "998387443383",
+    "project_id": "wishes-2-jetpack-compose",
+    "storage_bucket": "wishes-2-jetpack-compose.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:998387443383:android:3a17a823d22473dc308f32",
+        "android_client_info": {
+          "package_name": "com.wishes2.wishes.thailands"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "998387443383-oh7e80bcdttehcfiieq5d08egc2ha7k3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZyMBMow91U3u3M1Hcgww7B7ZsmrLYKkg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "998387443383-oh7e80bcdttehcfiieq5d08egc2ha7k3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

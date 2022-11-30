@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-kapt'
     id 'kotlin-parcelize'
     id 'dagger.hilt.android.plugin'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -11,7 +12,7 @@ android {
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.wishes_jetpackcompose"
+        applicationId "com.wishes2.wishes.thailands"
         minSdk 23
         targetSdk 33
         versionCode 1
@@ -32,7 +33,10 @@ android {
 
     buildTypes.each {
         it.buildConfigField 'String', 'api', api
+        it.buildConfigField 'String', 'PACKAGE_NAME', PACKAGE_NAME
     }
+    
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
@@ -114,6 +118,12 @@ dependencies {
     def glide = "4.11.0"
     implementation "com.github.bumptech.glide:glide:$glide"
     kapt "com.github.bumptech.glide:compiler:$glide"
+
+    implementation platform('com.google.firebase:firebase-bom:31.0.2')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-analytics'
+
+    implementation 'com.google.android.gms:play-services-ads:21.3.0'
 
 
 }

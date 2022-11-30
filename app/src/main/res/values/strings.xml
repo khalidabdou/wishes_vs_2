@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">wishes_jetpackCompose</string>
+    <string name="admob_id" translatable="false">ca-app-pub-3940256099942544~3347511713</string>
+
     <string name="rate">rate app</string>
     <string name="share">share app</string>
     <string name="send_to">best app good morning</string>
