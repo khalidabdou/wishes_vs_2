@@ -11,7 +11,7 @@ import androidx.compose.ui.platform.LocalContext
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
-import com.example.wishes_jetpackcompose.R
+import com.wishes.jetpackcompose.R
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 

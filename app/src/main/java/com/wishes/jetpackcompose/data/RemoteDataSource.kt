@@ -1,10 +1,10 @@
 package com.wishes.jetpackcompose.data
 
 
-import com.example.wishes_jetpackcompose.BuildConfig
-import com.example.wishes_jetpackcompose.data.entities.Categories
-import com.example.wishes_jetpackcompose.data.entities.Images
-import com.example.wishes_jetpackcompose.utlis.Const.Companion.LANGUAGE_ID
+import com.wishes.jetpackcompose.BuildConfig
+import com.wishes.jetpackcompose.data.entities.Categories
+import com.wishes.jetpackcompose.data.entities.Images
+import com.wishes.jetpackcompose.utlis.Const.Companion.LANGUAGE_ID
 import retrofit2.Response
 import javax.inject.Inject
 

@@ -4,7 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import com.example.wishes_jetpackcompose.BuildConfig
+import com.wishes.jetpackcompose.BuildConfig
 import kotlin.random.Random
 
 class Const {

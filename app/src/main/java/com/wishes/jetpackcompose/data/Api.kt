@@ -1,10 +1,11 @@
 package com.wishes.jetpackcompose.data
 
 
-import com.example.wishes_jetpackcompose.data.entities.Ads
-import com.example.wishes_jetpackcompose.data.entities.Apps
-import com.example.wishes_jetpackcompose.data.entities.Categories
-import com.example.wishes_jetpackcompose.data.entities.Images
+
+import com.wishes.jetpackcompose.data.entities.Ads
+import com.wishes.jetpackcompose.data.entities.Apps
+import com.wishes.jetpackcompose.data.entities.Categories
+import com.wishes.jetpackcompose.data.entities.Images
 import retrofit2.Response
 import retrofit2.http.*
 

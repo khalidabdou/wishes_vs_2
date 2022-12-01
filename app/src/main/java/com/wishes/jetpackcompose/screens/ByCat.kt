@@ -10,20 +10,20 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.wishes.jetpackcompose.data.entities.Page
+import com.wishes.jetpackcompose.runtime.NavRoutes
+import com.wishes.jetpackcompose.screens.ImagesFrom
+import com.wishes.jetpackcompose.utlis.Const
+import com.wishes.jetpackcompose.utlis.DEFAULT_RECIPE_IMAGE
+import com.wishes.jetpackcompose.utlis.loadPicture
+import com.wishes.jetpackcompose.viewModel.ImagesViewModel
 
-import com.example.wishes_jetpackcompose.data.entities.Page
-import com.example.wishes_jetpackcompose.runtime.NavRoutes
-import com.example.wishes_jetpackcompose.screens.ImagesFrom
-import com.example.wishes_jetpackcompose.utlis.Const
-import com.example.wishes_jetpackcompose.utlis.DEFAULT_RECIPE_IMAGE
-import com.example.wishes_jetpackcompose.utlis.loadPicture
-import com.example.wishes_jetpackcompose.viewModel.ImagesViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
-fun ByCat(viewModel: ImagesViewModel, navHostController: NavHostController,catId:Int) {
+fun ByCat(viewModel: ImagesViewModel, navHostController: NavHostController, catId:Int) {
 
     val context = LocalContext.current
     val scrollState = rememberLazyGridState()

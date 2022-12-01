@@ -1,7 +1,7 @@
 package com.wishes.jetpackcompose.repo
 
-import com.example.wishes_jetpackcompose.data.LocalDataSource
-import com.example.wishes_jetpackcompose.data.RemoteDataSource
+import com.wishes.jetpackcompose.data.LocalDataSource
+import com.wishes.jetpackcompose.data.RemoteDataSource
 import javax.inject.Inject
 
 class ImagesRepo @Inject constructor(

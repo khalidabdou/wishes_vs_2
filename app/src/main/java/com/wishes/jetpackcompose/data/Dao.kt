@@ -2,8 +2,9 @@ package com.wishes.jetpackcompose.data
 
 import android.util.Log
 import androidx.room.*
-import com.example.wishes_jetpackcompose.data.entities.Category
-import com.example.wishes_jetpackcompose.data.entities.Image
+import com.wishes.jetpackcompose.data.entities.Category
+import com.wishes.jetpackcompose.data.entities.Image
+
 import kotlinx.coroutines.flow.Flow
 
 

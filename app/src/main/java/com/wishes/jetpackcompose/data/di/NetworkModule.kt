@@ -1,7 +1,7 @@
 package com.green.china.di
 
-import com.example.wishes_jetpackcompose.BuildConfig
-import com.example.wishes_jetpackcompose.data.Api
+import com.wishes.jetpackcompose.BuildConfig
+import com.wishes.jetpackcompose.data.Api
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

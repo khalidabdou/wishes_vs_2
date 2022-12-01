@@ -8,9 +8,9 @@ import com.example.wishes_jetpackcompose.ByCat
 import com.example.wishes_jetpackcompose.Categories
 import com.example.wishes_jetpackcompose.Favorites
 import com.example.wishes_jetpackcompose.Home
-import com.example.wishes_jetpackcompose.data.entities.Page
-import com.example.wishes_jetpackcompose.screens.ViewPager
-import com.example.wishes_jetpackcompose.viewModel.ImagesViewModel
+import com.wishes.jetpackcompose.data.entities.Page
+import com.wishes.jetpackcompose.screens.ViewPager
+import com.wishes.jetpackcompose.viewModel.ImagesViewModel
 
 
 @Composable

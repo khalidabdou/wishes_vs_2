@@ -1,8 +1,9 @@
 package com.wishes.jetpackcompose.data
 
 
-import com.example.wishes_jetpackcompose.data.entities.Category
-import com.example.wishes_jetpackcompose.data.entities.Image
+
+import com.wishes.jetpackcompose.data.entities.Category
+import com.wishes.jetpackcompose.data.entities.Image
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

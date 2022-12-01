@@ -1,7 +1,7 @@
 package com.green.china.di
 
 import android.content.Context
-import com.example.wishes_jetpackcompose.data.WallDatabase
+import com.wishes.jetpackcompose.data.WallDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

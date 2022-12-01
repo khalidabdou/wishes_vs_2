@@ -5,20 +5,20 @@ import android.app.Application
 import android.util.Log
 import androidx.compose.runtime.*
 import androidx.lifecycle.*
-import com.example.wishes_jetpackcompose.data.entities.Categories
-import com.example.wishes_jetpackcompose.data.entities.Category
-import com.example.wishes_jetpackcompose.data.entities.Image
-import com.example.wishes_jetpackcompose.data.entities.Images
-import com.example.wishes_jetpackcompose.repo.ImagesRepo
-import com.example.wishes_jetpackcompose.utlis.Const.Companion.LANGUAGE_ID
-import com.example.wishes_jetpackcompose.utlis.Const.Companion.hasConnection
-import com.example.wishes_jetpackcompose.utlis.NetworkResults
+import com.wishes.jetpackcompose.data.entities.Categories
+import com.wishes.jetpackcompose.data.entities.Category
+import com.wishes.jetpackcompose.data.entities.Image
+import com.wishes.jetpackcompose.data.entities.Images
+import com.wishes.jetpackcompose.repo.ImagesRepo
+import com.wishes.jetpackcompose.utlis.Const.Companion.LANGUAGE_ID
+import com.wishes.jetpackcompose.utlis.Const.Companion.RANDOM
+import com.wishes.jetpackcompose.utlis.Const.Companion.hasConnection
+import com.wishes.jetpackcompose.utlis.NetworkResults
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import javax.inject.Inject
-import com.example.wishes_jetpackcompose.utlis.Const.Companion.RANDOM
 import java.util.*
 
 

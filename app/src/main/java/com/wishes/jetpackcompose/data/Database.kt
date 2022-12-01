@@ -5,9 +5,9 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.wishes_jetpackcompose.data.entities.Category
-import com.example.wishes_jetpackcompose.data.entities.Image
-import com.example.wishes_jetpackcompose.utlis.Const.Companion.DATABASE_NAME
+import com.wishes.jetpackcompose.data.entities.Category
+import com.wishes.jetpackcompose.data.entities.Image
+import com.wishes.jetpackcompose.utlis.Const.Companion.DATABASE_NAME
 
 
 @Database(

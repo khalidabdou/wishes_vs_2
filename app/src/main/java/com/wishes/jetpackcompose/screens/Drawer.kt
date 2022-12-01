@@ -16,8 +16,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.example.wishes_jetpackcompose.utlis.AppUtil
-import com.ringtones.compose.feature.admob.showInterstitialAfterClick
+import com.wishes.jetpackcompose.admob.showInterstitialAfterClick
+import com.wishes.jetpackcompose.utlis.AppUtil
 
 
 @Composable

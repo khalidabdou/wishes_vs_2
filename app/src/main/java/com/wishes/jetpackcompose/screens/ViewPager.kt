@@ -21,18 +21,18 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.wishes_jetpackcompose.data.entities.Image
-import com.example.wishes_jetpackcompose.utlis.AppUtil.getUriImage
-import com.example.wishes_jetpackcompose.utlis.AppUtil.imagesBitmap
-import com.example.wishes_jetpackcompose.utlis.AppUtil.shareImageUri
-import com.example.wishes_jetpackcompose.utlis.Const.Companion.directoryUpload
-import com.example.wishes_jetpackcompose.utlis.DEFAULT_RECIPE_IMAGE
-import com.example.wishes_jetpackcompose.utlis.loadPicture
-import com.example.wishes_jetpackcompose.viewModel.ImagesViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
-import com.ringtones.compose.feature.admob.showInterstitialAfterClick
+import com.wishes.jetpackcompose.admob.showInterstitialAfterClick
+import com.wishes.jetpackcompose.data.entities.Image
+import com.wishes.jetpackcompose.utlis.AppUtil.getUriImage
+import com.wishes.jetpackcompose.utlis.AppUtil.imagesBitmap
+import com.wishes.jetpackcompose.utlis.AppUtil.shareImageUri
+import com.wishes.jetpackcompose.utlis.Const.Companion.directoryUpload
+import com.wishes.jetpackcompose.utlis.DEFAULT_RECIPE_IMAGE
+import com.wishes.jetpackcompose.utlis.loadPicture
+import com.wishes.jetpackcompose.viewModel.ImagesViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 

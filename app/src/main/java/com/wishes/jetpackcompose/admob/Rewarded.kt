@@ -2,13 +2,14 @@ package com.ringtones.compose.feature.admob
 
 import android.content.Context
 import android.util.Log
-import com.example.wishes_jetpackcompose.data.entities.AdProvider.Companion.Rewarded
-import com.example.wishes_jetpackcompose.utlis.findActivity
+
 
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.rewarded.RewardItem
 import com.google.android.gms.ads.rewarded.RewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
+import com.wishes.jetpackcompose.data.entities.AdProvider.Companion.Rewarded
+import com.wishes.jetpackcompose.utlis.findActivity
 
 private var mRewardedAd: RewardedAd? = null
 

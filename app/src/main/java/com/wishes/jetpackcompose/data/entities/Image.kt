@@ -3,8 +3,8 @@ package com.wishes.jetpackcompose.data.entities
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.wishes_jetpackcompose.utlis.Const.Companion.TABLE_IMAGE
 import com.google.gson.annotations.SerializedName
+import com.wishes.jetpackcompose.utlis.Const.Companion.TABLE_IMAGE
 
 import kotlinx.android.parcel.Parcelize
 

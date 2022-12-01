@@ -10,11 +10,11 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
-import com.example.wishes_jetpackcompose.data.entities.AdProvider.Companion.OpenAd
 
 
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.appopen.AppOpenAd
+import com.wishes.jetpackcompose.data.entities.AdProvider.Companion.OpenAd
 import dagger.hilt.android.HiltAndroidApp
 import java.util.*
 

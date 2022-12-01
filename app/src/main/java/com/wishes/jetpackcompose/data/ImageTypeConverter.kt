@@ -1,10 +1,11 @@
 package com.wishes.jetpackcompose.data
 
 import androidx.room.TypeConverter
-import com.example.wishes_jetpackcompose.data.entities.Categories
-import com.example.wishes_jetpackcompose.data.entities.Image
+
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.wishes.jetpackcompose.data.entities.Categories
+import com.wishes.jetpackcompose.data.entities.Image
 
 
 class imageTypeConverter {

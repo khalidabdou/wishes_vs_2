@@ -13,7 +13,7 @@ import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.FileProvider
-import com.example.wishes_jetpackcompose.R
+import com.wishes.jetpackcompose.R
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException

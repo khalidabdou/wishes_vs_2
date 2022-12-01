@@ -32,16 +32,18 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.wishes_jetpackcompose.data.entities.AdProvider.Companion.Banner
-import com.example.wishes_jetpackcompose.runtime.NavBarItems
-import com.example.wishes_jetpackcompose.runtime.NavigationHost
-import com.example.wishes_jetpackcompose.screens.NavigationDrawer
-import com.example.wishes_jetpackcompose.ui.theme.Inter
-import com.example.wishes_jetpackcompose.ui.theme.Wishes_jetpackComposeTheme
-import com.example.wishes_jetpackcompose.utlis.AppUtil
 
-import com.example.wishes_jetpackcompose.viewModel.ImagesViewModel
+
 import com.ringtones.compose.feature.admob.AdvertView
+import com.wishes.jetpackcompose.data.entities.AdProvider.Companion.Banner
+import com.wishes.jetpackcompose.runtime.NavBarItems
+import com.wishes.jetpackcompose.runtime.NavigationHost
+import com.wishes.jetpackcompose.screens.NavigationDrawer
+import com.wishes.jetpackcompose.ui.theme.Inter
+import com.wishes.jetpackcompose.ui.theme.Wishes_jetpackComposeTheme
+import com.wishes.jetpackcompose.utlis.AppUtil
+import com.wishes.jetpackcompose.viewModel.ImagesViewModel
+
 import dagger.hilt.android.AndroidEntryPoint
 
 

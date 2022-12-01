@@ -23,11 +23,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.wishes_jetpackcompose.runtime.NavRoutes
-import com.example.wishes_jetpackcompose.utlis.Const.Companion.directoryUploadCat
-import com.example.wishes_jetpackcompose.utlis.DEFAULT_RECIPE_IMAGE
-import com.example.wishes_jetpackcompose.utlis.loadPicture
-import com.example.wishes_jetpackcompose.viewModel.ImagesViewModel
+import com.wishes.jetpackcompose.runtime.NavRoutes
+import com.wishes.jetpackcompose.utlis.Const.Companion.directoryUploadCat
+import com.wishes.jetpackcompose.utlis.DEFAULT_RECIPE_IMAGE
+import com.wishes.jetpackcompose.utlis.loadPicture
+import com.wishes.jetpackcompose.viewModel.ImagesViewModel
 
 
 @Composable

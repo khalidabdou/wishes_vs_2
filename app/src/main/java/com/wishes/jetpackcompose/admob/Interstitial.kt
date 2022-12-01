@@ -1,9 +1,8 @@
-package com.ringtones.compose.feature.admob
+package com.wishes.jetpackcompose.admob
 
 import android.content.Context
 import android.util.Log
-import com.example.wishes_jetpackcompose.data.entities.AdProvider.Companion.Inter
-import com.example.wishes_jetpackcompose.utlis.findActivity
+
 
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
@@ -11,6 +10,8 @@ import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
+import com.wishes.jetpackcompose.data.entities.AdProvider.Companion.Inter
+import com.wishes.jetpackcompose.utlis.findActivity
 
 
 var mInterstitialAd: InterstitialAd? = null

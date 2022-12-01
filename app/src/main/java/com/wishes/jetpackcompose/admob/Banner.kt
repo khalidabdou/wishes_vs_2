@@ -15,11 +15,11 @@ import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import com.example.wishes_jetpackcompose.data.entities.AdProvider.Companion.Banner
 
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
+import com.wishes.jetpackcompose.data.entities.AdProvider.Companion.Banner
 
 
 @Composable
