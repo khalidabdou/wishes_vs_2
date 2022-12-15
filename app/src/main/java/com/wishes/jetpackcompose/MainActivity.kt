@@ -32,19 +32,22 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.ringtones.compose.feature.admob.AdvertViewAdmob
 
 
-import com.ringtones.compose.feature.admob.AdvertView
+import com.ringtones.compose.feature.admob.AdvertViewFAN
 import com.wishes.jetpackcompose.data.entities.AdProvider.Companion.Banner
 import com.wishes.jetpackcompose.runtime.NavBarItems
 import com.wishes.jetpackcompose.runtime.NavigationHost
 import com.wishes.jetpackcompose.screens.NavigationDrawer
+import com.wishes.jetpackcompose.screens.comp.AdBannerApp
 import com.wishes.jetpackcompose.ui.theme.Inter
 import com.wishes.jetpackcompose.ui.theme.Wishes_jetpackComposeTheme
 import com.wishes.jetpackcompose.utlis.AppUtil
 import com.wishes.jetpackcompose.viewModel.ImagesViewModel
 
 import dagger.hilt.android.AndroidEntryPoint
+import kotlin.random.Random
 
 
 @AndroidEntryPoint
@@ -70,7 +73,6 @@ class MainActivity : ComponentActivity() {
 
                 Surface() {
                     var navigateClick by remember { mutableStateOf(false) }
-
                     val offSetAnim by animateDpAsState(
                         targetValue = if (navigateClick) 300.dp else 0.dp,
                         tween(1000)
@@ -103,7 +105,6 @@ class MainActivity : ComponentActivity() {
                         bottomBar = {
                             if (currentRoute(navController) != "viewPager")
                                 BottomNavigationBar(navController = navController)
-                          
                         },
 
                         )
@@ -118,15 +119,18 @@ class MainActivity : ComponentActivity() {
                                 },
                                 title = {
                                     Text(
-                                        text = stringResource(R.string.rate_title),
-                                        style = MaterialTheme.typography.titleLarge
-                                    )
-                                },
-                                text = {
-                                    Text(
                                         stringResource(R.string.sure),
                                         style = MaterialTheme.typography.bodyMedium
                                     )
+                                },
+                                text = {
+                                    val apps=viewModel.apps.value
+
+                                    if (!apps.isNullOrEmpty()){
+                                        val app = apps.get(Random.nextInt(0,apps.size))
+                                        AdBannerApp(app)
+                                    }
+
                                 },
                                 confirmButton = {
                                     Button(
@@ -159,8 +163,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun BottomNavigationBar(navController: NavHostController) {
 
-    Column() {
-
+    Column {
         BottomNavigation(
             modifier = Modifier.background(MaterialTheme.colorScheme.surfaceVariant),
         ) {
@@ -174,10 +177,9 @@ fun BottomNavigationBar(navController: NavHostController) {
                     onClick = {
                         navController.navigate(navItem.route) {
                             popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
+                                inclusive = true
                             }
-                            launchSingleTop = true
-                            restoreState = true
+
                         }
                     },
 
@@ -200,7 +202,8 @@ fun BottomNavigationBar(navController: NavHostController) {
             }
         }
         if (Banner.ad_status)
-            AdvertView()
+            AdvertViewAdmob()
+        AdvertViewFAN()
     }
 
     
@@ -217,7 +220,7 @@ fun TopBar(onDrawer: () -> Unit) {
         ),
         title = {
             Text(
-                text = "wishes 2022",
+                text = stringResource(id = R.string.app_name),
                 color = MaterialTheme.colorScheme.onPrimary,
                 style = MaterialTheme.typography.titleMedium.copy(
                     fontFamily = Inter

@@ -8,4 +8,19 @@
     <string name="rate_title">rate us</string>
     <string name="sure">are you sure you want to quit</string>
     <string name="quit">Quit</string>
+    <string name="morning">good morning</string>
+    <string name="afternoon">good afternoon</string>
+    <string name="evening">good evening</string>
+    <string name="night">good night</string>
+    <string name="install">Install</string>
+    <string name="invite">Invite</string>
+    <string name="our_app">Our Apps</string>
+    <string name="feed">Feedback</string>
+    <string name="privacy">Privacy Policy</string>
+    <string name="empty">Empty</string>
+    <string name="fav">Favorite</string>
+    <string name="add_fav">add to favorites</string>
+    <string name="share_icon">share</string>
+    <string name="Home">Home</string>
+    <string name="categories">Categories</string>
 </resources>

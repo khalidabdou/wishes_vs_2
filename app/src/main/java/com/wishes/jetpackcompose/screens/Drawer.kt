@@ -15,9 +15,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.wishes.jetpackcompose.admob.showInterstitialAfterClick
 import com.wishes.jetpackcompose.utlis.AppUtil
+import com.wishes.jetpackcompose.R
 
 
 @Composable
@@ -36,30 +38,30 @@ fun NavigationDrawer(onClick: () -> Unit) {
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "Wishes",
+                    text = context.getString(R.string.app_name),
                     style = MaterialTheme.typography.headlineLarge,
                     color = MaterialTheme.colorScheme.onPrimary
                 )
             }
             Spacer(modifier = Modifier.height(20.dp))
 
-            ItemDrawer("Invite", Icons.Default.Person) {
+            ItemDrawer(stringResource(R.string.invite), Icons.Default.Person) {
                 AppUtil.share(context)
                 showInterstitialAfterClick(context)
             }
-            ItemDrawer("Rate", Icons.Default.Star) {
+            ItemDrawer(stringResource(R.string.rate), Icons.Default.Star) {
                 AppUtil.rateApp(context)
                 showInterstitialAfterClick(context)
             }
-            ItemDrawer("Our Apps", Icons.Default.List) {
+            ItemDrawer(stringResource(R.string.our_app), Icons.Default.List) {
                 AppUtil.openStore("https://play.google.com/store/apps/developer?id=laik", context)
                 showInterstitialAfterClick(context)
             }
-            ItemDrawer("Feedback", Icons.Default.Email) {
+            ItemDrawer(stringResource(R.string.feed), Icons.Default.Email) {
                 AppUtil.sendEmail(context)
                 showInterstitialAfterClick(context)
             }
-            ItemDrawer("Privacy Policy", Icons.Default.Info) {
+            ItemDrawer(stringResource(R.string.privacy), Icons.Default.Info) {
                 AppUtil.openStore("https://stickersapi.specialones.online", context)
                 showInterstitialAfterClick(context)
             }

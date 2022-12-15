@@ -102,7 +102,7 @@ interface Api {
 
 
     //ads
-    @GET("ads/{package}")
+    @GET("infos/{package}")
     suspend fun getAds(
         @Path("package") packageName: String
     ): Response<Ads?>

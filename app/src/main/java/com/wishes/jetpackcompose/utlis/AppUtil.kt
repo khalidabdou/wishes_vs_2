@@ -91,6 +91,12 @@ object AppUtil {
         )
     }
 
+    fun openUrl(context: Context,url:String) {
+        val browserIntent =
+            Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        context.startActivity(browserIntent)
+    }
+
     fun shareImageUri(uri: Uri, context: Context) {
 
         val intent = Intent(Intent.ACTION_SEND)

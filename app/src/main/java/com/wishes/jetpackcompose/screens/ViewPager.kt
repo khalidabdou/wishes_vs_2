@@ -19,11 +19,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
+import com.wishes.jetpackcompose.R
 import com.wishes.jetpackcompose.admob.showInterstitialAfterClick
 import com.wishes.jetpackcompose.data.entities.Image
 import com.wishes.jetpackcompose.utlis.AppUtil.getUriImage
@@ -123,15 +125,15 @@ fun ViewPager(viewModel: ImagesViewModel, navController :NavController, page: In
                 .background(MaterialTheme.colorScheme.primary)
         ) {
 
-            Action("Favorite",Icons.Default.Favorite) {
+            Action(stringResource(R.string.fav),Icons.Default.Favorite) {
                 viewModel.addToFav(images[pagerState.currentPage].id, 1)
-                Toast.makeText(context,"add to favorites",Toast.LENGTH_LONG).show()
+                Toast.makeText(context, context.getString(R.string.add_fav),Toast.LENGTH_LONG).show()
                 showInterstitialAfterClick(context)
             }
             /*Action("Download", Icons.Outlined.KeyboardArrowDown) {
                 Toast.makeText(context,"Download success",Toast.LENGTH_LONG).show()
             }*/
-            Action("share", Icons.Outlined.Share) {
+            Action(stringResource(R.string.share_icon), Icons.Outlined.Share) {
                 imagesBitmap[images[pagerState.currentPage].id]?.let {
                     val uri: Uri?=getUriImage(it,context)
                     shareImageUri(uri!!,context)

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ความปรารถนา 2022</string>
+    <string name="rate">ให้คะแนนแอพ</string>
+    <string name="share">แชร์แอพ</string>
+    <string name="send_to">สวัสดีตอนเช้า</string>
+    <string name="rate_title">ให้คะแนนเรา</string>
+    <string name="sure">คุณแน่ใจหรือว่าต้องการเลิก</string>
+    <string name="quit">เลิก</string>
+    <string name="morning">อรุณสวัสดิ์</string>
+    <string name="afternoon">สวัสดีตอนบ่าย</string>
+    <string name="evening">สวัสดีตอนเย็น</string>
+    <string name="night">ราตรีสวัสดิ์</string>
+    <string name="install">ติดตั้ง</string>
+    <string name="invite">เชิญชวน</string>
+    <string name="our_app">แอพของเรา</string>
+    <string name="feed">ข้อเสนอแนะ</string>
+    <string name="privacy">นโยบายความเป็นส่วนตัว</string>
+    <string name="empty">ว่างเปล่า</string>
+    <string name="fav">ที่ชื่นชอบ</string>
+    <string name="add_fav">เพิ่มในรายการโปรด</string>
+    <string name="share_icon">แบ่งปัน</string>
+</resources>

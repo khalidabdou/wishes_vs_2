@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">2022年愿望</string>
+    <string name="rate">评价应用</string>
+    <string name="share">分享应用</string>
+    <string name="send_to">最好的应用程序早上好</string>
+    <string name="rate_title">评价我们</string>
+    <string name="sure">你确定你要退出吗</string>
+    <string name="quit">退出</string>
+    <string name="morning">早上好</string>
+    <string name="afternoon">下午好</string>
+    <string name="evening">晚上好</string>
+    <string name="night">晚安</string>
+    <string name="install">安装</string>
+    <string name="invite">邀请</string>
+    <string name="our_app">我们的应用程序</string>
+    <string name="feed">反馈</string>
+    <string name="privacy">隐私政策</string>
+    <string name="empty">空的</string>
+    <string name="fav">最喜欢的</string>
+    <string name="add_fav">添加到收藏夹</string>
+    <string name="share_icon">分享</string>
+    <string name="Home">家</string>
+    <string name="categories">类别</string>
+</resources>

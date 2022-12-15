@@ -9,6 +9,7 @@ import com.example.wishes_jetpackcompose.Categories
 import com.example.wishes_jetpackcompose.Favorites
 import com.example.wishes_jetpackcompose.Home
 import com.wishes.jetpackcompose.data.entities.Page
+import com.wishes.jetpackcompose.screens.Splash
 import com.wishes.jetpackcompose.screens.ViewPager
 import com.wishes.jetpackcompose.viewModel.ImagesViewModel
 
@@ -18,8 +19,10 @@ fun NavigationHost(navController: NavHostController,viewModel: ImagesViewModel) 
 
     NavHost(
         navController = navController,
-        startDestination = NavRoutes.Home.route,
+        startDestination = NavRoutes.Splash.route,
     ) {
+
+
         composable(NavRoutes.Home.route) {
             Home(viewModel, navController)
         }
@@ -28,8 +31,10 @@ fun NavigationHost(navController: NavHostController,viewModel: ImagesViewModel) 
             Favorites(viewModel, navController)
         }
         composable(NavRoutes.Categories.route) {
-
             Categories(viewModel, navController)
+        }
+        composable(NavRoutes.Splash.route) {
+            Splash(navController,viewModel)
         }
 
         composable(NavRoutes.ByCat.route+"/{id}") {

@@ -7,6 +7,180 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:998387443383:android:ade9b20c2849d5bf308f32",
+        "android_client_info": {
+          "package_name": "com.wishes2.wishes.chinese"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "998387443383-oh7e80bcdttehcfiieq5d08egc2ha7k3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZyMBMow91U3u3M1Hcgww7B7ZsmrLYKkg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "998387443383-oh7e80bcdttehcfiieq5d08egc2ha7k3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:998387443383:android:57dba86b3c98ec4b308f32",
+        "android_client_info": {
+          "package_name": "com.wishes2.wishes.english"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "998387443383-oh7e80bcdttehcfiieq5d08egc2ha7k3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZyMBMow91U3u3M1Hcgww7B7ZsmrLYKkg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "998387443383-oh7e80bcdttehcfiieq5d08egc2ha7k3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:998387443383:android:764f27da37ee6094308f32",
+        "android_client_info": {
+          "package_name": "com.wishes2.wishes.italian"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "998387443383-oh7e80bcdttehcfiieq5d08egc2ha7k3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZyMBMow91U3u3M1Hcgww7B7ZsmrLYKkg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "998387443383-oh7e80bcdttehcfiieq5d08egc2ha7k3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:998387443383:android:b98444be6bbc8c9d308f32",
+        "android_client_info": {
+          "package_name": "com.wishes2.wishes.korea"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "998387443383-oh7e80bcdttehcfiieq5d08egc2ha7k3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZyMBMow91U3u3M1Hcgww7B7ZsmrLYKkg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "998387443383-oh7e80bcdttehcfiieq5d08egc2ha7k3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:998387443383:android:65bb75cdb6bb9dbe308f32",
+        "android_client_info": {
+          "package_name": "com.wishes2.wishes.russian"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "998387443383-oh7e80bcdttehcfiieq5d08egc2ha7k3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZyMBMow91U3u3M1Hcgww7B7ZsmrLYKkg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "998387443383-oh7e80bcdttehcfiieq5d08egc2ha7k3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:998387443383:android:1c0f74608a37013d308f32",
+        "android_client_info": {
+          "package_name": "com.wishes2.wishes.spain"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "998387443383-oh7e80bcdttehcfiieq5d08egc2ha7k3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZyMBMow91U3u3M1Hcgww7B7ZsmrLYKkg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "998387443383-oh7e80bcdttehcfiieq5d08egc2ha7k3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:998387443383:android:3a17a823d22473dc308f32",
         "android_client_info": {
           "package_name": "com.wishes2.wishes.thailands"

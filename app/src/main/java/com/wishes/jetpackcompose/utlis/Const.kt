@@ -19,8 +19,8 @@ class Const {
         val directoryUpload: String = BuildConfig.api + "categories/"
         val directoryUploadCat: String = BuildConfig.api + "category/"
 
-        var LANGUAGE_ID: Int = 5
-        val RANDOM= Random.nextLong(12345,92345678)
+        var LANGUAGE_ID: Int = 9
+        var RANDOM = (0..10000).random()
 
 
         fun hasConnection(application: Application): Boolean {

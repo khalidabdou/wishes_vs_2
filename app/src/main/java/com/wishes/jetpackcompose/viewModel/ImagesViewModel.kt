@@ -2,24 +2,34 @@ package com.wishes.jetpackcompose.viewModel
 
 
 import android.app.Application
+import android.content.Context
 import android.util.Log
-import androidx.compose.runtime.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.*
-import com.wishes.jetpackcompose.data.entities.Categories
-import com.wishes.jetpackcompose.data.entities.Category
-import com.wishes.jetpackcompose.data.entities.Image
-import com.wishes.jetpackcompose.data.entities.Images
+import com.wishes.jetpackcompose.R
+import com.wishes.jetpackcompose.data.entities.*
+import com.wishes.jetpackcompose.data.entities.AdProvider.Companion.Banner
+import com.wishes.jetpackcompose.data.entities.AdProvider.Companion.BannerFAN
+import com.wishes.jetpackcompose.data.entities.AdProvider.Companion.Inter
+import com.wishes.jetpackcompose.data.entities.AdProvider.Companion.InterFAN
+import com.wishes.jetpackcompose.data.entities.AdProvider.Companion.OpenAd
+import com.wishes.jetpackcompose.data.entities.AdProvider.Companion.Rewarded
 import com.wishes.jetpackcompose.repo.ImagesRepo
 import com.wishes.jetpackcompose.utlis.Const.Companion.LANGUAGE_ID
 import com.wishes.jetpackcompose.utlis.Const.Companion.RANDOM
 import com.wishes.jetpackcompose.utlis.Const.Companion.hasConnection
+import com.wishes.jetpackcompose.utlis.HandleResponse
 import com.wishes.jetpackcompose.utlis.NetworkResults
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import retrofit2.Response
-import javax.inject.Inject
 import java.util.*
+import javax.inject.Inject
 
 
 @HiltViewModel
@@ -35,7 +45,11 @@ class ImagesViewModel @Inject constructor(
 
     var offset by mutableStateOf(30)
 
+    val infos = mutableStateOf<NetworkResults<Ads>>(NetworkResults.Loading())
+    val apps = mutableStateOf<List<App>?>(null)
 
+    private val _message = MutableStateFlow<String>("Good Morning")
+    val message: StateFlow<String> get() = _message
 
     /**ROOM DATABASE**/
     var catId: Int = 0
@@ -45,33 +59,37 @@ class ImagesViewModel @Inject constructor(
     var imagesByCategory by mutableStateOf(emptyList<Image>())
 
 
-
-    fun getImagesRoom()=viewModelScope.launch(Dispatchers.IO){
-        imageRepo.local.getImages(LANGUAGE_ID).collect{
-            if (it.isEmpty()){
+    fun getImagesRoom() = viewModelScope.launch(Dispatchers.IO) {
+        imageRepo.local.getImages(LANGUAGE_ID).collect {
+            if (it.isEmpty()) {
                 getImages()
-            }else imageslist=it.shuffled(Random(RANDOM)).subList(0,400)
+            } else {
+                if (imageslist.isEmpty())
+                    imageslist = it.subList(0, 400).shuffled()
+            }
+
+            //Log.d("RANDOM", RANDOM.toString())
         }
     }
 
-    fun getCategoriesRoom()=viewModelScope.launch(Dispatchers.IO){
-        imageRepo.local.readCategories("image", LANGUAGE_ID).collect{
-            categoriesList=it.shuffled(Random(100))
-            if (it.isEmpty()){
+    fun getCategoriesRoom() = viewModelScope.launch(Dispatchers.IO) {
+        imageRepo.local.readCategories("image", LANGUAGE_ID).collect {
+            categoriesList = it.shuffled(Random(100))
+            if (it.isEmpty()) {
                 getCategories()
             }
         }
     }
 
-    fun getFavoritesRoom()=viewModelScope.launch(Dispatchers.IO){
-        imageRepo.local.getFavoriteImages().collect{
-            favoritesList=it
+    fun getFavoritesRoom() = viewModelScope.launch(Dispatchers.IO) {
+        imageRepo.local.getFavoriteImages().collect {
+            favoritesList = it
         }
     }
 
-    fun getByCatRoom(id:Int)=viewModelScope.launch(Dispatchers.IO){
-        imageRepo.local.getImagesByCat(id, LANGUAGE_ID).collect{
-            imagesByCategory=it
+    fun getByCatRoom(id: Int) = viewModelScope.launch(Dispatchers.IO) {
+        imageRepo.local.getImagesByCat(id, LANGUAGE_ID).collect {
+            imagesByCategory = it
         }
     }
 
@@ -105,6 +123,53 @@ class ImagesViewModel @Inject constructor(
     fun getCategories() {
         viewModelScope.launch {
             getCategoriesSafeCall()
+        }
+    }
+
+    fun getAds() = viewModelScope.launch {
+        if (infos.value is NetworkResults.Error) {
+            //Log.e("ads", ads.value.toString())
+        }
+        if (infos.value is NetworkResults.Loading) {
+            try {
+                val response = imageRepo.remot.getAds()
+                val handle = HandleResponse(response)
+                infos.value = handle.handleResult()
+
+                apps.value = infos.value.data!!.apps
+                infos.value.data!!.ads.forEach {
+                    when (it.type) {
+                        "banner" -> {
+                            Banner = it
+                            //Log.d("ads", Banner.toString())
+                        }
+                        "inter" -> {
+                            Inter = it
+                            //Log.d("ads", Inter.toString())
+                        }
+                        "open" -> {
+                            Log.d("FAN", it.ad_id)
+                            OpenAd = it
+                            //Log.d("ads", OpenAd.toString())
+                        }
+                        "rewarded" -> {
+                            Rewarded = it
+                            //Log.d("ads", OpenAd.toString())
+                        }
+                        "banner_fan" -> {
+                            Log.d("FAN", it.ad_id)
+                            BannerFAN = it
+                            //Log.d("ads", Banner.toString())
+                        }
+                        "inter_fan" -> {
+                            InterFAN = it
+                            //Log.d("ads", Inter.toString())
+                        }
+                    }
+                }
+
+            } catch (ex: Exception) {
+            }
         }
     }
 
@@ -210,6 +275,39 @@ class ImagesViewModel @Inject constructor(
         viewModelScope.launch {
             // imageRepo.local.deleteImage(id)
         }
+    }
+
+    fun setMessage(context: Context) {
+        val c: Calendar = Calendar.getInstance()
+        val timeOfDay: Int = c.get(Calendar.HOUR_OF_DAY)
+        when (timeOfDay) {
+            in 0..11 -> {
+                _message.value = context.getString(R.string.morning)
+            }
+            in 12..15 -> {
+                _message.value = context.getString(R.string.afternoon)
+            }
+            in 16..20 -> {
+                _message.value = context.getString(R.string.evening)
+            }
+            in 21..23 -> {
+                _message.value = context.getString(R.string.night)
+            }
+
+        }
+//        if (timeOfDay in 0..11) {
+//            _message.value = context.getString(R.string.morning)
+//            //message = "Good Morning"
+//        } else if (timeOfDay in 12..15) {
+//            _message.value = context.getString(R.string.afternoon)
+//            //message = "Good Afternoon"
+//        } else if (timeOfDay in 16..20) {
+//            _message.value = context.getString(R.string.evening)
+//            //message = "Good Evening"
+//        } else if (timeOfDay in 21..23) {
+//            _message.value = context.getString(R.string.night)
+//            //message = "Good Night"
+//        }
     }
 
 

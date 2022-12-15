@@ -21,9 +21,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavHostController
+import com.wishes.jetpackcompose.R
 import com.wishes.jetpackcompose.data.entities.Page
 import com.wishes.jetpackcompose.runtime.NavRoutes
 import com.wishes.jetpackcompose.screens.ImagesFrom
@@ -71,7 +73,7 @@ fun Favorites(viewModel: ImagesViewModel, navHostController: NavHostController) 
                 modifier = Modifier.size(70.dp)
             )
             Text(
-                text = "Empty",
+                text = stringResource(R.string.empty),
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.primary
             )

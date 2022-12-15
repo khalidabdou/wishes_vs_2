@@ -5,19 +5,19 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 
-@Parcelize
 data class App(
     val id: Int,
-    val name: String,
-    val description: String,
-    val app_url: String,
-    val icon: String,
-    val larg_image: String,
-    val btn_text: String
-) : Parcelable
+    val title: String,
+    val desc: String,
+    val url: String,
+    val image: String,
+)
 
 
 data class Apps(
+    @SerializedName(value = "admobe", alternate = ["ads"])
+    val ads: List<Ad>,
+
     @SerializedName("apps")
-    val results: List<App>
+    val apps: List<App>
 )

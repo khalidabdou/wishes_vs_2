@@ -28,8 +28,10 @@ import com.wishes.jetpackcompose.utlis.Const.Companion.directoryUploadCat
 import com.wishes.jetpackcompose.utlis.DEFAULT_RECIPE_IMAGE
 import com.wishes.jetpackcompose.utlis.loadPicture
 import com.wishes.jetpackcompose.viewModel.ImagesViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun Categories(viewModel: ImagesViewModel, navHostController: NavHostController) {
     val scaffoldState = rememberScaffoldState()
@@ -53,6 +55,7 @@ fun Categories(viewModel: ImagesViewModel, navHostController: NavHostController)
             }
         } else {
             items(categories.size) {
+
                 val category = categories[it]
 //                val imageLoader = ImageLoader.Builder(context)
 //                    .diskCache {

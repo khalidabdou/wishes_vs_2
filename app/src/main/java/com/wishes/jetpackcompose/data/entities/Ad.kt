@@ -23,8 +23,8 @@ data class Ads(
     @SerializedName(value = "admobe", alternate = ["ads"])
     val ads: List<Ad>,
 
-    @SerializedName("setting")
-    val setting: List<Setting>
+    @SerializedName("apps")
+    val apps: List<App>
 )
 
 class AdProvider {
@@ -32,21 +32,21 @@ class AdProvider {
     companion object {
         var Banner: Ad = Ad(
             0,
-            "ca-app-pub-3940256099942544/6300978111",
+            "ca-app-pub-3940256099942544/6300978111-",
             "banner",
             false,
             null,
         )
         var Inter: Ad = Ad(
             0,
-            "ca-app-pub-3940256099942544/1033173712",
+            "ca-app-pub-3940256099942544/1033173712-",
             "inter",
             false,
             3,
         )
         var OpenAd: Ad = Ad(
             0,
-            "ca-app-pub-3940256099942544/3419835294",
+            "ca-app-pub-3940256099942544/3419835294-",
             "open",
             false,
             null,
@@ -57,6 +57,22 @@ class AdProvider {
             "rewarded",
             false,
             null,
+        )
+
+
+        var BannerFAN: Ad = Ad(
+            0,
+            "",
+            "banner_fan",
+            false,
+            null,
+        )
+        var InterFAN: Ad = Ad(
+            0,
+            "ca-app-pub-3940256099942544/1033173712-",
+            "inter_fan",
+            false,
+            3,
         )
     }
 }

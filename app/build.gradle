@@ -12,6 +12,7 @@ android {
     compileSdk 33
 
     defaultConfig {
+        //applicationId "com.wishes2.wishes.thailands"
         applicationId "com.wishes2.wishes.thailands"
         minSdk 23
         targetSdk 33
@@ -125,6 +126,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics'
 
     implementation 'com.google.android.gms:play-services-ads:21.3.0'
+
+
+    implementation 'com.facebook.android:audience-network-sdk:6.12.0'
 
 
 }

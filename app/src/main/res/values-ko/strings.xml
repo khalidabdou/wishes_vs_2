@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">2022년 소원</string>
+    <string name="rate">앱 평가</string>
+    <string name="share">공유 앱</string>
+    <string name="send_to">최고의 앱 좋은 아침</string>
+    <string name="rate_title">우리를 평가</string>
+    <string name="sure">종료하시겠습니까?</string>
+    <string name="quit">그만두다</string>
+    <string name="morning">좋은 아침</string>
+    <string name="afternoon">좋은 오후에요</string>
+    <string name="evening">좋은 저녁이에요</string>
+    <string name="night">안녕히 주무세요</string>
+    <string name="install">설치</string>
+    <string name="invite">초대</string>
+    <string name="our_app">우리의 앱</string>
+    <string name="feed">피드백</string>
+    <string name="privacy">개인 정보 정책</string>
+    <string name="empty">비어 있는</string>
+    <string name="fav">가장 좋아하는</string>
+    <string name="add_fav">즐겨 찾기에 추가</string>
+    <string name="share_icon">공유하다</string>
+    <string name="Home">집</string>
+    <string name="categories">카테고리</string>
+</resources>

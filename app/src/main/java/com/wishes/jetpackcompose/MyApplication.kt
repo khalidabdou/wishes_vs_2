@@ -10,6 +10,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
+import com.facebook.ads.AdSettings
 
 
 import com.google.android.gms.ads.*
@@ -40,6 +41,7 @@ class MyApplication : Application(), Application.ActivityLifecycleCallbacks, Lif
         MobileAds.initialize(this) {}
         ProcessLifecycleOwner.get().lifecycle.addObserver(this)
         appOpenAdManager = AppOpenAdManager()
+        AdSettings.addTestDevice("6dba4eee-09f3-4091-bc28-36d338f838f3");
     }
 
     /** LifecycleObserver method that shows the app open ad when the app moves to foreground. */
