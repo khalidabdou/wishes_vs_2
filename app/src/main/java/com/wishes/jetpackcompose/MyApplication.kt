@@ -41,7 +41,7 @@ class MyApplication : Application(), Application.ActivityLifecycleCallbacks, Lif
         MobileAds.initialize(this) {}
         ProcessLifecycleOwner.get().lifecycle.addObserver(this)
         appOpenAdManager = AppOpenAdManager()
-        AdSettings.addTestDevice("6dba4eee-09f3-4091-bc28-36d338f838f3");
+        AdSettings.addTestDevice("a6bd2249-b6d1-4973-9449-d734b29931ac");
     }
 
     /** LifecycleObserver method that shows the app open ad when the app moves to foreground. */

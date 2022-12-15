@@ -1,5 +1,9 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.example.wishes_jetpackcompose
 
+import android.app.Activity
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -10,33 +14,51 @@ import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.LifecycleOwner
+import androidx.compose.ui.window.Popup
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
+import com.ringtones.compose.feature.admob.AdvertViewAdmob
+import com.ringtones.compose.feature.admob.AdvertViewFAN
+
+import com.wishes.jetpackcompose.R
+
 import com.wishes.jetpackcompose.admob.showInterstitialAfterClick
+import com.wishes.jetpackcompose.data.entities.AdProvider
 import com.wishes.jetpackcompose.data.entities.Page
+import com.wishes.jetpackcompose.runtime.NavBarItems
 import com.wishes.jetpackcompose.runtime.NavRoutes
 import com.wishes.jetpackcompose.screens.ImagesFrom
+import com.wishes.jetpackcompose.screens.NavigationDrawer
+import com.wishes.jetpackcompose.screens.comp.AdBannerApp
+import com.wishes.jetpackcompose.ui.theme.Inter
+import com.wishes.jetpackcompose.utlis.AppUtil
 import com.wishes.jetpackcompose.utlis.Const.Companion.directoryUpload
 import com.wishes.jetpackcompose.utlis.DEFAULT_RECIPE_IMAGE
 import com.wishes.jetpackcompose.utlis.loadPicture
 import com.wishes.jetpackcompose.viewModel.ImagesViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlin.random.Random
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @ExperimentalCoroutinesApi
 @Composable
 fun Home(viewModel: ImagesViewModel, navHostController: NavHostController) {
@@ -44,66 +66,91 @@ fun Home(viewModel: ImagesViewModel, navHostController: NavHostController) {
     val context = LocalContext.current
 
     val lazyGridState = LazyGridState
-
+    var showAlertDialog by remember { mutableStateOf(false) }
     LaunchedEffect(Unit) {
-        if (viewModel.imageslist.isEmpty()){
+        if (viewModel.imageslist.isEmpty()) {
             viewModel.getImagesRoom()
         }
-
     }
 
-//    val imageLoader = ImageLoader.Builder(context)
-//        .diskCache {
-//            DiskCache.Builder()
-//                .directory(context.cacheDir.resolve("image_cache"))
-//                .maxSizePercent(0.02)
-//                .build()
-//        }
-//        .build()
-
-    /*  val firstItemVisible by remember {
-          derivedStateOf {f
-              scrollState.firstVisibleItemIndex == 18
-          }
-      }*/
-
     val images = viewModel.imageslist
-    LazyVerticalGrid(
-        state = scrollState,
-        columns = GridCells.Adaptive(128.dp),
-        content = {
-            /* Log.d("scroll",scrollState.firstVisibleItemIndex.toString())
-             if (firstItemVisible) {
-                 //viewModel.offset=40
-                 Toast.makeText(context,"last",Toast.LENGTH_LONG).show()
-             }*/
-            if (images.isEmpty()) {
-                items(15) {
-                    LoadingShimmerEffectImage()
-                }
-            } else {
-                items(images.size) {
-                    val image = loadPicture(
-                        url = directoryUpload + images[it].languageLable + "/" + images[it].image_upload,
-                        defaultImage = DEFAULT_RECIPE_IMAGE
-                    ).value
-                    image?.let { img ->
-                        ImageItem(
-                            img.asImageBitmap(),
-                        ) {
-                            val page = Page(
-                                page = it,
-                                imagesList = ImagesFrom.Latest.route,
-                                null
-                            )
-                            navHostController.currentBackStackEntry?.savedStateHandle?.set(
-                                key = "page",
-                                value = page
-                            )
 
-                            navHostController.navigate(NavRoutes.ViewPager.route)
+
+    Surface() {
+        BackHandler() {
+            showAlertDialog = true
+        }
+        var navigateClick by remember { mutableStateOf(false) }
+        val offSetAnim by animateDpAsState(
+            targetValue = if (navigateClick) 300.dp else 0.dp,
+            tween(1000)
+        )
+        val clipDp by animateDpAsState(
+            targetValue = if (navigateClick) 60.dp else 0.dp,
+            tween(1000)
+        )
+        val scaleAnim by animateFloatAsState(
+            targetValue = if (navigateClick) 0.5f else 1.0f,
+            tween(1000)
+        )
+
+        NavigationDrawer() {
+            navigateClick = false
+        }
+
+        Scaffold(
+            modifier = Modifier
+                .fillMaxSize()
+                .scale(scaleAnim)
+                .offset(x = offSetAnim)
+                .clip(RoundedCornerShape(clipDp)),
+            contentColor = MaterialTheme.colorScheme.background,
+            topBar = {
+                TopBar() {
+                    navigateClick = !navigateClick
+                }
+            },
+            bottomBar = {
+                BottomNavigationBar(navController = navHostController)
+            },
+
+            ) {
+            LazyVerticalGrid(modifier = Modifier.padding(it),
+                state = scrollState,
+                columns = GridCells.Adaptive(128.dp),
+                content = {
+                    /* Log.d("scroll",scrollState.firstVisibleItemIndex.toString())
+                     if (firstItemVisible) {
+                         //viewModel.offset=40
+                         Toast.makeText(context,"last",Toast.LENGTH_LONG).show()
+                     }*/
+                    if (images.isEmpty()) {
+                        items(15) {
+                            LoadingShimmerEffectImage()
                         }
-                    }
+                    } else {
+                        items(images.size) {
+                            val image = loadPicture(
+                                url = directoryUpload + images[it].languageLable + "/" + images[it].image_upload,
+                                defaultImage = DEFAULT_RECIPE_IMAGE
+                            ).value
+                            image?.let { img ->
+                                ImageItem(
+                                    img.asImageBitmap(),
+                                ) {
+                                    val page = Page(
+                                        page = it,
+                                        imagesList = ImagesFrom.Latest.route,
+                                        null
+                                    )
+                                    navHostController.currentBackStackEntry?.savedStateHandle?.set(
+                                        key = "page",
+                                        value = page
+                                    )
+
+                                    navHostController.navigate(NavRoutes.ViewPager.route)
+                                }
+                            }
 //                    val painter = rememberAsyncImagePainter(
 //                        model = directoryUpload + images[it].languageLable + "/" + images[it].image_upload,
 //                        imageLoader = imageLoader,
@@ -123,9 +170,54 @@ fun Home(viewModel: ImagesViewModel, navHostController: NavHostController) {
 //
 //                        navHostController.navigate(NavRoutes.ViewPager.route)
 //                    }
-                }
+                        }
+                    }
+                })
+
+            if (showAlertDialog) {
+                AlertDialog(
+                    onDismissRequest = {
+                        showAlertDialog = false
+                    },
+                    title = {
+                        Text(
+                            stringResource(R.string.sure),
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    },
+                    text = {
+                        val apps = viewModel.apps.value
+
+                        if (!apps.isNullOrEmpty()) {
+                            val app = apps.get(Random.nextInt(0, apps.size))
+                            AdBannerApp(app)
+                        }
+
+                    },
+                    confirmButton = {
+                        Button(
+                            onClick = {
+                                AppUtil.rateApp(context)
+
+                            }) {
+                            Text(stringResource(R.string.rate))
+                        }
+                    },
+                    dismissButton = {
+                        Button(
+                            onClick = {
+                                //showAlertDialog=false
+                                (context as Activity).finish()
+                            }) {
+                            Text(stringResource(R.string.quit))
+                        }
+                    },
+                )
             }
-        })
+        }
+    }
+
+
 }
 
 
@@ -197,6 +289,158 @@ fun ShimmerGridItemImage(brush: Brush) {
                 .clip(RoundedCornerShape(6.dp))
                 .background(brush)
         )
+    }
+}
+
+
+@Composable
+fun BottomNavigationBar(navController: NavHostController) {
+
+    Column {
+        BottomNavigation(
+            modifier = Modifier.background(MaterialTheme.colorScheme.surfaceVariant),
+        ) {
+            val backStackEntry by navController.currentBackStackEntryAsState()
+            val currentRoute = backStackEntry?.destination?.route
+
+            NavBarItems.BarItems.forEach { navItem ->
+                BottomNavigationItem(
+                    selected = currentRoute == navItem.route,
+                    modifier = Modifier.background(MaterialTheme.colorScheme.primary),
+                    onClick = {
+                        navController.navigate(navItem.route) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                inclusive = true
+                            }
+                        }
+                    },
+
+                    icon = {
+                        Icon(
+                            imageVector = navItem.image,
+                            tint = MaterialTheme.colorScheme.onPrimary,
+                            contentDescription = navItem.title
+                        )
+                    },
+                    label = {
+                        Text(
+                            text = navItem.title, color = MaterialTheme.colorScheme.onPrimary,
+                            style = MaterialTheme.typography.titleMedium.copy(
+                                fontFamily = Inter
+                            )
+                        )
+                    },
+                )
+            }
+        }
+    }
+
+
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TopBar(onDrawer: () -> Unit) {
+    val context = LocalContext.current
+    var isMoreOptionPopupShowed by remember { mutableStateOf(false) }
+    TopAppBar(
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.primary
+        ),
+        title = {
+            Text(
+                text = stringResource(id = R.string.app_name),
+                color = MaterialTheme.colorScheme.onPrimary,
+                style = MaterialTheme.typography.titleMedium.copy(
+                    fontFamily = Inter
+                )
+            )
+        },
+        navigationIcon = {
+            IconButton(
+                onClick = {
+                    onDrawer()
+                }
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_setting),
+                    tint = MaterialTheme.colorScheme.onPrimary,
+                    contentDescription = null
+                )
+            }
+        },
+        actions = {
+
+
+            /*if (isMoreOptionPopupShowed) {
+                MoreOptionPopup(
+                    options = listOf(
+                        stringResource(id = R.string.rate),
+                        stringResource(id = R.string.rate),
+                        stringResource(id = R.string.share),
+
+                        ),
+                    onDismissRequest = {
+                        isMoreOptionPopupShowed = false
+                    },
+                    onClick = { i ->
+                        when (i) {
+                            0 -> {
+                                AppUtil.openStore(context)
+                            }
+                            1 -> {
+
+                            }
+                            2 -> {
+                                AppUtil.share(context)
+                            }
+
+                        }
+                    },
+                    modifier = Modifier
+                        .padding(8.dp)
+                )
+            }*/
+        }
+    )
+}
+
+
+
+@Composable
+fun MoreOptionPopup(
+    options: List<String>,
+    modifier: Modifier = Modifier,
+    onDismissRequest: () -> Unit,
+    onClick: (Int) -> Unit
+) {
+
+    Popup(
+        alignment = Alignment.BottomCenter,
+        onDismissRequest = onDismissRequest
+    ) {
+        Card(
+            shape = MaterialTheme.shapes.medium,
+            modifier = modifier
+        ) {
+            options.forEachIndexed { i, label ->
+                Row {
+                    Text(
+                        text = label,
+                        style = MaterialTheme.typography.titleMedium.copy(
+                            fontFamily = Inter
+                        ),
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .clickable {
+                                onDismissRequest()
+                                onClick(i)
+                            }
+                    )
+                }
+
+            }
+        }
     }
 }
 

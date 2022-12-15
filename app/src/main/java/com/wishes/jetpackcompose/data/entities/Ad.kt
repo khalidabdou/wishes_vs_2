@@ -3,9 +3,9 @@ package com.wishes.jetpackcompose.data.entities
 import com.google.gson.annotations.SerializedName
 
 data class Ad(
-    val id: Int,
+    var id: Int,
     var ad_id: String,
-    val type: String,
+    var type: String,
     var ad_status: Boolean,
     var show_count: Int?,
 
@@ -69,10 +69,10 @@ class AdProvider {
         )
         var InterFAN: Ad = Ad(
             0,
-            "ca-app-pub-3940256099942544/1033173712-",
+            "",
             "inter_fan",
             false,
-            3,
+            10,
         )
     }
 }
