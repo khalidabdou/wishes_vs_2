@@ -19,7 +19,7 @@ class Const {
         val directoryUpload: String = BuildConfig.api + "categories/"
         val directoryUploadCat: String = BuildConfig.api + "category/"
 
-        var LANGUAGE_ID: Int = 9
+        var LANGUAGE_ID: Int = 8
         var RANDOM = (0..10000).random()
 
 

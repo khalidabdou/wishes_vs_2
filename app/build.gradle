@@ -13,7 +13,7 @@ android {
 
     defaultConfig {
         //applicationId "com.wishes2.wishes.thailands"
-        applicationId "com.wishes2.wishes.thailands"
+        applicationId "com.wishes2.wishes.portugal"
         minSdk 23
         targetSdk 33
         versionCode 1

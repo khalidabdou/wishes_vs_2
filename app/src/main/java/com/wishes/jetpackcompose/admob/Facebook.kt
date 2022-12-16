@@ -23,6 +23,9 @@ class Facebook {
                 loadInterstitialFAN(activity)
                 return
             }
+            if (countShow % InterFAN.show_count!! != 0) {
+                return
+            }
             interstitialAd.show()
 
 

@@ -34,13 +34,13 @@ fun NavigationDrawer(onClick: () -> Unit) {
                 modifier = Modifier
                     .height(100.dp)
                     .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.primary),
+                    .background(MaterialTheme.colorScheme.primaryContainer),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = context.getString(R.string.app_name),
                     style = MaterialTheme.typography.headlineLarge,
-                    color = MaterialTheme.colorScheme.onPrimary
+                    color = MaterialTheme.colorScheme.onPrimaryContainer
                 )
             }
             Spacer(modifier = Modifier.height(20.dp))
@@ -54,7 +54,7 @@ fun NavigationDrawer(onClick: () -> Unit) {
                 showInterstitialAfterClick(context)
             }
             ItemDrawer(stringResource(R.string.our_app), Icons.Default.List) {
-                AppUtil.openStore("https://play.google.com/store/apps/developer?id=laik", context)
+                AppUtil.openStore("https://play.google.com/store/apps/developer?id=Istickers+Packs", context)
                 showInterstitialAfterClick(context)
             }
             ItemDrawer(stringResource(R.string.feed), Icons.Default.Email) {

@@ -39,9 +39,9 @@ class AdProvider {
         )
         var Inter: Ad = Ad(
             0,
-            "ca-app-pub-3940256099942544/1033173712-",
+            "ca-app-pub-3940256099942544/1033173712",
             "inter",
-            false,
+            true,
             3,
         )
         var OpenAd: Ad = Ad(

@@ -6,6 +6,7 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.os.Bundle
+import android.widget.Toast
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
@@ -41,7 +42,7 @@ class MyApplication : Application(), Application.ActivityLifecycleCallbacks, Lif
         MobileAds.initialize(this) {}
         ProcessLifecycleOwner.get().lifecycle.addObserver(this)
         appOpenAdManager = AppOpenAdManager()
-        AdSettings.addTestDevice("e14cbd58-5349-4258-ad3a-03a0924b5f96");
+        AdSettings.addTestDevice("7687cf73-4e44-46c2-be44-009b16118fdb")
     }
 
     /** LifecycleObserver method that shows the app open ad when the app moves to foreground. */
@@ -208,6 +209,7 @@ class MyApplication : Application(), Application.ActivityLifecycleCallbacks, Lif
     }
 
     override fun onActivityStarted(activity: Activity) {
+        //Toast.makeText(activity,"onActivityStarted",Toast.LENGTH_LONG).show()
         if (!appOpenAdManager.isShowingAd) {
             currentActivity = activity
         }

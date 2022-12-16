@@ -117,13 +117,8 @@ fun Home(viewModel: ImagesViewModel, navHostController: NavHostController) {
             ) {
             LazyVerticalGrid(modifier = Modifier.padding(it),
                 state = scrollState,
-                columns = GridCells.Adaptive(128.dp),
+                columns = GridCells.Fixed(2),
                 content = {
-                    /* Log.d("scroll",scrollState.firstVisibleItemIndex.toString())
-                     if (firstItemVisible) {
-                         //viewModel.offset=40
-                         Toast.makeText(context,"last",Toast.LENGTH_LONG).show()
-                     }*/
                     if (images.isEmpty()) {
                         items(15) {
                             LoadingShimmerEffectImage()

@@ -8,6 +8,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.material3.MaterialTheme
@@ -93,9 +94,10 @@ fun Splash(alpha: Float, message: String) {
     ) {
         Image(
             modifier = Modifier
-                .size(120.dp),
+                .size(120.dp).clip(CircleShape),
             painter = painterResource(id = R.mipmap.ic_launcher_foreground),
             contentDescription = "Logo Icon",
+
             //tint = Color.DarkGray
         )
         Text(

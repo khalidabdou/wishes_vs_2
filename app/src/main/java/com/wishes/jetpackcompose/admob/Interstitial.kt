@@ -1,12 +1,9 @@
 package com.wishes.jetpackcompose.admob
 
+
 import android.app.Activity
 import android.content.Context
 import android.util.Log
-import com.facebook.ads.Ad
-import com.facebook.ads.InterstitialAdListener
-
-
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
@@ -19,15 +16,12 @@ import com.wishes.jetpackcompose.utlis.findActivity
 
 
 var mInterstitialAd: InterstitialAd? = null
-lateinit var interstitialAd: com.facebook.ads.InterstitialAd
 var countShow = -1
 val showAd = 10
 
 // load the interstitial ad
 fun loadInterstitial(context: Context) {
 
-    if (!Inter.ad_status)
-        return
 
     InterstitialAd.load(
         context,
@@ -36,12 +30,13 @@ fun loadInterstitial(context: Context) {
         object : InterstitialAdLoadCallback() {
             override fun onAdFailedToLoad(adError: LoadAdError) {
                 mInterstitialAd = null
-                //Log.d("MainActivity", adError.message)
+                Log.d("MainActivity", adError.message)
+                Inter.ad_status=false
             }
 
             override fun onAdLoaded(interstitialAd: InterstitialAd) {
                 mInterstitialAd = interstitialAd
-                //Log.d("MainActivity", "Ad was loaded.")
+                Log.d("MainActivity", "Ad was loaded.")
             }
         }
 
@@ -52,13 +47,17 @@ fun loadInterstitial(context: Context) {
 fun showInterstitialAfterClick(context: Context) {
 
     countShow++
+    //Log.d("MainActivity", "$countShow")
+
     if (Inter.ad_status) {
-        if(mInterstitialAd != null){
+        //Log.d("MainActivity", "Ad admob.")
+        if (mInterstitialAd == null) {
             loadInterstitial(context)
         }
         if (countShow % Inter.show_count!! != 0) {
             return
         }
+
         val activity = context.findActivity()
         mInterstitialAd?.fullScreenContentCallback =
             object : FullScreenContentCallback() {
@@ -78,9 +77,10 @@ fun showInterstitialAfterClick(context: Context) {
                 }
             }
         mInterstitialAd?.show(activity!!)
-    } else  {
-        Facebook.showInterstitial(context as Activity)
 
+    } else if (InterFAN.ad_status) {
+        //Log.d("MainActivity", "Ad fan.")
+        Facebook.showInterstitial(context as Activity)
     }
 }
 
