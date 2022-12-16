@@ -75,8 +75,6 @@ fun showInterstitialAfterClick(context: Context) {
                 }
 
                 override fun onAdShowedFullScreenContent() {
-                    Log.d("MainActivity", "Ad showed fullscreen content.")
-                    // Called when ad is dismissed.
                 }
             }
         mInterstitialAd?.show(activity!!)

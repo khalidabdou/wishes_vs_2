@@ -29,7 +29,6 @@ class Facebook {
         }
 
         fun loadInterstitialFAN(activity: Activity) {
-
             interstitialAd = InterstitialAd(
                 activity,
                 InterFAN.ad_id

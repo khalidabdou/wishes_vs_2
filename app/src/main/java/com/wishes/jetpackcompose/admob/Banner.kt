@@ -1,6 +1,7 @@
 package com.ringtones.compose.feature.admob
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
@@ -13,6 +14,8 @@ import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import com.facebook.ads.Ad
+import com.facebook.ads.AdError
 import com.google.android.gms.ads.*
 import com.wishes.jetpackcompose.data.entities.AdProvider.Companion.Banner
 import com.wishes.jetpackcompose.data.entities.AdProvider.Companion.BannerFAN
@@ -22,6 +25,7 @@ import com.wishes.jetpackcompose.data.entities.AdProvider.Companion.BannerFAN
 fun AdvertViewAdmob(modifier: Modifier = Modifier) {
     val isInEditMode = LocalInspectionMode.current
     var state by remember { mutableStateOf(true) }
+    var stateFb by remember { mutableStateOf(true) }
     if (isInEditMode) {
         Text(
             modifier = modifier
@@ -37,7 +41,8 @@ fun AdvertViewAdmob(modifier: Modifier = Modifier) {
             modifier = modifier
                 .fillMaxWidth()
                 .height(AdSize.BANNER.height.dp + 4.dp)
-                .background(MaterialTheme.colorScheme.surface).padding(top = 4.dp, bottom = 4.dp),
+                .background(MaterialTheme.colorScheme.surface)
+                .padding(top = 4.dp, bottom = 4.dp),
             factory = { context ->
                 AdView(context).apply {
                     setAdSize(AdSize.BANNER)
@@ -47,10 +52,12 @@ fun AdvertViewAdmob(modifier: Modifier = Modifier) {
                         override fun onAdClicked() {
                             // Code to be executed when the user clicks on an ad.
                         }
+
                         override fun onAdClosed() {
                             // Code to be executed when the user is about to return
                             // to the app after tapping on an ad.
                         }
+
                         override fun onAdFailedToLoad(adError: LoadAdError) {
                             state = false
                         }
@@ -72,23 +79,42 @@ fun AdvertViewAdmob(modifier: Modifier = Modifier) {
                 }
             }
         )
-    } else if(BannerFAN.ad_status) {
+    } else if (BannerFAN.ad_status && stateFb) {
+        val adListenerfb: com.facebook.ads.AdListener = object : com.facebook.ads.AdListener {
+            override fun onError(p0: Ad?, p1: AdError?) {
+                stateFb=false
+            }
+
+            override fun onAdLoaded(p0: Ad?) {
+
+            }
+
+            override fun onAdClicked(p0: Ad?) {
+
+            }
+
+            override fun onLoggingImpression(p0: Ad?) {
+
+            }
+        }
+
         AndroidView(
             modifier = modifier
                 .fillMaxWidth()
                 .height(AdSize.BANNER.height.dp + 4.dp)
-                .background(MaterialTheme.colorScheme.surface).padding(top = 4.dp, bottom = 4.dp),
+                .background(MaterialTheme.colorScheme.surface)
+                .padding(top = 4.dp, bottom = 4.dp),
             factory = { context ->
                 com.facebook.ads.AdView(
                     context,
                     BannerFAN.ad_id,
                     com.facebook.ads.AdSize.BANNER_HEIGHT_50
                 ).apply {
-                    loadAd()
+                    loadAd(buildLoadAdConfig().withAdListener(adListenerfb).build())
                 }
             }
         )
-    }else{
+    } else {
         Box() {}
     }
 }

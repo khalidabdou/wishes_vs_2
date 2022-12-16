@@ -121,8 +121,7 @@ fun ViewPager(viewModel: ImagesViewModel, navController :NavController, page: In
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(80.dp)
-                .background(MaterialTheme.colorScheme.primary)
+                .background(MaterialTheme.colorScheme.primaryContainer).padding(6.dp)
         ) {
 
             Action(stringResource(R.string.fav),Icons.Default.Favorite) {
@@ -150,10 +149,10 @@ fun Action(text: String, icon: ImageVector, onClickAction: () -> Unit) {
         modifier = Modifier.clickable {
             onClickAction()
         }) {
-        Icon(icon, contentDescription = "")
+        Icon(icon, contentDescription = "", tint = MaterialTheme.colorScheme.onPrimaryContainer)
         Text(
             text = text, style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onPrimary
+            color = MaterialTheme.colorScheme.onPrimaryContainer
         )
     }
 }

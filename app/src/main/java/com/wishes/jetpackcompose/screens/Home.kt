@@ -306,7 +306,7 @@ fun BottomNavigationBar(navController: NavHostController) {
             NavBarItems.BarItems.forEach { navItem ->
                 BottomNavigationItem(
                     selected = currentRoute == navItem.route,
-                    modifier = Modifier.background(MaterialTheme.colorScheme.primary),
+                    modifier = Modifier.background(MaterialTheme.colorScheme.primaryContainer),
                     onClick = {
                         navController.navigate(navItem.route) {
                             popUpTo(navController.graph.findStartDestination().id) {
@@ -318,13 +318,13 @@ fun BottomNavigationBar(navController: NavHostController) {
                     icon = {
                         Icon(
                             imageVector = navItem.image,
-                            tint = MaterialTheme.colorScheme.onPrimary,
+                            tint = MaterialTheme.colorScheme.onPrimaryContainer,
                             contentDescription = navItem.title
                         )
                     },
                     label = {
                         Text(
-                            text = navItem.title, color = MaterialTheme.colorScheme.onPrimary,
+                            text = navItem.title, color = MaterialTheme.colorScheme.onPrimaryContainer,
                             style = MaterialTheme.typography.titleMedium.copy(
                                 fontFamily = Inter
                             )
@@ -345,12 +345,12 @@ fun TopBar(onDrawer: () -> Unit) {
     var isMoreOptionPopupShowed by remember { mutableStateOf(false) }
     TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primary
+            containerColor = MaterialTheme.colorScheme.primaryContainer
         ),
         title = {
             Text(
                 text = stringResource(id = R.string.app_name),
-                color = MaterialTheme.colorScheme.onPrimary,
+                color = MaterialTheme.colorScheme.primary,
                 style = MaterialTheme.typography.titleMedium.copy(
                     fontFamily = Inter
                 )
@@ -364,7 +364,7 @@ fun TopBar(onDrawer: () -> Unit) {
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_setting),
-                    tint = MaterialTheme.colorScheme.onPrimary,
+                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
                     contentDescription = null
                 )
             }
