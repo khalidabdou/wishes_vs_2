@@ -22,9 +22,22 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
 
+
+
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="@string/admob_id" />
+
+
+        <service
+            android:name=".utlis.FirebaseMessageReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -40,6 +53,8 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileProvider"
@@ -49,6 +64,8 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
+
 
     </application>
 

@@ -122,8 +122,8 @@ dependencies {
     kapt "com.github.bumptech.glide:compiler:$glide"
 
     implementation platform('com.google.firebase:firebase-bom:31.0.2')
-    implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-messaging'
 
     implementation 'com.google.android.gms:play-services-ads:21.3.0'
 

@@ -3,8 +3,11 @@ package com.wishes.jetpackcompose
 
 
 import android.app.Activity
+import android.app.AlarmManager
 import android.app.Application
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.lifecycle.Lifecycle
@@ -17,6 +20,7 @@ import com.facebook.ads.AdSettings
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.appopen.AppOpenAd
 import com.wishes.jetpackcompose.data.entities.AdProvider.Companion.OpenAd
+
 import dagger.hilt.android.HiltAndroidApp
 import java.util.*
 
@@ -43,6 +47,8 @@ class MyApplication : Application(), Application.ActivityLifecycleCallbacks, Lif
         ProcessLifecycleOwner.get().lifecycle.addObserver(this)
         appOpenAdManager = AppOpenAdManager()
         AdSettings.addTestDevice("7687cf73-4e44-46c2-be44-009b16118fdb")
+
+
     }
 
     /** LifecycleObserver method that shows the app open ad when the app moves to foreground. */
