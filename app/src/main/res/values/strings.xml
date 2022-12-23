@@ -2,6 +2,11 @@
     <string name="app_name">wishes 2022</string>
     <string name="admob_id" translatable="false">ca-app-pub-3940256099942544~3347511713</string>
 
+    //applovin
+    <string name="applovine_interstitial" translatable="false">6df3f7c0d7c13f56</string>
+    <string name="applovine_native" translatable="false">c143833c06e3c0b0</string>
+    <string name="applovine_banner" translatable="false">a7583c932a21655e</string>
+
     <string name="rate">rate app</string>
     <string name="share">share app</string>
     <string name="send_to">best app good morning</string>

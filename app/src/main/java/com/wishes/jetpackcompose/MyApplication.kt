@@ -46,7 +46,7 @@ class MyApplication : Application(), Application.ActivityLifecycleCallbacks, Lif
         MobileAds.initialize(this) {}
         ProcessLifecycleOwner.get().lifecycle.addObserver(this)
         appOpenAdManager = AppOpenAdManager()
-        AdSettings.addTestDevice("7687cf73-4e44-46c2-be44-009b16118fdb")
+        AdSettings.addTestDevice("2fc9747b-b77b-4c23-9ae0-53c42d39afbd")
 
 
     }

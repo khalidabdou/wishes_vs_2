@@ -138,7 +138,7 @@ class ImagesViewModel @Inject constructor(
 
                 apps.value = infos.value.data!!.apps
                 infos.value.data!!.ads.forEach {
-                    //Log.d("FAN", it.ad_id)
+                    Log.d("FAN", it.ad_id)
                     when (it.type) {
                         "banner" -> {
                             Banner = it
@@ -170,6 +170,7 @@ class ImagesViewModel @Inject constructor(
                 }
 
             } catch (ex: Exception) {
+                Log.d("Exception",ex.toString())
             }
         }
     }

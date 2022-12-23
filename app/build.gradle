@@ -13,7 +13,7 @@ android {
 
     defaultConfig {
         //applicationId "com.wishes2.wishes.thailands"
-        applicationId "com.wishes2.wishes.portugal"
+        applicationId "com.wishes2.wishes.chinese"
         minSdk 23
         targetSdk 33
         versionCode 1
@@ -129,6 +129,7 @@ dependencies {
 
 
     implementation 'com.facebook.android:audience-network-sdk:6.12.0'
-
+    implementation("com.applovin:applovin-sdk:11.4.4")
+    implementation 'com.applovin.mediation:facebook-adapter:6.11.0.5'
 
 }
