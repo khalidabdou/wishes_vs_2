@@ -1,9 +1,11 @@
 package com.ringtones.compose.feature.admob
 
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
@@ -14,10 +16,15 @@ import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import com.applovin.mediation.MaxAd
+import com.applovin.mediation.MaxAdViewAdListener
+import com.applovin.mediation.MaxError
+import com.applovin.mediation.ads.MaxAdView
 import com.facebook.ads.Ad
 import com.facebook.ads.AdError
 import com.google.android.gms.ads.*
 import com.wishes.jetpackcompose.data.entities.AdProvider.Companion.Banner
+import com.wishes.jetpackcompose.data.entities.AdProvider.Companion.BannerApplovin
 import com.wishes.jetpackcompose.data.entities.AdProvider.Companion.BannerFAN
 
 
@@ -26,6 +33,7 @@ fun AdvertViewAdmob(modifier: Modifier = Modifier) {
     val isInEditMode = LocalInspectionMode.current
     var state by remember { mutableStateOf(true) }
     var stateFb by remember { mutableStateOf(true) }
+    var stateApplovin by remember { mutableStateOf(true) }
     if (isInEditMode) {
         Text(
             modifier = modifier
@@ -82,7 +90,8 @@ fun AdvertViewAdmob(modifier: Modifier = Modifier) {
     } else if (BannerFAN.ad_status && stateFb) {
         val adListenerfb: com.facebook.ads.AdListener = object : com.facebook.ads.AdListener {
             override fun onError(p0: Ad?, p1: AdError?) {
-                stateFb=false
+                stateFb = false
+
             }
 
             override fun onAdLoaded(p0: Ad?) {
@@ -114,8 +123,54 @@ fun AdvertViewAdmob(modifier: Modifier = Modifier) {
                 }
             }
         )
-    } else {
-        Box() {}
+    } else if (BannerApplovin.ad_status) {
+        val adListenerMax: MaxAdViewAdListener = object : MaxAdViewAdListener {
+            override fun onAdLoaded(ad: MaxAd?) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onAdDisplayed(ad: MaxAd?) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onAdHidden(ad: MaxAd?) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onAdClicked(ad: MaxAd?) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onAdLoadFailed(adUnitId: String?, error: MaxError?) {
+                stateApplovin = false
+            }
+
+            override fun onAdDisplayFailed(ad: MaxAd?, error: MaxError?) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onAdExpanded(ad: MaxAd?) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onAdCollapsed(ad: MaxAd?) {
+                TODO("Not yet implemented")
+            }
+
+        }
+        AndroidView(
+            modifier = modifier
+                .fillMaxWidth()
+                .height(AdSize.BANNER.height.dp + 4.dp)
+                .background(MaterialTheme.colorScheme.surface)
+                .padding(top = 4.dp, bottom = 4.dp),
+            factory = { context ->
+                MaxAdView(BannerApplovin.ad_id, context).apply {
+                    loadAd()
+                    setListener(adListenerMax)
+                }
+
+            })
     }
 }
 
@@ -140,3 +195,4 @@ fun AdvertViewFAN(modifier: Modifier = Modifier) {
     )
 
 }
+

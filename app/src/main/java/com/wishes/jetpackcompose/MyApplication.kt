@@ -14,6 +14,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
+import com.applovin.sdk.AppLovinSdk
+import com.applovin.sdk.AppLovinSdkConfiguration
 import com.facebook.ads.AdSettings
 
 
@@ -47,6 +49,10 @@ class MyApplication : Application(), Application.ActivityLifecycleCallbacks, Lif
         ProcessLifecycleOwner.get().lifecycle.addObserver(this)
         appOpenAdManager = AppOpenAdManager()
         AdSettings.addTestDevice("2fc9747b-b77b-4c23-9ae0-53c42d39afbd")
+        AppLovinSdk.getInstance( this ).setMediationProvider( "max" )
+        AppLovinSdk.getInstance( this ).initializeSdk({ configuration: AppLovinSdkConfiguration ->
+
+        })
 
 
     }

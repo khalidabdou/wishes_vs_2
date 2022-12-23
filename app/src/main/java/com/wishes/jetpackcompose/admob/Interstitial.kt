@@ -11,6 +11,7 @@ import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.wishes.jetpackcompose.data.entities.AdProvider.Companion.Inter
+import com.wishes.jetpackcompose.data.entities.AdProvider.Companion.InterApplovin
 import com.wishes.jetpackcompose.data.entities.AdProvider.Companion.InterFAN
 import com.wishes.jetpackcompose.utlis.findActivity
 
@@ -18,11 +19,10 @@ import com.wishes.jetpackcompose.utlis.findActivity
 var mInterstitialAd: InterstitialAd? = null
 var countShow = -1
 val showAd = 10
+var applovin = applovin()
 
 // load the interstitial ad
 fun loadInterstitial(context: Context) {
-
-
     InterstitialAd.load(
         context,
         Inter.ad_id,
@@ -31,7 +31,7 @@ fun loadInterstitial(context: Context) {
             override fun onAdFailedToLoad(adError: LoadAdError) {
                 mInterstitialAd = null
                 Log.d("MainActivity", adError.message)
-                Inter.ad_status=false
+                Inter.ad_status = false
             }
 
             override fun onAdLoaded(interstitialAd: InterstitialAd) {
@@ -81,6 +81,10 @@ fun showInterstitialAfterClick(context: Context) {
     } else if (InterFAN.ad_status) {
         //Log.d("MainActivity", "Ad fan.")
         Facebook.showInterstitial(context as Activity)
+    } else if (InterApplovin.ad_status) {
+
+        applovin.createInterstitialAd(context)
+
     }
 }
 

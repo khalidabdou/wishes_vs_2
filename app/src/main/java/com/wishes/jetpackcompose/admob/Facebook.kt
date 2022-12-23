@@ -1,9 +1,10 @@
 package com.wishes.jetpackcompose.admob
 
 import android.app.Activity
-import android.view.View.GONE
-import android.widget.FrameLayout
-import com.facebook.ads.*
+import com.facebook.ads.Ad
+import com.facebook.ads.AdError
+import com.facebook.ads.InterstitialAd
+import com.facebook.ads.InterstitialAdListener
 import com.wishes.jetpackcompose.data.entities.AdProvider.Companion.InterFAN
 
 
@@ -28,7 +29,6 @@ class Facebook {
             }
             interstitialAd.show()
 
-
         }
 
         fun loadInterstitialFAN(activity: Activity) {
@@ -38,7 +38,9 @@ class Facebook {
             )
             val interstitialAdListener: InterstitialAdListener = object : InterstitialAdListener {
                 override fun onError(p0: Ad?, p1: AdError?) {
-
+                    var applovin = applovin()
+                    applovin.createInterstitialAd()
+                    InterFAN.ad_status = false
                 }
 
                 override fun onAdLoaded(inter: Ad?) {
@@ -65,7 +67,7 @@ class Facebook {
                 interstitialAd.buildLoadAdConfig()
                     .withAdListener(interstitialAdListener)
                     .build()
-            );
+            )
 
         }
 

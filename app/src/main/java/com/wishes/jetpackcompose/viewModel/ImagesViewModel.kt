@@ -11,8 +11,10 @@ import androidx.lifecycle.*
 import com.wishes.jetpackcompose.R
 import com.wishes.jetpackcompose.data.entities.*
 import com.wishes.jetpackcompose.data.entities.AdProvider.Companion.Banner
+import com.wishes.jetpackcompose.data.entities.AdProvider.Companion.BannerApplovin
 import com.wishes.jetpackcompose.data.entities.AdProvider.Companion.BannerFAN
 import com.wishes.jetpackcompose.data.entities.AdProvider.Companion.Inter
+import com.wishes.jetpackcompose.data.entities.AdProvider.Companion.InterApplovin
 import com.wishes.jetpackcompose.data.entities.AdProvider.Companion.InterFAN
 import com.wishes.jetpackcompose.data.entities.AdProvider.Companion.OpenAd
 import com.wishes.jetpackcompose.data.entities.AdProvider.Companion.Rewarded
@@ -164,6 +166,15 @@ class ImagesViewModel @Inject constructor(
                         }
                         "inter_fan" -> {
                             InterFAN = it
+                            //Log.d("ads", Inter.toString())
+                        }
+                        "banner_applovin" -> {
+                            Log.d("FAN", it.ad_id)
+                            BannerApplovin = it
+                            //Log.d("ads", Banner.toString())
+                        }
+                        "inter_Applovin" -> {
+                            InterApplovin = it
                             //Log.d("ads", Inter.toString())
                         }
                     }

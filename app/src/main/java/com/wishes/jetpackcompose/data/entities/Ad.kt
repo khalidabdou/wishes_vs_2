@@ -32,21 +32,21 @@ class AdProvider {
     companion object {
         var Banner: Ad = Ad(
             0,
-            "ca-app-pub-3940256099942544/6300978111-",
+            "",
             "banner",
             false,
             null,
         )
         var Inter: Ad = Ad(
             0,
-            "ca-app-pub-3940256099942544/1033173712",
+            "",
             "inter",
             true,
             3,
         )
         var OpenAd: Ad = Ad(
             0,
-            "ca-app-pub-3940256099942544/3419835294-",
+            "",
             "open",
             false,
             null,
@@ -74,5 +74,20 @@ class AdProvider {
             false,
             10,
         )
+        var BannerApplovin: Ad = Ad(
+            0,
+            "",
+            "banner_applovin",
+            false,
+            null,
+        )
+        var InterApplovin: Ad = Ad(
+            0,
+            "",
+            "inter_Applovin",
+            false,
+            10,
+        )
+        //banner_applovin
     }
 }

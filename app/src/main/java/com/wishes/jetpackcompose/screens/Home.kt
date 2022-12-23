@@ -80,6 +80,8 @@ fun Home(viewModel: ImagesViewModel, navHostController: NavHostController) {
         BackHandler() {
             showAlertDialog = true
         }
+
+        //create animations
         var navigateClick by remember { mutableStateOf(false) }
         val offSetAnim by animateDpAsState(
             targetValue = if (navigateClick) 300.dp else 0.dp,
