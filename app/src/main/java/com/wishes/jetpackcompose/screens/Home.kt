@@ -3,6 +3,7 @@
 package com.example.wishes_jetpackcompose
 
 import android.app.Activity
+import android.graphics.Bitmap
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
@@ -16,11 +17,14 @@ import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
@@ -35,13 +39,8 @@ import androidx.compose.ui.window.Popup
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.ringtones.compose.feature.admob.AdvertViewAdmob
-import com.ringtones.compose.feature.admob.AdvertViewFAN
-
 import com.wishes.jetpackcompose.R
-
 import com.wishes.jetpackcompose.admob.showInterstitialAfterClick
-import com.wishes.jetpackcompose.data.entities.AdProvider
 import com.wishes.jetpackcompose.data.entities.Page
 import com.wishes.jetpackcompose.runtime.NavBarItems
 import com.wishes.jetpackcompose.runtime.NavRoutes
@@ -52,7 +51,7 @@ import com.wishes.jetpackcompose.ui.theme.Inter
 import com.wishes.jetpackcompose.utlis.AppUtil
 import com.wishes.jetpackcompose.utlis.Const.Companion.directoryUpload
 import com.wishes.jetpackcompose.utlis.DEFAULT_RECIPE_IMAGE
-import com.wishes.jetpackcompose.utlis.loadPicture
+import com.wishes.jetpackcompose.utlis.loadPicturetemmp
 import com.wishes.jetpackcompose.viewModel.ImagesViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlin.random.Random
@@ -62,15 +61,16 @@ import kotlin.random.Random
 @ExperimentalCoroutinesApi
 @Composable
 fun Home(viewModel: ImagesViewModel, navHostController: NavHostController) {
-    val scrollState = rememberLazyGridState()
+    val scrollState = rememberLazyGridState(0)
     val context = LocalContext.current
-
+    val message = viewModel.message.collectAsState()
     val lazyGridState = LazyGridState
     var showAlertDialog by remember { mutableStateOf(false) }
     LaunchedEffect(Unit) {
         if (viewModel.imageslist.isEmpty()) {
             viewModel.getImagesRoom()
         }
+
     }
 
     val images = viewModel.imageslist
@@ -96,6 +96,11 @@ fun Home(viewModel: ImagesViewModel, navHostController: NavHostController) {
             tween(1000)
         )
 
+        val rotate by animateFloatAsState(
+            targetValue = if (navigateClick) 10f else 0f,
+            tween(1000)
+        )
+
         NavigationDrawer() {
             navigateClick = false
         }
@@ -105,10 +110,11 @@ fun Home(viewModel: ImagesViewModel, navHostController: NavHostController) {
                 .fillMaxSize()
                 .scale(scaleAnim)
                 .offset(x = offSetAnim)
+                .rotate(rotate)
                 .clip(RoundedCornerShape(clipDp)),
             contentColor = MaterialTheme.colorScheme.background,
             topBar = {
-                TopBar() {
+                TopBar(message.value) {
                     navigateClick = !navigateClick
                 }
             },
@@ -117,7 +123,9 @@ fun Home(viewModel: ImagesViewModel, navHostController: NavHostController) {
             },
 
             ) {
-            LazyVerticalGrid(modifier = Modifier.padding(it),
+            LazyVerticalGrid(modifier = Modifier
+                .fillMaxSize()
+                .padding(it),
                 state = scrollState,
                 columns = GridCells.Fixed(2),
                 content = {
@@ -127,46 +135,29 @@ fun Home(viewModel: ImagesViewModel, navHostController: NavHostController) {
                         }
                     } else {
                         items(images.size) {
-                            val image = loadPicture(
+
+                            val image: MutableState<Bitmap?>? = loadPicturetemmp(
                                 url = directoryUpload + images[it].languageLable + "/" + images[it].image_upload,
                                 defaultImage = DEFAULT_RECIPE_IMAGE
-                            ).value
-                            image?.let { img ->
-                                ImageItem(
-                                    img.asImageBitmap(),
-                                ) {
-                                    val page = Page(
-                                        page = it,
-                                        imagesList = ImagesFrom.Latest.route,
-                                        null
-                                    )
-                                    navHostController.currentBackStackEntry?.savedStateHandle?.set(
-                                        key = "page",
-                                        value = page
-                                    )
+                            )
+                            ImageItem(
+                                image?.value?.asImageBitmap(),
+                            ) {
+                                val page = Page(
+                                    page = it,
+                                    imagesList = ImagesFrom.Latest.route,
+                                    null
+                                )
+                                navHostController.currentBackStackEntry?.savedStateHandle?.set(
+                                    key = "page",
+                                    value = page
+                                )
 
-                                    navHostController.navigate(NavRoutes.ViewPager.route)
-                                }
+                                navHostController.navigate(NavRoutes.ViewPager.route)
                             }
-//                    val painter = rememberAsyncImagePainter(
-//                        model = directoryUpload + images[it].languageLable + "/" + images[it].image_upload,
-//                        imageLoader = imageLoader,
-//                        filterQuality= FilterQuality.Low
-//
-//                    )
-//                    ImageItem( painter = painter){
-//                        val page=Page(
-//                            page = it,
-//                            imagesList = ImagesFrom.Latest.route,
-//                            null
-//                        )
-//                        navHostController.currentBackStackEntry?.savedStateHandle?.set(
-//                            key="page",
-//                            value = page
-//                        )
-//
-//                        navHostController.navigate(NavRoutes.ViewPager.route)
-//                    }
+
+
+
                         }
                     }
                 })
@@ -219,7 +210,7 @@ fun Home(viewModel: ImagesViewModel, navHostController: NavHostController) {
 
 
 @Composable
-fun ImageItem(painter: ImageBitmap, onClick: () -> Unit) {
+fun ImageItem(painter: ImageBitmap?, onClick: () -> Unit) {
     val context = LocalContext.current
     Card(
         modifier = Modifier
@@ -230,13 +221,19 @@ fun ImageItem(painter: ImageBitmap, onClick: () -> Unit) {
                 onClick()
                 showInterstitialAfterClick(context)
             },
-
-        ) {
-        Image(
-            bitmap = painter, contentDescription = null,
-            modifier = Modifier.fillMaxWidth(),
-            contentScale = ContentScale.Crop
-        )
+    ) {
+        if (painter == null) {
+            Image(
+                painter = painterResource(id = R.drawable.holder), contentDescription = null,
+                modifier = Modifier.fillMaxWidth(),
+                contentScale = ContentScale.Crop
+            )
+        } else
+            Image(
+                bitmap = painter, contentDescription = null,
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.Crop
+            )
     }
 }
 
@@ -321,7 +318,8 @@ fun BottomNavigationBar(navController: NavHostController) {
                     },
                     label = {
                         Text(
-                            text = navItem.title, color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            text = navItem.title,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
                             style = MaterialTheme.typography.titleMedium.copy(
                                 fontFamily = Inter
                             )
@@ -337,16 +335,24 @@ fun BottomNavigationBar(navController: NavHostController) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar(onDrawer: () -> Unit) {
-    val context = LocalContext.current
-    var isMoreOptionPopupShowed by remember { mutableStateOf(false) }
+fun TopBar(title: String, onDrawer: () -> Unit) {
+    val infiniteTransition = rememberInfiniteTransition()
+    val angle by infiniteTransition.animateFloat(
+        initialValue = 0F,
+        targetValue = 360F,
+        animationSpec = infiniteRepeatable(
+            animation = tween(2000, easing = LinearEasing)
+        )
+    )
+
     TopAppBar(
+        modifier = Modifier.clickable { onDrawer() },
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer
         ),
         title = {
             Text(
-                text = stringResource(id = R.string.app_name),
+                text = title,
                 color = MaterialTheme.colorScheme.primary,
                 style = MaterialTheme.typography.titleMedium.copy(
                     fontFamily = Inter
@@ -360,9 +366,10 @@ fun TopBar(onDrawer: () -> Unit) {
                 }
             ) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_setting),
+                    imageVector =  Icons.Default.Settings,
                     tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                    contentDescription = null
+                    contentDescription = null,
+                    modifier = Modifier.rotate(angle)
                 )
             }
         },
@@ -401,7 +408,6 @@ fun TopBar(onDrawer: () -> Unit) {
         }
     )
 }
-
 
 
 @Composable

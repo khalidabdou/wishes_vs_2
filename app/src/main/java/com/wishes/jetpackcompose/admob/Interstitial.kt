@@ -13,13 +13,14 @@ import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.wishes.jetpackcompose.data.entities.AdProvider.Companion.Inter
 import com.wishes.jetpackcompose.data.entities.AdProvider.Companion.InterApplovin
 import com.wishes.jetpackcompose.data.entities.AdProvider.Companion.InterFAN
+import com.wishes.jetpackcompose.utlis.Const.Companion.applovinClass
 import com.wishes.jetpackcompose.utlis.findActivity
 
 
 var mInterstitialAd: InterstitialAd? = null
 var countShow = -1
 val showAd = 10
-var applovin = applovin()
+
 
 // load the interstitial ad
 fun loadInterstitial(context: Context) {
@@ -83,7 +84,10 @@ fun showInterstitialAfterClick(context: Context) {
         Facebook.showInterstitial(context as Activity)
     } else if (InterApplovin.ad_status) {
 
-        applovin.createInterstitialAd(context)
+        applovinClass.createInterstitialAd(context)
+        applovinClass.show(context)
+
+        Log.d("applovinad","show")
 
     }
 }

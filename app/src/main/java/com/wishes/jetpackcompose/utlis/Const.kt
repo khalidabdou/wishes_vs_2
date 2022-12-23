@@ -5,7 +5,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import com.wishes.jetpackcompose.BuildConfig
-import kotlin.random.Random
+import com.wishes.jetpackcompose.admob.applovin
 
 class Const {
 
@@ -21,6 +21,8 @@ class Const {
 
         var LANGUAGE_ID: Int = 7
         var RANDOM = (0..10000).random()
+
+        val applovinClass = applovin()
 
 
         fun hasConnection(application: Application): Boolean {

@@ -144,7 +144,7 @@ class ImagesViewModel @Inject constructor(
                     when (it.type) {
                         "banner" -> {
                             Banner = it
-                            //Log.d("ads", Banner.toString())
+                            Log.d("ads", Banner.toString())
                         }
                         "inter" -> {
                             Inter = it

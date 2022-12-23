@@ -6,6 +6,7 @@ import com.facebook.ads.AdError
 import com.facebook.ads.InterstitialAd
 import com.facebook.ads.InterstitialAdListener
 import com.wishes.jetpackcompose.data.entities.AdProvider.Companion.InterFAN
+import com.wishes.jetpackcompose.utlis.Const.Companion.applovinClass
 
 
 class Facebook {
@@ -38,8 +39,8 @@ class Facebook {
             )
             val interstitialAdListener: InterstitialAdListener = object : InterstitialAdListener {
                 override fun onError(p0: Ad?, p1: AdError?) {
-                    var applovin = applovin()
-                    applovin.createInterstitialAd()
+
+                    applovinClass.createInterstitialAd(activity)
                     InterFAN.ad_status = false
                 }
 

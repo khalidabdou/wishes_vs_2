@@ -55,3 +55,41 @@ fun loadPicture(url: String, @DrawableRes defaultImage: Int): MutableState<Bitma
 
     return bitmapState
 }
+
+@SuppressLint("UnrememberedMutableState")
+@ExperimentalCoroutinesApi
+@Composable
+fun loadPicturetemmp(url: String, @DrawableRes defaultImage: Int): MutableState<Bitmap?>? {
+
+    val bitmapState: MutableState<Bitmap?> =mutableStateOf(null)
+
+    // show default image while image loads
+    Glide.with(LocalContext.current)
+        .asBitmap()
+        .load(defaultImage)
+        .into(object : CustomTarget<Bitmap>() {
+            override fun onLoadCleared(placeholder: Drawable?) { }
+            override fun onResourceReady(
+                resource: Bitmap,
+                transition: Transition<in Bitmap>?
+            ) {
+                bitmapState.value = resource
+            }
+        })
+
+    // get network image
+    Glide.with(LocalContext.current)
+        .asBitmap()
+        .load(url)
+        .into(object : CustomTarget<Bitmap>() {
+            override fun onLoadCleared(placeholder: Drawable?) { }
+            override fun onResourceReady(
+                resource: Bitmap,
+                transition: Transition<in Bitmap>?
+            ) {
+                bitmapState.value = resource
+            }
+        })
+
+    return bitmapState
+}

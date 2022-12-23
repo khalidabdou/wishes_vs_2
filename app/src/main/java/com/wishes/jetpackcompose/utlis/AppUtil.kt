@@ -104,7 +104,7 @@ object AppUtil {
 
             intent.putExtra(
                 Intent.EXTRA_TEXT,
-                "https://play.google.com/store/apps/details?id=${context.packageName}")
+                "${context.resources.getString(R.string.send_to)} https://play.google.com/store/apps/details?id=${context.packageName}")
 
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         intent.type = "image/png"
