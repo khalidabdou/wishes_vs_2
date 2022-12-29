@@ -15,6 +15,7 @@ class Const {
         const val TABLE_IMAGE = "tbl_images"
         const val TABLE_CATEGORY = "tbl_category"
         const val TABLE_WALLPAPER = "tbl_wallpaper"
+        const val LANGUAGE_PREFERENCE="language"
 
         val directoryUpload: String = BuildConfig.api + "categories/"
         val directoryUploadCat: String = BuildConfig.api + "category/"

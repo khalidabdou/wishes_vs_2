@@ -18,9 +18,10 @@ import com.wishes.jetpackcompose.data.entities.AdProvider.Companion.InterApplovi
 import com.wishes.jetpackcompose.data.entities.AdProvider.Companion.InterFAN
 import com.wishes.jetpackcompose.data.entities.AdProvider.Companion.OpenAd
 import com.wishes.jetpackcompose.data.entities.AdProvider.Companion.Rewarded
-import com.wishes.jetpackcompose.repo.ImagesRepo
+import com.wishes.jetpackcompose.repo.RepositoryImpl
+
 import com.wishes.jetpackcompose.utlis.Const.Companion.LANGUAGE_ID
-import com.wishes.jetpackcompose.utlis.Const.Companion.RANDOM
+import com.wishes.jetpackcompose.utlis.Const.Companion.LANGUAGE_PREFERENCE
 import com.wishes.jetpackcompose.utlis.Const.Companion.hasConnection
 import com.wishes.jetpackcompose.utlis.HandleResponse
 import com.wishes.jetpackcompose.utlis.NetworkResults
@@ -29,6 +30,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import retrofit2.Response
 import java.util.*
 import javax.inject.Inject
@@ -36,7 +38,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ImagesViewModel @Inject constructor(
-    private val imageRepo: ImagesRepo,
+    private val imageRepo: RepositoryImpl,
     application: Application
 ) : AndroidViewModel(application) {
     val LOG_IMAGE: String = "response_image"
@@ -52,6 +54,9 @@ class ImagesViewModel @Inject constructor(
 
     private val _message = MutableStateFlow<String>("Good Morning")
     val message: StateFlow<String> get() = _message
+
+    //language
+    var languageID = getLanguage()
 
     /**ROOM DATABASE**/
     var catId: Int = 0
@@ -69,7 +74,6 @@ class ImagesViewModel @Inject constructor(
                 if (imageslist.isEmpty())
                     imageslist = it.subList(0, 400).shuffled()
             }
-
             //Log.d("RANDOM", RANDOM.toString())
         }
     }
@@ -96,7 +100,7 @@ class ImagesViewModel @Inject constructor(
     }
 
     //val readImages: LiveData<List<Image>> = imageRepo.local.getImages(LANGUAGE_ID).asLiveData()
-    val readCategories: LiveData<List<Category>> =
+    private val readCategories: LiveData<List<Category>> =
         imageRepo.local.readCategories("image", LANGUAGE_ID).asLiveData()
     val favorites: LiveData<List<Image>> = imageRepo.local.getFavoriteImages().asLiveData()
 
@@ -107,22 +111,22 @@ class ImagesViewModel @Inject constructor(
         }
 
     fun incDownloadImg(id: Int) = viewModelScope.launch(Dispatchers.IO) {
-        imageRepo.remot.incDownloadImg(id)
+        imageRepo.remote.incDownloadImg(id)
     }
 
     fun incShareImg(id: Int) = viewModelScope.launch(Dispatchers.IO) {
-        imageRepo.remot.incShareImg(id)
+        imageRepo.remote.incShareImg(id)
     }
 
     fun incFavImg(id: Int) = viewModelScope.launch(Dispatchers.IO) {
-        imageRepo.remot.incFavImg(id)
+        imageRepo.remote.incFavImg(id)
     }
 
     fun incViewImg(id: Int) = viewModelScope.launch(Dispatchers.IO) {
-        imageRepo.remot.incViewsImg(id)
+        imageRepo.remote.incViewsImg(id)
     }
 
-    fun getCategories() {
+    private fun getCategories() {
         viewModelScope.launch {
             getCategoriesSafeCall()
         }
@@ -134,7 +138,7 @@ class ImagesViewModel @Inject constructor(
         }
         if (infos.value is NetworkResults.Loading) {
             try {
-                val response = imageRepo.remot.getAds()
+                val response = imageRepo.remote.getAds()
                 val handle = HandleResponse(response)
                 infos.value = handle.handleResult()
 
@@ -181,7 +185,7 @@ class ImagesViewModel @Inject constructor(
                 }
 
             } catch (ex: Exception) {
-                Log.d("Exception",ex.toString())
+                Log.d("Exception", ex.toString())
             }
         }
     }
@@ -189,7 +193,7 @@ class ImagesViewModel @Inject constructor(
     private suspend fun getCategoriesSafeCall() {
         if (hasInternetConnection()) {
             try {
-                val categoriesResponse = imageRepo.remot.getCategories()
+                val categoriesResponse = imageRepo.remote.getCategories()
                 categories.value = handCategoriesResponse(categoriesResponse)
                 Log.d("Tag_quote", categoriesResponse.body().toString())
             } catch (ex: Exception) {
@@ -228,7 +232,7 @@ class ImagesViewModel @Inject constructor(
         }
     }
 
-    fun getImages() {
+    private fun getImages() {
         viewModelScope.launch {
             getImagesSafeCall()
         }
@@ -237,7 +241,7 @@ class ImagesViewModel @Inject constructor(
     private suspend fun getImagesSafeCall() {
         if (hasInternetConnection()) {
             try {
-                val imagesResponse = imageRepo.remot.getImages()
+                val imagesResponse = imageRepo.remote.getImages()
                 images.value = handlImagesResponse(imagesResponse)
                 val imageCache = images.value!!.data
                 if (imageCache != null) {
@@ -278,6 +282,16 @@ class ImagesViewModel @Inject constructor(
         }
     }
 
+    fun saveLanguage(value: Int) {
+        viewModelScope.launch {
+            imageRepo.dataStore.putInt(LANGUAGE_PREFERENCE, value)
+        }
+    }
+
+    fun getLanguage(): Int? = runBlocking {
+        imageRepo.dataStore.getInt(LANGUAGE_PREFERENCE)
+    }
+
     fun deleteCategories(id: Int) {
         viewModelScope.launch {
             //imageRepo.local.deleteCategory(id)
@@ -289,6 +303,7 @@ class ImagesViewModel @Inject constructor(
             // imageRepo.local.deleteImage(id)
         }
     }
+
 
     fun setMessage(context: Context) {
         val c: Calendar = Calendar.getInstance()
@@ -308,19 +323,7 @@ class ImagesViewModel @Inject constructor(
             }
 
         }
-//        if (timeOfDay in 0..11) {
-//            _message.value = context.getString(R.string.morning)
-//            //message = "Good Morning"
-//        } else if (timeOfDay in 12..15) {
-//            _message.value = context.getString(R.string.afternoon)
-//            //message = "Good Afternoon"
-//        } else if (timeOfDay in 16..20) {
-//            _message.value = context.getString(R.string.evening)
-//            //message = "Good Evening"
-//        } else if (timeOfDay in 21..23) {
-//            _message.value = context.getString(R.string.night)
-//            //message = "Good Night"
-//        }
+
     }
 
 

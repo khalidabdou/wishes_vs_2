@@ -26,4 +26,5 @@
     <string name="share_icon">share</string>
     <string name="Home">Home</string>
     <string name="categories">Categories</string>
+    <string name="select_language">Select language</string>
 </resources>

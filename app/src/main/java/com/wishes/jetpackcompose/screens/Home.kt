@@ -4,6 +4,7 @@ package com.example.wishes_jetpackcompose
 
 import android.app.Activity
 import android.graphics.Bitmap
+import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
@@ -66,11 +67,17 @@ fun Home(viewModel: ImagesViewModel, navHostController: NavHostController) {
     val message = viewModel.message.collectAsState()
     val lazyGridState = LazyGridState
     var showAlertDialog by remember { mutableStateOf(false) }
-    LaunchedEffect(Unit) {
-        if (viewModel.imageslist.isEmpty()) {
-            viewModel.getImagesRoom()
-        }
-
+    val openDialogLanguage = remember { mutableStateOf(false) }
+    LaunchedEffect(viewModel.languageID) {
+        if (viewModel.languageID == null){
+            Toast.makeText(context,"empty lang",Toast.LENGTH_LONG).show()
+            viewModel.saveLanguage(2)
+            openDialogLanguage.value=true
+        }else
+            Toast.makeText(context,"${viewModel.languageID}",Toast.LENGTH_LONG).show()
+//        else (viewModel.imageslist.isEmpty()) {
+//                viewModel.getImagesRoom()
+//            }
     }
 
     val images = viewModel.imageslist
@@ -155,7 +162,6 @@ fun Home(viewModel: ImagesViewModel, navHostController: NavHostController) {
 
                                 navHostController.navigate(NavRoutes.ViewPager.route)
                             }
-
 
 
                         }
@@ -366,7 +372,7 @@ fun TopBar(title: String, onDrawer: () -> Unit) {
                 }
             ) {
                 Icon(
-                    imageVector =  Icons.Default.Settings,
+                    imageVector = Icons.Default.Settings,
                     tint = MaterialTheme.colorScheme.onPrimaryContainer,
                     contentDescription = null,
                     modifier = Modifier.rotate(angle)

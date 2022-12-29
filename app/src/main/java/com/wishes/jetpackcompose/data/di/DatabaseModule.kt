@@ -2,6 +2,7 @@ package com.green.china.di
 
 import android.content.Context
 import com.wishes.jetpackcompose.data.WallDatabase
+import com.wishes.jetpackcompose.preferences.implimentation.DataStoreRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,5 +22,12 @@ object DatabaseModule {
     @Singleton
     @Provides
     fun provideDao(database: WallDatabase) = database.imageDao()
+
+
+    @Singleton
+    @Provides
+    fun provideDataStoreRepository(
+        @ApplicationContext app: Context
+    ): DataStoreRepositoryImpl = DataStoreRepositoryImpl(app)
 
 }
