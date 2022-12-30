@@ -2,7 +2,6 @@
 
 package com.example.wishes_jetpackcompose
 
-import android.app.Activity
 import android.graphics.Bitmap
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
@@ -34,7 +33,6 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -47,15 +45,14 @@ import com.wishes.jetpackcompose.runtime.NavBarItems
 import com.wishes.jetpackcompose.runtime.NavRoutes
 import com.wishes.jetpackcompose.screens.ImagesFrom
 import com.wishes.jetpackcompose.screens.NavigationDrawer
-import com.wishes.jetpackcompose.screens.comp.AdBannerApp
+import com.wishes.jetpackcompose.screens.comp.DialogExit
+import com.wishes.jetpackcompose.screens.comp.LanguagesDialog
 import com.wishes.jetpackcompose.ui.theme.Inter
-import com.wishes.jetpackcompose.utlis.AppUtil
 import com.wishes.jetpackcompose.utlis.Const.Companion.directoryUpload
 import com.wishes.jetpackcompose.utlis.DEFAULT_RECIPE_IMAGE
 import com.wishes.jetpackcompose.utlis.loadPicturetemmp
 import com.wishes.jetpackcompose.viewModel.ImagesViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlin.random.Random
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -66,17 +63,20 @@ fun Home(viewModel: ImagesViewModel, navHostController: NavHostController) {
     val context = LocalContext.current
     val message = viewModel.message.collectAsState()
     val lazyGridState = LazyGridState
-    var showAlertDialog by remember { mutableStateOf(false) }
+    var openDialogExit by remember { mutableStateOf(false) }
     val openDialogLanguage = remember { mutableStateOf(false) }
-    LaunchedEffect(showAlertDialog) {
-//        if (viewModel.languageID == null){
-//            Toast.makeText(context,"empty lang",Toast.LENGTH_LONG).show()
-//            viewModel.saveLanguage(2)
-//            openDialogLanguage.value=true
-//        }else
-        Toast.makeText(context, "${viewModel.languageID}", Toast.LENGTH_LONG).show()
-        if (viewModel.imageslist.isEmpty()) {
-            viewModel.getImagesRoom()
+
+    LaunchedEffect(openDialogLanguage.value) {
+
+        if (viewModel.languageID == null) {
+            Toast.makeText(context, "empty lang", Toast.LENGTH_LONG).show()
+            //openDialogLanguage.value = true
+            viewModel.getLanguages()
+        } else {
+            Toast.makeText(context, "${viewModel.languageID}", Toast.LENGTH_LONG).show()
+            if (viewModel.imageslist.isEmpty()) {
+                viewModel.getImagesRoom()
+            }
         }
     }
 
@@ -85,7 +85,7 @@ fun Home(viewModel: ImagesViewModel, navHostController: NavHostController) {
 
     Surface() {
         BackHandler() {
-            showAlertDialog = true
+            openDialogExit = true
         }
 
         //create animations
@@ -121,7 +121,9 @@ fun Home(viewModel: ImagesViewModel, navHostController: NavHostController) {
                 .clip(RoundedCornerShape(clipDp)),
             contentColor = MaterialTheme.colorScheme.background,
             topBar = {
-                TopBar(message.value) {
+                TopBar(message.value, language = {
+                    openDialogLanguage.value = true
+                }) {
                     navigateClick = !navigateClick
                 }
             },
@@ -168,45 +170,26 @@ fun Home(viewModel: ImagesViewModel, navHostController: NavHostController) {
                     }
                 })
 
-            if (showAlertDialog) {
-                AlertDialog(
-                    onDismissRequest = {
-                        showAlertDialog = false
-                    },
-                    title = {
-                        Text(
-                            stringResource(R.string.sure),
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-                    },
-                    text = {
-                        val apps = viewModel.apps.value
+            if (openDialogExit)
+                DialogExit(viewModel, context) {
+                    openDialogExit = false
 
-                        if (!apps.isNullOrEmpty()) {
-                            val app = apps.get(Random.nextInt(0, apps.size))
-                            AdBannerApp(app)
-                        }
+                }
 
-                    },
-                    confirmButton = {
-                        Button(
-                            onClick = {
-                                AppUtil.rateApp(context)
+            if (openDialogLanguage.value) {
+                if (viewModel.languagesLiveData.value.isNullOrEmpty()) {
+                    viewModel.getLanguages()
+                    CircularProgressIndicator()
+                } else
+                    LanguagesDialog(viewModel.languagesLiveData.value,
+                        onConfirm = {
+                            openDialogLanguage.value = false
+                            viewModel.languageID = it.Id
+                            viewModel.saveLanguage(it.Id)
 
-                            }) {
-                            Text(stringResource(R.string.rate))
-                        }
-                    },
-                    dismissButton = {
-                        Button(
-                            onClick = {
-                                //showAlertDialog=false
-                                (context as Activity).finish()
-                            }) {
-                            Text(stringResource(R.string.quit))
-                        }
-                    },
-                )
+                        }) {
+
+                    }
             }
         }
     }
@@ -230,8 +213,9 @@ fun ImageItem(painter: ImageBitmap?, onClick: () -> Unit) {
     ) {
         if (painter == null) {
             Image(
-                painter = painterResource(id = R.drawable.holder), contentDescription = null,
-                modifier = Modifier.fillMaxWidth(),
+                painter = painterResource(id = R.drawable.holder),
+                contentDescription = null,
+                modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop
             )
         } else
@@ -341,18 +325,18 @@ fun BottomNavigationBar(navController: NavHostController) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar(title: String, onDrawer: () -> Unit) {
+fun TopBar(title: String, language: () -> Unit, onDrawer: () -> Unit) {
     val infiniteTransition = rememberInfiniteTransition()
     val angle by infiniteTransition.animateFloat(
         initialValue = 0F,
         targetValue = 360F,
         animationSpec = infiniteRepeatable(
-            animation = tween(2000, easing = LinearEasing)
+            animation = tween(7000, easing = LinearEasing)
         )
     )
 
     TopAppBar(
-        modifier = Modifier.clickable { onDrawer() },
+        modifier = Modifier,
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer
         ),
@@ -380,7 +364,18 @@ fun TopBar(title: String, onDrawer: () -> Unit) {
             }
         },
         actions = {
+            Icon(
+                painter = painterResource(id = R.drawable.language),
+                contentDescription = "",
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier
+                    .size(27.dp)
+                    .padding(4.dp)
+                    .clickable {
+                        language()
+                    },
 
+                )
 
             /*if (isMoreOptionPopupShowed) {
                 MoreOptionPopup(

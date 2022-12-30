@@ -2,10 +2,7 @@ package com.wishes.jetpackcompose.data
 
 
 
-import com.wishes.jetpackcompose.data.entities.Ads
-import com.wishes.jetpackcompose.data.entities.Apps
-import com.wishes.jetpackcompose.data.entities.Categories
-import com.wishes.jetpackcompose.data.entities.Images
+import com.wishes.jetpackcompose.data.entities.*
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -106,5 +103,8 @@ interface Api {
     suspend fun getAds(
         @Path("package") packageName: String
     ): Response<Ads?>
+
+    @GET("languages")
+    suspend fun getLanguages(): Response<Languages?>
 
 }

@@ -4,6 +4,8 @@ package com.wishes.jetpackcompose.data
 import com.wishes.jetpackcompose.BuildConfig
 import com.wishes.jetpackcompose.data.entities.Categories
 import com.wishes.jetpackcompose.data.entities.Images
+import com.wishes.jetpackcompose.data.entities.LanguageApp
+import com.wishes.jetpackcompose.data.entities.Languages
 import com.wishes.jetpackcompose.utlis.Const.Companion.LANGUAGE_ID
 import retrofit2.Response
 import javax.inject.Inject
@@ -12,8 +14,8 @@ class RemoteDataSource @Inject constructor(
     private val wallApi: Api
 ) {
     // images
-    suspend fun getImages(): Response<Images?>? {
-        return wallApi.getImages(LANGUAGE_ID)
+    suspend fun getImages(languageApp: Int): Response<Images?>? {
+        return wallApi.getImages(languageApp)
     }
 
     suspend fun getCategories(): Response<Categories?> {
@@ -54,5 +56,7 @@ class RemoteDataSource @Inject constructor(
     //get ads
     suspend fun getAds()=wallApi.getAds(BuildConfig.PACKAGE_NAME)
 
+
+    suspend fun getLanguages(): Response<Languages?>? = wallApi.getLanguages()
 
 }

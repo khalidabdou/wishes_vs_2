@@ -47,6 +47,8 @@ class ImagesViewModel @Inject constructor(
     var categories: MutableLiveData<NetworkResults<Categories>> = MutableLiveData()
     var images: MutableLiveData<NetworkResults<Images>> = MutableLiveData()
 
+    var languagesLiveData: MutableLiveData<List<LanguageApp>> = MutableLiveData()
+
     var offset by mutableStateOf(30)
 
     val infos = mutableStateOf<NetworkResults<Ads>>(NetworkResults.Loading())
@@ -59,6 +61,7 @@ class ImagesViewModel @Inject constructor(
     //language
     var languageID = getLanguage()
 
+
     /**ROOM DATABASE**/
     var catId: Int = 0
     var imageslist by mutableStateOf(emptyList<Image>())
@@ -68,7 +71,7 @@ class ImagesViewModel @Inject constructor(
 
 
     fun getImagesRoom() = viewModelScope.launch(Dispatchers.IO) {
-        imageRepo.local.getImages(LANGUAGE_ID).collect {
+        imageRepo.local.getImages(languageID!!).collect {
             if (it.isEmpty()) {
                 getImages()
             } else {
@@ -191,13 +194,15 @@ class ImagesViewModel @Inject constructor(
         }
     }
 
+
     private suspend fun getCategoriesSafeCall() {
         if (hasInternetConnection()) {
             try {
                 val categoriesResponse = imageRepo.remote.getCategories()
                 categories.value = HandleResponse(categoriesResponse).handleResult()
-                if (categories.value is NetworkResults.Success){
-                    val cats = categories.value!!.data?.listCategory!!.filter { cat -> cat.type=="image" }
+                if (categories.value is NetworkResults.Success) {
+                    val cats =
+                        categories.value!!.data?.listCategory!!.filter { cat -> cat.type == "image" }
                     cacheCategories(cats)
                 }
                 //Log.d("Tag_quote", categoriesResponse.body().toString())
@@ -210,6 +215,7 @@ class ImagesViewModel @Inject constructor(
 
         //categories.value=NetworkResults.Loading()
     }
+
 
     private fun handCategoriesResponse(categoriesResponse: Response<Categories>): NetworkResults<Categories>? {
         when {
@@ -239,14 +245,14 @@ class ImagesViewModel @Inject constructor(
 
     private fun getImages() {
         viewModelScope.launch {
-            getImagesSafeCall()
+            getImagesSafeCall(languageID!!)
         }
     }
 
-    private suspend fun getImagesSafeCall() {
+    private suspend fun getImagesSafeCall(languageApp: Int) {
         if (hasInternetConnection()) {
             try {
-                val imagesResponse = imageRepo.remote.getImages()
+                val imagesResponse = imageRepo.remote.getImages(languageApp)
                 images.value = HandleResponse(imagesResponse).handleResult()
                 if (images.value is NetworkResults.Success) {
                     val imageCache = images.value!!.data
@@ -260,6 +266,33 @@ class ImagesViewModel @Inject constructor(
 
         } else {
             images.value = NetworkResults.Error("No Internet Connection")
+            //FirebaseCrashlytics.getInstance().log("Images : No Internet Connection")
+        }
+
+    }
+
+    fun getLanguages() = viewModelScope.launch {
+        getLanguageSafeCall()
+    }
+
+    private suspend fun getLanguageSafeCall() {
+        if (hasInternetConnection()) {
+            try {
+                val languagesResponse = imageRepo.remote.getLanguages()
+                languages.value = HandleResponse(languagesResponse).handleResult()
+                if (languages.value is NetworkResults.Success) {
+                    //val imageCache = images.value!!.data
+                    //offlineCacheImages(imageCache!!.results)
+                    Log.d("Tag_quotes", languages.value.data?.languages.toString())
+                    languagesLiveData.value = languages.value.data?.languages
+                }
+            } catch (ex: Exception) {
+                Log.d(LOG_IMAGE, ex.toString())
+                languages.value = NetworkResults.Error(ex.message)
+            }
+
+        } else {
+            languages.value = NetworkResults.Error("No Internet Connection")
             //FirebaseCrashlytics.getInstance().log("Images : No Internet Connection")
         }
 
