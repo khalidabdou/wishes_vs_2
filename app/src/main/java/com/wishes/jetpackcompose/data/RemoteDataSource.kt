@@ -12,11 +12,11 @@ class RemoteDataSource @Inject constructor(
     private val wallApi: Api
 ) {
     // images
-    suspend fun getImages(): Response<Images> {
+    suspend fun getImages(): Response<Images?>? {
         return wallApi.getImages(LANGUAGE_ID)
     }
 
-    suspend fun getCategories(): Response<Categories> {
+    suspend fun getCategories(): Response<Categories?> {
         return wallApi.getImgesCategories(LANGUAGE_ID)
     }
 

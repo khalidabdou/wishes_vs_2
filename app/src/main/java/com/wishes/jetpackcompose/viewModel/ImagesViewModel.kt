@@ -50,6 +50,7 @@ class ImagesViewModel @Inject constructor(
     var offset by mutableStateOf(30)
 
     val infos = mutableStateOf<NetworkResults<Ads>>(NetworkResults.Loading())
+    val languages = mutableStateOf<NetworkResults<Languages>>(NetworkResults.Loading())
     val apps = mutableStateOf<List<App>?>(null)
 
     private val _message = MutableStateFlow<String>("Good Morning")
@@ -139,8 +140,8 @@ class ImagesViewModel @Inject constructor(
         if (infos.value is NetworkResults.Loading) {
             try {
                 val response = imageRepo.remote.getAds()
-                val handle = HandleResponse(response)
-                infos.value = handle.handleResult()
+                val handle = HandleResponse(response).handleResult()
+                infos.value = handle
 
                 apps.value = infos.value.data!!.apps
                 infos.value.data!!.ads.forEach {
@@ -194,8 +195,12 @@ class ImagesViewModel @Inject constructor(
         if (hasInternetConnection()) {
             try {
                 val categoriesResponse = imageRepo.remote.getCategories()
-                categories.value = handCategoriesResponse(categoriesResponse)
-                Log.d("Tag_quote", categoriesResponse.body().toString())
+                categories.value = HandleResponse(categoriesResponse).handleResult()
+                if (categories.value is NetworkResults.Success){
+                    val cats = categories.value!!.data?.listCategory!!.filter { cat -> cat.type=="image" }
+                    cacheCategories(cats)
+                }
+                //Log.d("Tag_quote", categoriesResponse.body().toString())
             } catch (ex: Exception) {
                 categories.value = NetworkResults.Error(ex.message)
             }
@@ -242,10 +247,10 @@ class ImagesViewModel @Inject constructor(
         if (hasInternetConnection()) {
             try {
                 val imagesResponse = imageRepo.remote.getImages()
-                images.value = handlImagesResponse(imagesResponse)
-                val imageCache = images.value!!.data
-                if (imageCache != null) {
-                    offlineCacheImages(imageCache.results)
+                images.value = HandleResponse(imagesResponse).handleResult()
+                if (images.value is NetworkResults.Success) {
+                    val imageCache = images.value!!.data
+                    offlineCacheImages(imageCache!!.results)
                     Log.d("Tag_quotes", imageCache.results.toString())
                 }
             } catch (ex: Exception) {
@@ -266,7 +271,7 @@ class ImagesViewModel @Inject constructor(
         }
     }
 
-    private fun handlImagesResponse(imagesResponse: Response<Images>): NetworkResults<Images>? {
+    private fun handleImagesResponse(imagesResponse: Response<Images>): NetworkResults<Images>? {
         when {
             imagesResponse.message().toString()
                 .contains("Timeout") -> return NetworkResults.Error("Timeout")

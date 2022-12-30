@@ -15,12 +15,12 @@ interface Api {
     @GET("ImgCats")
     suspend fun getImgesCategories(
         @Query("language") language: Int = 3
-    ): Response<Categories>
+    ): Response<Categories?>
 
     @GET("images")
     suspend fun getImages(
         @Query("language") language: Int = 3
-    ): Response<Images>
+    ): Response<Images?>?
 
 
     @Headers("Content-Type: application/json")

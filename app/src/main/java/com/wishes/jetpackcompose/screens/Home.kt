@@ -68,16 +68,16 @@ fun Home(viewModel: ImagesViewModel, navHostController: NavHostController) {
     val lazyGridState = LazyGridState
     var showAlertDialog by remember { mutableStateOf(false) }
     val openDialogLanguage = remember { mutableStateOf(false) }
-    LaunchedEffect(viewModel.languageID) {
-        if (viewModel.languageID == null){
-            Toast.makeText(context,"empty lang",Toast.LENGTH_LONG).show()
-            viewModel.saveLanguage(2)
-            openDialogLanguage.value=true
-        }else
-            Toast.makeText(context,"${viewModel.languageID}",Toast.LENGTH_LONG).show()
-//        else (viewModel.imageslist.isEmpty()) {
-//                viewModel.getImagesRoom()
-//            }
+    LaunchedEffect(showAlertDialog) {
+//        if (viewModel.languageID == null){
+//            Toast.makeText(context,"empty lang",Toast.LENGTH_LONG).show()
+//            viewModel.saveLanguage(2)
+//            openDialogLanguage.value=true
+//        }else
+        Toast.makeText(context, "${viewModel.languageID}", Toast.LENGTH_LONG).show()
+        if (viewModel.imageslist.isEmpty()) {
+            viewModel.getImagesRoom()
+        }
     }
 
     val images = viewModel.imageslist

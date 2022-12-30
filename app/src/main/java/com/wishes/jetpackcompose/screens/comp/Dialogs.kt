@@ -36,31 +36,7 @@ fun LanguagesDialog(
             Text(stringResource(R.string.select_language))
         },
         text = {
-            when (viewModel.languageResponse.value) {
-                is NetworkResults.Error -> {
-                    onDismiss()
-                    //openDialogLanguage.value = false
-                }
-                is NetworkResults.Success -> {
-                    LanguageRadioGroup(createTestViewModel.languages) {
-                        createTestViewModel.isLanguageSelected.value = true
-                        onSelect(it)
-                        onDismiss()
-                    }
-                }
-                is NetworkResults.Loading -> {
-                    createTestViewModel.getLanguages()
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(290.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        CircularProgressIndicatorSample(color = MaterialTheme.colorScheme.primary)
-                    }
-                }
-                else -> {}
-            }
+
 
         },
         confirmButton = {
