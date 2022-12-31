@@ -78,6 +78,6 @@ interface IDao {
         }
     }
 
-    @Query("DELETE FROM tbl_images")
-    suspend fun restAll()
+    @Query("DELETE FROM tbl_images where language_app =:id")
+    suspend fun restAll(id: Int)
 }

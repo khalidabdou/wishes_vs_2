@@ -28,5 +28,5 @@ data class Image(
 
 data class Images(
     @SerializedName("latest")
-    val results: List<Image>
+    var results: List<Image>
 )

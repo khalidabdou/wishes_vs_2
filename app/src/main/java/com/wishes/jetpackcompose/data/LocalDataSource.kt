@@ -53,7 +53,7 @@ class LocalDataSource @Inject constructor(
         return WallDao.readImagesByCategory(catID, language)
     }
 
-    suspend fun resetImages() =
-        WallDao.restAll()
+    suspend fun resetImages(id:Int) =
+        WallDao.restAll(id)
 
 }

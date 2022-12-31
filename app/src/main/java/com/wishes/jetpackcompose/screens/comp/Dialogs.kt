@@ -11,6 +11,8 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -82,15 +84,26 @@ fun LanguagesDialog(
     onDismiss: () -> Unit
 ) {
 
-    AlertDialog(
+    AlertDialog(modifier = Modifier.padding(bottom = 100.dp, top = 40.dp),
         properties = DialogProperties(
             dismissOnClickOutside = true
         ),
         title = {
-            Text(
-                stringResource(R.string.select_language),
-                style = MaterialTheme.typography.titleLarge
-            )
+            Row() {
+                Text(
+                    stringResource(R.string.select_language),
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                )
+                Icon(imageVector = Icons.Default.Close, contentDescription = null,
+                    modifier = Modifier.clickable {
+                        onDismiss()
+                    }
+                )
+            }
+
         },
         text = {
             LazyVerticalGrid(
@@ -145,12 +158,7 @@ fun LanguagesDialog(
             }
         },
         confirmButton = {
-            Button(onClick = {
-                //onConfirm()
-            }, modifier = Modifier) {
 
-                Text(text = "Confirm")
-            }
         },
         dismissButton = {
 
@@ -164,8 +172,10 @@ fun WaitDialog(onDismiss: () -> Unit) {
     AlertDialog(
         title = { Text("Please wait") },
         text = {
-            Row(modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 CircularProgressIndicator()
             }
 

@@ -67,7 +67,7 @@ fun ViewPager(
             viewModel.getByCatRoom(CatId!!)
         }
         ImagesFrom.Latest.route -> {
-            viewModel.getImagesRoom()
+            viewModel.getImagesRoom(viewModel.languageID!!)
         }
     }
 
@@ -81,7 +81,7 @@ fun ViewPager(
             images = viewModel.imagesByCategory
         }
         ImagesFrom.Latest.route -> {
-            images = viewModel.imageslist
+            images = viewModel.imagesList
         }
     }
     SideEffect {

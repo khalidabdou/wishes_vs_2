@@ -61,18 +61,18 @@ class ImagesViewModel @Inject constructor(
 
     /**ROOM DATABASE**/
     var catId: Int = 0
-    var imageslist by mutableStateOf(emptyList<Image>())
+    var imagesList by mutableStateOf(emptyList<Image>())
     var categoriesList by mutableStateOf(emptyList<Category>())
     var favoritesList by mutableStateOf(emptyList<Image>())
     var imagesByCategory by mutableStateOf(emptyList<Image>())
 
-    fun getImagesRoom() = viewModelScope.launch(Dispatchers.IO) {
-        imageRepo.local.getImages(languageID!!).collect {
+    fun getImagesRoom(id:Int) = viewModelScope.launch(Dispatchers.IO) {
+        imageRepo.local.getImages(id).collect {
             if (it.isEmpty()) {
-                getImages()
+                getImages(id)
             } else {
-                if (imageslist.isEmpty())
-                    imageslist = it.subList(0, 400).shuffled()
+                if (imagesList.isEmpty())
+                    imagesList = it.subList(0, 400).shuffled()
             }
             //Log.d("RANDOM", RANDOM.toString())
         }
@@ -216,9 +216,9 @@ class ImagesViewModel @Inject constructor(
         }
     }
 
-    private fun getImages() {
+    private fun getImages(id:Int) {
         viewModelScope.launch {
-            getImagesSafeCall(languageID!!)
+            getImagesSafeCall(id)
         }
     }
 
@@ -230,6 +230,7 @@ class ImagesViewModel @Inject constructor(
                 if (images.value is NetworkResults.Success) {
                     val imageCache = images.value!!.data
                     offlineCacheImages(imageCache!!.results)
+                    imagesList=imageCache!!.results
                     //Log.d("Tag_quotes", imageCache.results.toString())
                 }
             } catch (ex: Exception) {
@@ -291,9 +292,9 @@ class ImagesViewModel @Inject constructor(
         }
     }
 
-    fun resetImages() {
+    fun resetImages(id: Int) {
         viewModelScope.launch {
-            imageRepo.local.resetImages()
+            imageRepo.local.resetImages(id)
         }
     }
 

@@ -3,7 +3,6 @@
 package com.example.wishes_jetpackcompose
 
 import android.graphics.Bitmap
-import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
@@ -74,17 +73,17 @@ fun Home(viewModel: ImagesViewModel, navHostController: NavHostController) {
 
     LaunchedEffect(isLanguageChanged.value) {
         if (viewModel.languageID == null) {
-            Toast.makeText(context, "empty lang", Toast.LENGTH_LONG).show()
-            openDialogLanguage.value = true
-            viewModel.getLanguages()
+            //Toast.makeText(context, "empty lang", Toast.LENGTH_LONG).show()
+            openDialogWait.value = true
+            isLanguageChanged.value = true
+            //viewModel.getLanguages()
         } else {
-            Toast.makeText(context, "${viewModel.languageID}", Toast.LENGTH_LONG).show()
-            if (viewModel.imageslist.isEmpty()) {
-                viewModel.getImagesRoom()
+            //Toast.makeText(context, "${viewModel.languageID}", Toast.LENGTH_LONG).show()
+            if (viewModel.imagesList.isEmpty()) {
+                viewModel.getImagesRoom(viewModel.languageID!!)
             }
         }
     }
-    val images = viewModel.imageslist
     Surface() {
         BackHandler() {
             openDialogExit = true
@@ -135,14 +134,14 @@ fun Home(viewModel: ImagesViewModel, navHostController: NavHostController) {
                 state = scrollState,
                 columns = GridCells.Fixed(2),
                 content = {
-                    if (images.isEmpty()) {
+                    if (viewModel.imagesList.isEmpty()) {
                         items(15) {
                             LoadingShimmerEffectImage()
                         }
                     } else {
-                        items(images.size) {
+                        items(viewModel.imagesList.size) {
                             val image: MutableState<Bitmap?>? = loadPicturetemmp(
-                                url = directoryUpload + images[it].languageLable + "/" + images[it].image_upload,
+                                url = directoryUpload + viewModel.imagesList[it].languageLable + "/" + viewModel.imagesList[it].image_upload,
                                 defaultImage = DEFAULT_RECIPE_IMAGE
                             )
                             ImageItem(
@@ -169,16 +168,20 @@ fun Home(viewModel: ImagesViewModel, navHostController: NavHostController) {
                 }
             if (openDialogLanguage.value) {
                 LanguagesDialog(viewModel.languagesLiveData.value,
-                    onConfirm = {
+                    onConfirm = { lang ->
+                        viewModel.languageID = lang.Id
+                        viewModel.imagesList = emptyList()
                         openDialogLanguage.value = false
-                        viewModel.languageID = it.Id
-                        viewModel.saveLanguage(it.Id)
+                        viewModel.saveLanguage(lang.Id)
+
                         isLanguageChanged.value = !isLanguageChanged.value
-                        if (it.Id!=viewModel.languageID){
-                            viewModel.imageslist= emptyList()
-                            viewModel.resetImages()
-                        }
-                    }) {}
+                        //Toast.makeText(context, "${viewModel.imagesList.size}", Toast.LENGTH_SHORT)
+                        //.show()
+                    }) {
+                    if (viewModel.languageID!=null)
+                        openDialogWait.value=false
+                        openDialogLanguage.value=false
+                }
             }
 
             if (openDialogWait.value && isLanguageChanged.value) {
@@ -197,6 +200,7 @@ fun Home(viewModel: ImagesViewModel, navHostController: NavHostController) {
                     is NetworkResults.Success -> {
                         openDialogLanguage.value = true
                     }
+                    else -> {}
                 }
             }
 
