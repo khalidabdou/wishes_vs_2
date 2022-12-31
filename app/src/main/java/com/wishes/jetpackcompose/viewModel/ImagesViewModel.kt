@@ -46,9 +46,7 @@ class ImagesViewModel @Inject constructor(
     /** RETROFIT **/
     var categories: MutableLiveData<NetworkResults<Categories>> = MutableLiveData()
     var images: MutableLiveData<NetworkResults<Images>> = MutableLiveData()
-
     var languagesLiveData: MutableLiveData<List<LanguageApp>> = MutableLiveData()
-
     var offset by mutableStateOf(30)
 
     val infos = mutableStateOf<NetworkResults<Ads>>(NetworkResults.Loading())
@@ -61,14 +59,12 @@ class ImagesViewModel @Inject constructor(
     //language
     var languageID = getLanguage()
 
-
     /**ROOM DATABASE**/
     var catId: Int = 0
     var imageslist by mutableStateOf(emptyList<Image>())
     var categoriesList by mutableStateOf(emptyList<Category>())
     var favoritesList by mutableStateOf(emptyList<Image>())
     var imagesByCategory by mutableStateOf(emptyList<Image>())
-
 
     fun getImagesRoom() = viewModelScope.launch(Dispatchers.IO) {
         imageRepo.local.getImages(languageID!!).collect {
@@ -212,29 +208,6 @@ class ImagesViewModel @Inject constructor(
         } else {
             categories.value = NetworkResults.Error("No Internet Connection")
         }
-
-        //categories.value=NetworkResults.Loading()
-    }
-
-
-    private fun handCategoriesResponse(categoriesResponse: Response<Categories>): NetworkResults<Categories>? {
-        when {
-            categoriesResponse.message().toString()
-                .contains("Timeout") -> return NetworkResults.Error("Timeout")
-            categoriesResponse.code() == 402 -> return NetworkResults.Error("Api Key Limited.")
-            categoriesResponse.body()!!.listCategory.isNullOrEmpty() -> return NetworkResults.Error(
-                "No Data Found"
-            )
-            categoriesResponse.isSuccessful -> {
-                val categories = categoriesResponse.body()
-                categories!!.listCategory.forEach { cat -> cat.type = "image" }
-                cacheCategories(categories.listCategory)
-                Log.d("Tag_quotes", readCategories.value.toString())
-
-                return NetworkResults.Success(categories)
-            }
-            else -> return NetworkResults.Error(categoriesResponse.message())
-        }
     }
 
     fun addToFav(id: Int, fav: Int) {
@@ -257,7 +230,7 @@ class ImagesViewModel @Inject constructor(
                 if (images.value is NetworkResults.Success) {
                     val imageCache = images.value!!.data
                     offlineCacheImages(imageCache!!.results)
-                    Log.d("Tag_quotes", imageCache.results.toString())
+                    //Log.d("Tag_quotes", imageCache.results.toString())
                 }
             } catch (ex: Exception) {
                 Log.d(LOG_IMAGE, ex.toString())
@@ -268,7 +241,6 @@ class ImagesViewModel @Inject constructor(
             images.value = NetworkResults.Error("No Internet Connection")
             //FirebaseCrashlytics.getInstance().log("Images : No Internet Connection")
         }
-
     }
 
     fun getLanguages() = viewModelScope.launch {
@@ -295,28 +267,11 @@ class ImagesViewModel @Inject constructor(
             languages.value = NetworkResults.Error("No Internet Connection")
             //FirebaseCrashlytics.getInstance().log("Images : No Internet Connection")
         }
-
     }
 
     private fun offlineCacheImages(images: List<Image>) {
         viewModelScope.launch(Dispatchers.IO) {
             imageRepo.local.updateOrInsert(images)
-        }
-    }
-
-    private fun handleImagesResponse(imagesResponse: Response<Images>): NetworkResults<Images>? {
-        when {
-            imagesResponse.message().toString()
-                .contains("Timeout") -> return NetworkResults.Error("Timeout")
-            imagesResponse.code() == 402 -> return NetworkResults.Error("Api KEy Limited.")
-            imagesResponse.body()!!.results.isNullOrEmpty() -> {
-                return NetworkResults.Error("No Data Found")
-            }
-            imagesResponse.isSuccessful -> {
-                val images = imagesResponse.body()
-                return NetworkResults.Success(images!!)
-            }
-            else -> return NetworkResults.Error(imagesResponse.message())
         }
     }
 
@@ -336,12 +291,11 @@ class ImagesViewModel @Inject constructor(
         }
     }
 
-    fun deleteImage(id: Int) {
+    fun resetImages() {
         viewModelScope.launch {
-            // imageRepo.local.deleteImage(id)
+            imageRepo.local.resetImages()
         }
     }
-
 
     fun setMessage(context: Context) {
         val c: Calendar = Calendar.getInstance()
@@ -363,7 +317,6 @@ class ImagesViewModel @Inject constructor(
         }
 
     }
-
 
     fun hasInternetConnection(): Boolean = hasConnection(getApplication())
 

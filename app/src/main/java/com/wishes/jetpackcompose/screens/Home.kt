@@ -11,7 +11,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -47,9 +46,11 @@ import com.wishes.jetpackcompose.screens.ImagesFrom
 import com.wishes.jetpackcompose.screens.NavigationDrawer
 import com.wishes.jetpackcompose.screens.comp.DialogExit
 import com.wishes.jetpackcompose.screens.comp.LanguagesDialog
+import com.wishes.jetpackcompose.screens.comp.WaitDialog
 import com.wishes.jetpackcompose.ui.theme.Inter
 import com.wishes.jetpackcompose.utlis.Const.Companion.directoryUpload
 import com.wishes.jetpackcompose.utlis.DEFAULT_RECIPE_IMAGE
+import com.wishes.jetpackcompose.utlis.NetworkResults
 import com.wishes.jetpackcompose.utlis.loadPicturetemmp
 import com.wishes.jetpackcompose.viewModel.ImagesViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -59,18 +60,22 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @ExperimentalCoroutinesApi
 @Composable
 fun Home(viewModel: ImagesViewModel, navHostController: NavHostController) {
+
     val scrollState = rememberLazyGridState(0)
     val context = LocalContext.current
     val message = viewModel.message.collectAsState()
-    val lazyGridState = LazyGridState
+    //val lazyGridState = LazyGridState
     var openDialogExit by remember { mutableStateOf(false) }
     val openDialogLanguage = remember { mutableStateOf(false) }
+    val openDialogWait = remember { mutableStateOf(false) }
+    val isLanguageChanged = remember {
+        mutableStateOf(false)
+    }
 
-    LaunchedEffect(openDialogLanguage.value) {
-
+    LaunchedEffect(isLanguageChanged.value) {
         if (viewModel.languageID == null) {
             Toast.makeText(context, "empty lang", Toast.LENGTH_LONG).show()
-            //openDialogLanguage.value = true
+            openDialogLanguage.value = true
             viewModel.getLanguages()
         } else {
             Toast.makeText(context, "${viewModel.languageID}", Toast.LENGTH_LONG).show()
@@ -79,15 +84,11 @@ fun Home(viewModel: ImagesViewModel, navHostController: NavHostController) {
             }
         }
     }
-
     val images = viewModel.imageslist
-
-
     Surface() {
         BackHandler() {
             openDialogExit = true
         }
-
         //create animations
         var navigateClick by remember { mutableStateOf(false) }
         val offSetAnim by animateDpAsState(
@@ -102,16 +103,13 @@ fun Home(viewModel: ImagesViewModel, navHostController: NavHostController) {
             targetValue = if (navigateClick) 0.5f else 1.0f,
             tween(1000)
         )
-
         val rotate by animateFloatAsState(
             targetValue = if (navigateClick) 10f else 0f,
             tween(1000)
         )
-
         NavigationDrawer() {
             navigateClick = false
         }
-
         Scaffold(
             modifier = Modifier
                 .fillMaxSize()
@@ -122,16 +120,15 @@ fun Home(viewModel: ImagesViewModel, navHostController: NavHostController) {
             contentColor = MaterialTheme.colorScheme.background,
             topBar = {
                 TopBar(message.value, language = {
-                    openDialogLanguage.value = true
+                    openDialogWait.value = true
+                    isLanguageChanged.value = true
                 }) {
                     navigateClick = !navigateClick
                 }
             },
             bottomBar = {
                 BottomNavigationBar(navController = navHostController)
-            },
-
-            ) {
+            }) {
             LazyVerticalGrid(modifier = Modifier
                 .fillMaxSize()
                 .padding(it),
@@ -144,7 +141,6 @@ fun Home(viewModel: ImagesViewModel, navHostController: NavHostController) {
                         }
                     } else {
                         items(images.size) {
-
                             val image: MutableState<Bitmap?>? = loadPicturetemmp(
                                 url = directoryUpload + images[it].languageLable + "/" + images[it].image_upload,
                                 defaultImage = DEFAULT_RECIPE_IMAGE
@@ -161,11 +157,8 @@ fun Home(viewModel: ImagesViewModel, navHostController: NavHostController) {
                                     key = "page",
                                     value = page
                                 )
-
                                 navHostController.navigate(NavRoutes.ViewPager.route)
                             }
-
-
                         }
                     }
                 })
@@ -173,24 +166,40 @@ fun Home(viewModel: ImagesViewModel, navHostController: NavHostController) {
             if (openDialogExit)
                 DialogExit(viewModel, context) {
                     openDialogExit = false
-
                 }
-
             if (openDialogLanguage.value) {
-                if (viewModel.languagesLiveData.value.isNullOrEmpty()) {
-                    viewModel.getLanguages()
-                    CircularProgressIndicator()
-                } else
-                    LanguagesDialog(viewModel.languagesLiveData.value,
-                        onConfirm = {
-                            openDialogLanguage.value = false
-                            viewModel.languageID = it.Id
-                            viewModel.saveLanguage(it.Id)
-
-                        }) {
-
-                    }
+                LanguagesDialog(viewModel.languagesLiveData.value,
+                    onConfirm = {
+                        openDialogLanguage.value = false
+                        viewModel.languageID = it.Id
+                        viewModel.saveLanguage(it.Id)
+                        isLanguageChanged.value = !isLanguageChanged.value
+                        if (it.Id!=viewModel.languageID){
+                            viewModel.imageslist= emptyList()
+                            viewModel.resetImages()
+                        }
+                    }) {}
             }
+
+            if (openDialogWait.value && isLanguageChanged.value) {
+                when (viewModel.languages.value) {
+                    is NetworkResults.Loading -> {
+                        viewModel.getLanguages()
+                        WaitDialog {
+                            openDialogWait.value = false
+                        }
+                    }
+                    is NetworkResults.Error -> {
+                        openDialogWait.value = false
+                        openDialogLanguage.value = false
+                    }
+
+                    is NetworkResults.Success -> {
+                        openDialogLanguage.value = true
+                    }
+                }
+            }
+
         }
     }
 

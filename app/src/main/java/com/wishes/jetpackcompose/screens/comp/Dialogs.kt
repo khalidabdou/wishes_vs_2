@@ -6,18 +6,12 @@ import android.graphics.Bitmap
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
@@ -145,10 +139,8 @@ fun LanguagesDialog(
                             style = MaterialTheme.typography.titleMedium,
                             color = MaterialTheme.colorScheme.onPrimary,
                             textAlign = TextAlign.Center
-
                         )
                     }
-
                 }
             }
         },
@@ -164,5 +156,27 @@ fun LanguagesDialog(
 
         },
         onDismissRequest = {}
+    )
+}
+
+@Composable
+fun WaitDialog(onDismiss: () -> Unit) {
+    AlertDialog(
+        title = { Text("Please wait") },
+        text = {
+            Row(modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically) {
+                CircularProgressIndicator()
+            }
+
+        },
+        onDismissRequest = {},
+        confirmButton = {
+            Button(onClick = {
+                onDismiss()
+            }) {
+                Text(text = "Cancel")
+            }
+        }
     )
 }

@@ -75,7 +75,9 @@ interface IDao {
             if (insertResult[i] == -1L) {
                 upadteImages(images[i].id, images[i].count_shared, images[i].count_view)
             }
-
         }
     }
+
+    @Query("DELETE FROM tbl_images")
+    suspend fun restAll()
 }
