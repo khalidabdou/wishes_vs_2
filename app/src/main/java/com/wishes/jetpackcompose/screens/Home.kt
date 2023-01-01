@@ -95,7 +95,7 @@ fun Home(viewModel: ImagesViewModel, navHostController: NavHostController) {
             tween(1000)
         )
         val clipDp by animateDpAsState(
-            targetValue = if (navigateClick) 60.dp else 0.dp,
+            targetValue = if (navigateClick) 40.dp else 0.dp,
             tween(1000)
         )
         val scaleAnim by animateFloatAsState(
@@ -103,7 +103,7 @@ fun Home(viewModel: ImagesViewModel, navHostController: NavHostController) {
             tween(1000)
         )
         val rotate by animateFloatAsState(
-            targetValue = if (navigateClick) 10f else 0f,
+            targetValue = if (navigateClick) 6f else 0f,
             tween(1000)
         )
         NavigationDrawer() {
@@ -117,6 +117,7 @@ fun Home(viewModel: ImagesViewModel, navHostController: NavHostController) {
                 .rotate(rotate)
                 .clip(RoundedCornerShape(clipDp)),
             contentColor = MaterialTheme.colorScheme.background,
+
             topBar = {
                 TopBar(message.value, language = {
                     openDialogWait.value = true
@@ -127,7 +128,8 @@ fun Home(viewModel: ImagesViewModel, navHostController: NavHostController) {
             },
             bottomBar = {
                 BottomNavigationBar(navController = navHostController)
-            }) {
+            }
+        ) {
             LazyVerticalGrid(modifier = Modifier
                 .fillMaxSize()
                 .padding(it),
@@ -171,16 +173,16 @@ fun Home(viewModel: ImagesViewModel, navHostController: NavHostController) {
                     onConfirm = { lang ->
                         viewModel.languageID = lang.Id
                         viewModel.imagesList = emptyList()
+                        viewModel.categoriesList = emptyList()
                         openDialogLanguage.value = false
                         viewModel.saveLanguage(lang.Id)
-
                         isLanguageChanged.value = !isLanguageChanged.value
                         //Toast.makeText(context, "${viewModel.imagesList.size}", Toast.LENGTH_SHORT)
                         //.show()
                     }) {
-                    if (viewModel.languageID!=null)
-                        openDialogWait.value=false
-                        openDialogLanguage.value=false
+                    if (viewModel.languageID != null)
+                        openDialogWait.value = false
+                    openDialogLanguage.value = false
                 }
             }
 
@@ -218,7 +220,7 @@ fun ImageItem(painter: ImageBitmap?, onClick: () -> Unit) {
         modifier = Modifier
             .padding(4.dp)
             .fillMaxWidth()
-            .height(200.dp)
+            .height(210.dp)
             .clickable {
                 onClick()
                 showInterstitialAfterClick(context)
@@ -292,10 +294,9 @@ fun ShimmerGridItemImage(brush: Brush) {
 
 @Composable
 fun BottomNavigationBar(navController: NavHostController) {
-
-    Column {
+    Column(modifier = Modifier) {
         BottomNavigation(
-            modifier = Modifier.background(MaterialTheme.colorScheme.surfaceVariant),
+            modifier = Modifier.background(MaterialTheme.colorScheme.primaryContainer),
         ) {
             val backStackEntry by navController.currentBackStackEntryAsState()
             val currentRoute = backStackEntry?.destination?.route
@@ -314,9 +315,12 @@ fun BottomNavigationBar(navController: NavHostController) {
 
                     icon = {
                         Icon(
-                            imageVector = navItem.image,
+                            painter = painterResource(id = navItem.image),
                             tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                            contentDescription = navItem.title
+                            contentDescription = navItem.title,
+                            modifier = Modifier
+                                .size(25.dp)
+                                .padding(3.dp)
                         )
                     },
                     label = {
@@ -332,8 +336,6 @@ fun BottomNavigationBar(navController: NavHostController) {
             }
         }
     }
-
-
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

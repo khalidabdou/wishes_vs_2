@@ -18,8 +18,8 @@ class RemoteDataSource @Inject constructor(
         return wallApi.getImages(languageApp)
     }
 
-    suspend fun getCategories(): Response<Categories?> {
-        return wallApi.getImgesCategories(LANGUAGE_ID)
+    suspend fun getCategories(cat :Int): Response<Categories?> {
+        return wallApi.getImgesCategories(cat)
     }
 
     suspend fun incShareImg(id: Int?) {

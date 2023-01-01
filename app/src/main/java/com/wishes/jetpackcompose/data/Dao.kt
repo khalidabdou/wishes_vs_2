@@ -39,14 +39,14 @@ interface IDao {
     @Query("SELECT * FROM tbl_images where language_app=:languageID")
     fun getImages(languageID: Int): Flow<List<Image>>
 
-    @Query("SELECT * FROM tbl_images WHERE cat_id=:catId AND language_app=:languageID")
-    fun getImagesByCat(catId: Int, languageID: Int): Flow<List<Image>>
+    @Query("SELECT * FROM tbl_images WHERE cat_id=:catId")
+    fun getImagesByCat(catId: Int): Flow<List<Image>>
 
     @Query("Update tbl_images set isfav =:fav where id =:id")
     suspend fun addToFav(id: Int, fav: Int)
 
-    @Query("SELECT * FROM tbl_category WHERE type=:type AND language_app=:languageID")
-    fun readCategories(type: String, languageID: Int): Flow<List<Category>>
+    @Query("SELECT * FROM tbl_category WHERE language_app=:languageID")
+    fun readCategories( languageID: Int): Flow<List<Category>>
 
 
     @Query("SELECT * FROM tbl_images WHERE cat_id=:catID AND language_app=:languageID")

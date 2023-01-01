@@ -24,8 +24,8 @@ class LocalDataSource @Inject constructor(
         return WallDao.getFavoriteImages()
     }
 
-    fun getImagesByCat(id: Int, language: Int): Flow<List<Image>> {
-        return WallDao.getImagesByCat(id, language)
+    fun getImagesByCat(id: Int): Flow<List<Image>> {
+        return WallDao.getImagesByCat(id)
     }
 
     suspend fun insertImages(images: List<Image>) {
@@ -36,8 +36,8 @@ class LocalDataSource @Inject constructor(
         WallDao.insertImage(image)
     }
 
-    fun readCategories(type: String, language: Int): Flow<List<Category>> {
-        return WallDao.readCategories(type, language)
+    fun readCategories( language: Int): Flow<List<Category>> {
+        return WallDao.readCategories( language)
     }
 
     suspend fun insertCategories(categories: List<Category>) {

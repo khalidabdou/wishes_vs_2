@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -93,21 +94,22 @@ fun Splash(alpha: Float, message: String) {
 
     ) {
         Image(
-            modifier = Modifier
-                .size(120.dp).clip(CircleShape),
+            modifier = Modifier.clip(RoundedCornerShape(60.dp)).alpha(alpha),
             painter = painterResource(id = R.mipmap.ic_launcher_foreground),
             contentDescription = "Logo Icon",
+            contentScale = ContentScale.Crop
 
             //tint = Color.DarkGray
         )
         Text(
             text = stringResource(id = R.string.app_name),
             color = MaterialTheme.colorScheme.onBackground,
-            style = TextStyle(fontSize = 19.sp)
+            style = MaterialTheme.typography.titleLarge
         )
         Text(
             text = message,
             color = MaterialTheme.colorScheme.onBackground,
+            style = MaterialTheme.typography.titleMedium
         )
     }
 }

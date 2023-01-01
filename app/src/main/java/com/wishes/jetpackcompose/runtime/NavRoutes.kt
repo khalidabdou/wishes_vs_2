@@ -6,6 +6,7 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import com.wishes.jetpackcompose.R
 
 sealed class NavRoutes(val route: String) {
@@ -19,7 +20,7 @@ sealed class NavRoutes(val route: String) {
 
 data class BarItem(
     val title: String,
-    val image: ImageVector,
+    val image: Int,
     val route: String
 )
 
@@ -28,19 +29,19 @@ object NavBarItems {
     val BarItems = listOf(
         BarItem(
             title = "Latest",
-            image = Icons.Filled.Home,
+            image = R.drawable.home,
             route = "home"
         ),
 
         BarItem(
             title = "Categories",
-            image = Icons.Outlined.Menu,
+            image = R.drawable.cats,
             route = "categories"
         ),
 
         BarItem(
             title = "Favorites",
-            image = Icons.Outlined.Favorite,
+            image = R.drawable.favs,
             route = "favorites"
         )
     )

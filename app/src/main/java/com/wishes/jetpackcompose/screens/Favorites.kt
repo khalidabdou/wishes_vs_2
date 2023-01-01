@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LifecycleOwner
@@ -42,20 +43,11 @@ fun Favorites(viewModel: ImagesViewModel, navHostController: NavHostController) 
 
     val context = LocalContext.current
     val scrollState = rememberLazyGridState()
-    val lazyGridState = LazyGridState
-    val lifecycleOwner: LifecycleOwner
+
     LaunchedEffect(Unit) {
         viewModel.getFavoritesRoom()
     }
-
-//    val imageLoader = ImageLoader.Builder(context)
-//        .diskCache {
-//            DiskCache.Builder()
-//                .directory(context.cacheDir.resolve("image_cache"))
-//                .maxSizePercent(0.02)
-//                .build()
-//        }
-//        .build()
+    
 
     val images = viewModel.favoritesList
     if (images.isEmpty()) {
@@ -67,7 +59,7 @@ fun Favorites(viewModel: ImagesViewModel, navHostController: NavHostController) 
 
             ) {
             Icon(
-                Icons.Default.Favorite,
+                painter = painterResource(id = R.drawable.favs),
                 contentDescription = "",
                 tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.size(70.dp)
@@ -87,12 +79,6 @@ fun Favorites(viewModel: ImagesViewModel, navHostController: NavHostController) 
 
 
                 items(images.size) {
-//                    val painter = rememberAsyncImagePainter(
-//                        model = Const.directoryUpload + images[it].languageLable + "/" + images[it].image_upload,
-//                        imageLoader = imageLoader,
-//                        filterQuality= FilterQuality.Low
-//
-//                    )
                     val image = loadPicture(
                         url = Const.directoryUpload + images[it].languageLable + "/" + images[it].image_upload,
                         defaultImage = DEFAULT_RECIPE_IMAGE
@@ -113,9 +99,6 @@ fun Favorites(viewModel: ImagesViewModel, navHostController: NavHostController) 
                             navHostController.navigate(NavRoutes.ViewPager.route)
                         }
                     }
-                    /* ImageItem( painter = painter){
-                         navHostController.navigate(NavRoutes.ViewPager.route+"/"+it)
-                     }*/
                 }
 
             })

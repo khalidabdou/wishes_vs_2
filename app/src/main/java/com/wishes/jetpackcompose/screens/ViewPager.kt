@@ -17,8 +17,10 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -49,15 +51,6 @@ fun ViewPager(
     CatId: Int?
 ) {
     val context = LocalContext.current
-//    val imageLoader = ImageLoader.Builder(context)
-//        .diskCache {
-//            DiskCache.Builder()
-//                .directory(context.cacheDir.resolve("image_cache"))
-//                .maxSizePercent(0.02)
-//                .build()
-//        }
-//        .build()
-
 
     when (route) {
         ImagesFrom.Fav.route -> {
@@ -100,7 +93,7 @@ fun ViewPager(
             state = pagerState
         ) { page ->
             if (page % 21 == 0 && !apps.isNullOrEmpty()) {
-                val app = apps.get(Random.nextInt(0, apps.size))
+                val app = apps[Random.nextInt(0, apps.size)]
                 Ad_app(app, context)
 
             } else {
@@ -134,7 +127,7 @@ fun ViewPager(
                 .padding(6.dp)
         ) {
 
-            Action(stringResource(R.string.fav), Icons.Default.Favorite) {
+            Action(stringResource(R.string.fav), painterResource(id = R.drawable.favs)) {
                 viewModel.addToFav(images[pagerState.currentPage].id, 1)
                 Toast.makeText(
                     context,
@@ -146,7 +139,7 @@ fun ViewPager(
             /*Action("Download", Icons.Outlined.KeyboardArrowDown) {
                 Toast.makeText(context,"Download success",Toast.LENGTH_LONG).show()
             }*/
-            Action(stringResource(R.string.share_icon), Icons.Outlined.Share) {
+            Action(stringResource(R.string.share_icon), painterResource(id = R.drawable.ic_share)) {
                 imagesBitmap[images[pagerState.currentPage].id]?.let {
                     val uri: Uri? = getUriImage(it, context)
                     shareImageUri(uri!!, context)
@@ -159,12 +152,14 @@ fun ViewPager(
 }
 
 @Composable
-fun Action(text: String, icon: ImageVector, onClickAction: () -> Unit) {
+fun Action(text: String, icon: Painter, onClickAction: () -> Unit) {
     Column(horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.clickable {
             onClickAction()
         }) {
-        Icon(icon, contentDescription = "", tint = MaterialTheme.colorScheme.onPrimaryContainer)
+        Icon(painter = icon, contentDescription = "",
+            tint = MaterialTheme.colorScheme.onPrimaryContainer,
+        modifier = Modifier.size(30.dp))
         Text(
             text = text, style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onPrimaryContainer

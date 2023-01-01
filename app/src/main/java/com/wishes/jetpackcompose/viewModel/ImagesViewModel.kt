@@ -79,11 +79,10 @@ class ImagesViewModel @Inject constructor(
     }
 
     fun getCategoriesRoom() = viewModelScope.launch(Dispatchers.IO) {
-        imageRepo.local.readCategories("image", LANGUAGE_ID).collect {
-            categoriesList = it.shuffled(Random(100))
+        imageRepo.local.readCategories( languageID!!).collect {
             if (it.isEmpty()) {
                 getCategories()
-            }
+            }else categoriesList = it.shuffled(Random(100))
         }
     }
 
@@ -94,15 +93,11 @@ class ImagesViewModel @Inject constructor(
     }
 
     fun getByCatRoom(id: Int) = viewModelScope.launch(Dispatchers.IO) {
-        imageRepo.local.getImagesByCat(id, LANGUAGE_ID).collect {
+        imageRepo.local.getImagesByCat(id).collect {
             imagesByCategory = it
+            Log.d("byCAt",it.toString())
         }
     }
-
-    //val readImages: LiveData<List<Image>> = imageRepo.local.getImages(LANGUAGE_ID).asLiveData()
-    private val readCategories: LiveData<List<Category>> =
-        imageRepo.local.readCategories("image", LANGUAGE_ID).asLiveData()
-    val favorites: LiveData<List<Image>> = imageRepo.local.getFavoriteImages().asLiveData()
 
 
     private fun cacheCategories(categories: List<Category>) =
@@ -183,7 +178,6 @@ class ImagesViewModel @Inject constructor(
                         }
                     }
                 }
-
             } catch (ex: Exception) {
                 Log.d("Exception", ex.toString())
             }
@@ -194,14 +188,15 @@ class ImagesViewModel @Inject constructor(
     private suspend fun getCategoriesSafeCall() {
         if (hasInternetConnection()) {
             try {
-                val categoriesResponse = imageRepo.remote.getCategories()
+                val categoriesResponse = imageRepo.remote.getCategories(languageID!!)
                 categories.value = HandleResponse(categoriesResponse).handleResult()
                 if (categories.value is NetworkResults.Success) {
                     val cats =
-                        categories.value!!.data?.listCategory!!.filter { cat -> cat.type == "image" }
+                        categories.value!!.data?.listCategory!!
                     cacheCategories(cats)
+                    Log.d("tbCats", categoriesResponse.body().toString())
                 }
-                //Log.d("Tag_quote", categoriesResponse.body().toString())
+
             } catch (ex: Exception) {
                 categories.value = NetworkResults.Error(ex.message)
             }
