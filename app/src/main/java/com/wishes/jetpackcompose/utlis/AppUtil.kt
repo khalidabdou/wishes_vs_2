@@ -12,6 +12,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.ContextCompat.startActivity
 import androidx.core.content.FileProvider
 import com.wishes.jetpackcompose.R
 import java.io.File
@@ -58,7 +59,20 @@ object AppUtil {
     }
 
     fun sendEmail(context: Context) {
-
+        val i = Intent(Intent.ACTION_SEND)
+        i.type = "message/rfc822"
+        i.putExtra(Intent.EXTRA_EMAIL, arrayOf("specialonesteam@gmail.com"))
+        i.putExtra(Intent.EXTRA_SUBJECT, context.packageName)
+        i.putExtra(Intent.EXTRA_TEXT, "")
+        try {
+            context.startActivity(Intent.createChooser(i, "Send mail..."))
+        } catch (ex: ActivityNotFoundException) {
+            Toast.makeText(
+                context,
+                "There are no email clients installed.",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 
      fun openStore(url: String,context: Context) {
@@ -81,7 +95,7 @@ object AppUtil {
         shareIntent.type = "text/plain"
         shareIntent.putExtra(
             Intent.EXTRA_TEXT,
-            "Enjoy this app \n https://play.google.com/store/apps/details?id=${context.packageName}"
+            "${context.getString(R.string.send_to)} \n https://play.google.com/store/apps/details?id=${context.packageName}"
         );
         context.startActivity(
             Intent.createChooser(
@@ -97,7 +111,7 @@ object AppUtil {
         context.startActivity(browserIntent)
     }
 
-    fun shareImageUri(uri: Uri, context: Context) {
+    fun shareImageUri(uri: Uri, context: Context,pack:String?) {
 
         val intent = Intent(Intent.ACTION_SEND)
         intent.putExtra(Intent.EXTRA_STREAM, uri)
@@ -107,6 +121,8 @@ object AppUtil {
                 "${context.resources.getString(R.string.send_to)} https://play.google.com/store/apps/details?id=${context.packageName}")
 
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        if (pack!=null)
+            intent.`package`=pack
         intent.type = "image/png"
         try {
             context!!.startActivity(intent)

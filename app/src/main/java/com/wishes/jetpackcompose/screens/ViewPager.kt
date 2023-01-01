@@ -123,7 +123,7 @@ fun ViewPager(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.primaryContainer)
+                .background(MaterialTheme.colorScheme.background)
                 .padding(6.dp)
         ) {
 
@@ -142,7 +142,14 @@ fun ViewPager(
             Action(stringResource(R.string.share_icon), painterResource(id = R.drawable.ic_share)) {
                 imagesBitmap[images[pagerState.currentPage].id]?.let {
                     val uri: Uri? = getUriImage(it, context)
-                    shareImageUri(uri!!, context)
+                    shareImageUri(uri!!, context,null)
+                }
+                showInterstitialAfterClick(context)
+            }
+            Action(stringResource(R.string.wtsp), painterResource(id = R.drawable.wtsp)) {
+                imagesBitmap[images[pagerState.currentPage].id]?.let {
+                    val uri: Uri? = getUriImage(it, context)
+                    shareImageUri(uri!!, context,"com.whatsapp")
                 }
                 showInterstitialAfterClick(context)
             }
@@ -159,7 +166,7 @@ fun Action(text: String, icon: Painter, onClickAction: () -> Unit) {
         }) {
         Icon(painter = icon, contentDescription = "",
             tint = MaterialTheme.colorScheme.onPrimaryContainer,
-        modifier = Modifier.size(30.dp))
+        modifier = Modifier.size(20.dp))
         Text(
             text = text, style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onPrimaryContainer

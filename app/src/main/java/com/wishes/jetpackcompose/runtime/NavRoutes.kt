@@ -1,12 +1,5 @@
 package com.wishes.jetpackcompose.runtime
 
-import android.content.Context
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.outlined.Favorite
-import androidx.compose.material.icons.outlined.Menu
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
 import com.wishes.jetpackcompose.R
 
 sealed class NavRoutes(val route: String) {
@@ -27,11 +20,11 @@ data class BarItem(
 
 object NavBarItems {
     val BarItems = listOf(
-        BarItem(
-            title = "Latest",
-            image = R.drawable.home,
-            route = "home"
-        ),
+//        BarItem(
+//            title = "Latest",
+//            image = R.drawable.home,
+//            route = "home"
+//        ),
 
         BarItem(
             title = "Categories",

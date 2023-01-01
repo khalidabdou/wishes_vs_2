@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -96,13 +97,14 @@ fun ItemCategory(text: String, painter: ImageBitmap?, onClick: () -> Unit) {
                 .padding(6.dp)
                 .size(100.dp)
                 .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.onPrimaryContainer)
+
         ) {
             if (painter == null)
-                androidx.compose.foundation.Image(
-                    painter = painterResource(id = R.drawable.holder), contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxSize()
+                Icon(
+                    painter = painterResource(id = R.drawable.placeholder),
+                    contentDescription = null,
+                    modifier = Modifier.fillMaxSize().padding(20.dp),
+                    tint = MaterialTheme.colorScheme.onBackground.copy(0.5f)
                 )
             else
                 androidx.compose.foundation.Image(
@@ -116,7 +118,7 @@ fun ItemCategory(text: String, painter: ImageBitmap?, onClick: () -> Unit) {
             text = "$text",
             style = MaterialTheme.typography.titleMedium,
             maxLines = 1,
-            color = MaterialTheme.colorScheme.onBackground,
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(6.dp)
 

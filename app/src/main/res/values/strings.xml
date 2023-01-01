@@ -4,13 +4,15 @@
     <string name="admob_id" translatable="false">ca-app-pub-3940256099942544~3347511713</string>
 
 
-    <string name="app_name">Global</string>
-    <string name="rate">rate app</string>
+    <string name="app_name">Wishes 2023</string>
+    <string name="rate">Rate app</string>
     <string name="share">share app</string>
-    <string name="send_to">best app good morning _ share images with your friends</string>
-    <string name="rate_title">rate us</string>
-    <string name="sure">are you sure you want to quit</string>
-    <string name="quit">Quit</string>
+    <string name="send_to">🌞 Send beautiful good morning images to your friends and loved ones with our app 💌</string>
+    <string name="rate_title">Give 5 🌟</string>
+    <string name="title">Thank You 💖</string>
+    <string name="dailog_desc">💖 Love the app? 🌟 Leave us a rating on the Play Store! 🙏 Your support means a lot to us. 🙌 Thanks for using our app!</string>
+    <string name="exit">Exit</string>
+
     <string name="morning">good morning</string>
     <string name="afternoon">good afternoon</string>
     <string name="evening">good evening</string>
@@ -27,4 +29,7 @@
     <string name="Home">Home</string>
     <string name="categories">Categories</string>
     <string name="select_language">Select language</string>
+    <string name="wtsp" >whatsapp</string>
+    <string name="site">Our website</string>
+    <string name="site_url" translatable="false">https://wishes2023.specialones.online</string>
 </resources>

@@ -2,6 +2,7 @@ package com.wishes.jetpackcompose.ui.theme
 
 import android.app.Activity
 import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -10,6 +11,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 
 private val LightColors = lightColorScheme(
     primary = md_theme_light_primary,
@@ -72,6 +74,7 @@ private val DarkColors = darkColorScheme(
 
     )
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun Wishes_jetpackComposeTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
@@ -90,8 +93,14 @@ fun Wishes_jetpackComposeTheme(
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
-            (view.context as Activity).window.statusBarColor = colorScheme.primaryContainer.toArgb()
-            ViewCompat.getWindowInsetsController(view)?.isAppearanceLightStatusBars = darkTheme
+            val currentWindow = (view.context as? Activity)?.window
+                ?: throw Exception("Not in an activity - unable to get Window reference")
+            (view.context as Activity).window.statusBarColor = colorScheme.background.toArgb()
+
+            //ViewCompat.getWindowInsetsController(view)?.isAppearanceLightStatusBars = darkTheme
+            WindowCompat.getInsetsController(currentWindow, view).isAppearanceLightStatusBars =
+                !darkTheme
+
         }
     }
 

@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -93,14 +94,17 @@ fun Splash(alpha: Float, message: String) {
         horizontalAlignment = Alignment.CenterHorizontally
 
     ) {
-        Image(
-            modifier = Modifier.clip(RoundedCornerShape(60.dp)).alpha(alpha),
-            painter = painterResource(id = R.mipmap.ic_launcher_foreground),
+        Icon(
+            modifier = Modifier
+                .clip(RoundedCornerShape(10.dp))
+                .alpha(alpha),
+            painter = painterResource(id = R.drawable.placeholder),
             contentDescription = "Logo Icon",
-            contentScale = ContentScale.Crop
+            tint = MaterialTheme.colorScheme.primary
 
             //tint = Color.DarkGray
         )
+        Spacer(modifier = Modifier.height(10.dp))
         Text(
             text = stringResource(id = R.string.app_name),
             color = MaterialTheme.colorScheme.onBackground,

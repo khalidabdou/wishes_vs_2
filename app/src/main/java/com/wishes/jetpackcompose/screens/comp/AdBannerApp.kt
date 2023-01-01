@@ -36,7 +36,7 @@ fun AdBannerApp(app:App?) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(10.dp))
+                .clip(RoundedCornerShape(20.dp))
                 .background(MaterialTheme.colorScheme.background).padding(5.dp)
                ,
             horizontalArrangement = Arrangement.SpaceEvenly,
@@ -79,7 +79,8 @@ fun AdBannerApp(app:App?) {
                     ) {
                         Text(
                             text = stringResource(R.string.install),
-                            color = MaterialTheme.colorScheme.onPrimaryContainer
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            style = MaterialTheme.typography.bodyMedium
                         )
                     }
                 }

@@ -6,10 +6,11 @@
 
     <string name="rate">оцінити додаток</string>
     <string name="share">поділитися програмою</string>
-    <string name="send_to">найкращий додаток доброго ранку</string>
+    <string name="send_to">🌞 Отправляйте красивые картинки "Доброе утро" своим друзьям и близким с помощью нашего приложения 💌</string>
     <string name="rate_title">Оцініть нас</string>
-    <string name="sure">ти впевнений що хочеш піти</string>
-    <string name="quit">Вийти</string>
+    <string name="title">Спасибо 💖</string>
+    <string name="dailog_desc">💖 Вам нравится это приложение? 🌟 Оставьте нам отзыв в Play Store! 🙏 Ваша поддержка очень важна для нас. 🙌 Спасибо за использование нашего приложения!</string>
+    <string name="exit">Выйти</string>
     <string name="morning">доброго ранку</string>
     <string name="afternoon">доброго дня</string>
     <string name="evening">добрий вечір</string>
@@ -25,5 +26,9 @@
     <string name="share_icon">частка</string>
     <string name="Home">додому</string>
     <string name="categories">Категорії</string>
+    <string name="select_language">Выберите язык</string>
+    <string name="wtsp">WhatsApp</string>
+    <string name="site">Наш сайт</string>
+
 
 </resources>

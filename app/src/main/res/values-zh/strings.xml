@@ -4,10 +4,11 @@
     <string name="app_name">祝福 2023</string>
     <string name="rate">给应用评分</string>
     <string name="share">分享应用</string>
-    <string name="send_to">最好的应用早上好 - 与您的朋友分享图片</string>
+    <string name="send_to">🌞 使用我们的应用程序向您的朋友和亲人发送漂亮的早安图像 💌</string>
     <string name="rate_title">给我们评分</string>
-    <string name="sure">您确定要退出吗？</string>
-    <string name="quit">退出</string>
+    <string name="title">谢谢 💖</string>
+    <string name="dailog_desc">💖 你喜欢这个应用吗？ 🌟 请在 Play Store 上为我们的应用评分！ 🙏 你的支持对我们来说很重要。 🙌 感谢使用我们的应用！</string>
+    <string name="exit">退出</string>
     <string name="morning">早上好</string>
     <string name="afternoon">下午好</string>
     <string name="evening">晚上好</string>
@@ -23,4 +24,7 @@
     <string name="share_icon">分享</string>
     <string name="Home">主页</string>
     <string name="categories">类别</string>
+    <string name="select_language">选择语言</string>
+    <string name="wtsp">WhatsApp</string>
+    <string name="site">我们的网站</string>
 </resources>

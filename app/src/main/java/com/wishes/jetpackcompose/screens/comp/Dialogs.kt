@@ -43,35 +43,45 @@ fun DialogExit(viewModel: ImagesViewModel, context: Context, onDismiss: () -> Un
             onDismiss()
         },
         title = {
-            Text(
-                stringResource(R.string.sure),
-                style = MaterialTheme.typography.bodyMedium
-            )
+            Row() {
+                Text(
+                    context.getString(R.string.title),
+                    modifier = Modifier.weight(1f)
+                )
+                Icon(imageVector = Icons.Default.Close, contentDescription = "cancel",
+                    tint = MaterialTheme.colorScheme.primary.copy(0.6f),
+                    modifier = Modifier.clickable {
+                        onDismiss()
+                    }
+                )
+            }
         },
         text = {
-            val apps = viewModel.apps.value
-            if (!apps.isNullOrEmpty()) {
-                val app = apps.get(Random.nextInt(0, apps.size))
-                AdBannerApp(app)
+            Column() {
+                Text(text = context.getString(R.string.dailog_desc))
+                Spacer(modifier = Modifier.height(5.dp))
+                val apps = viewModel.apps.value
+                if (!apps.isNullOrEmpty()) {
+                    val app = apps.get(Random.nextInt(0, apps.size))
+                    AdBannerApp(app)
+                }
             }
+
 
         },
         confirmButton = {
-            Button(
-                onClick = {
-                    AppUtil.rateApp(context)
-
-                }) {
-                Text(stringResource(R.string.rate))
+            Button(onClick = {
+                AppUtil.rateApp(context)
+            }) {
+                Text(text = context.getString(R.string.rate_title))
             }
+
         },
         dismissButton = {
-            Button(
-                onClick = {
-                    //showAlertDialog=false
-                    (context as Activity).finish()
-                }) {
-                Text(stringResource(R.string.quit))
+            Button(onClick = {
+                (context as Activity).finish()
+            }) {
+                Text(text =  context.getString(R.string.exit))
             }
         },
     )
@@ -129,7 +139,7 @@ fun LanguagesDialog(
                     ) {
                         if (image?.value == null) {
                             Image(
-                                painter = painterResource(id = R.drawable.holder),
+                                painter = painterResource(id = R.drawable.placeholder),
                                 contentDescription = null,
                                 modifier = Modifier
                                     .size(60.dp)

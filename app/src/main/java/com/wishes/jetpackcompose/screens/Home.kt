@@ -36,6 +36,7 @@ import androidx.compose.ui.window.Popup
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.bumptech.glide.util.Util
 import com.wishes.jetpackcompose.R
 import com.wishes.jetpackcompose.admob.showInterstitialAfterClick
 import com.wishes.jetpackcompose.data.entities.Page
@@ -47,6 +48,7 @@ import com.wishes.jetpackcompose.screens.comp.DialogExit
 import com.wishes.jetpackcompose.screens.comp.LanguagesDialog
 import com.wishes.jetpackcompose.screens.comp.WaitDialog
 import com.wishes.jetpackcompose.ui.theme.Inter
+import com.wishes.jetpackcompose.utlis.AppUtil
 import com.wishes.jetpackcompose.utlis.Const.Companion.directoryUpload
 import com.wishes.jetpackcompose.utlis.DEFAULT_RECIPE_IMAGE
 import com.wishes.jetpackcompose.utlis.NetworkResults
@@ -205,7 +207,6 @@ fun Home(viewModel: ImagesViewModel, navHostController: NavHostController) {
                     else -> {}
                 }
             }
-
         }
     }
 
@@ -225,13 +226,16 @@ fun ImageItem(painter: ImageBitmap?, onClick: () -> Unit) {
                 onClick()
                 showInterstitialAfterClick(context)
             },
+
     ) {
         if (painter == null) {
-            Image(
-                painter = painterResource(id = R.drawable.holder),
+            Icon(
+                painter = painterResource(id = R.drawable.placeholder),
                 contentDescription = null,
-                modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.Crop
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(20.dp),
+                tint = MaterialTheme.colorScheme.onBackground.copy(0.5f)
             )
         } else
             Image(
@@ -296,7 +300,7 @@ fun ShimmerGridItemImage(brush: Brush) {
 fun BottomNavigationBar(navController: NavHostController) {
     Column(modifier = Modifier) {
         BottomNavigation(
-            modifier = Modifier.background(MaterialTheme.colorScheme.primaryContainer),
+            //modifier = Modifier.background(MaterialTheme.colorScheme.primary),
         ) {
             val backStackEntry by navController.currentBackStackEntryAsState()
             val currentRoute = backStackEntry?.destination?.route
@@ -304,7 +308,7 @@ fun BottomNavigationBar(navController: NavHostController) {
             NavBarItems.BarItems.forEach { navItem ->
                 BottomNavigationItem(
                     selected = currentRoute == navItem.route,
-                    modifier = Modifier.background(MaterialTheme.colorScheme.primaryContainer),
+                    modifier = Modifier.background(MaterialTheme.colorScheme.background),
                     onClick = {
                         navController.navigate(navItem.route) {
                             popUpTo(navController.graph.findStartDestination().id) {
@@ -312,11 +316,10 @@ fun BottomNavigationBar(navController: NavHostController) {
                             }
                         }
                     },
-
                     icon = {
                         Icon(
                             painter = painterResource(id = navItem.image),
-                            tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                            tint = MaterialTheme.colorScheme.primary,
                             contentDescription = navItem.title,
                             modifier = Modifier
                                 .size(25.dp)
@@ -326,7 +329,7 @@ fun BottomNavigationBar(navController: NavHostController) {
                     label = {
                         Text(
                             text = navItem.title,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            color = MaterialTheme.colorScheme.primary,
                             style = MaterialTheme.typography.titleMedium.copy(
                                 fontFamily = Inter
                             )
@@ -341,6 +344,7 @@ fun BottomNavigationBar(navController: NavHostController) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBar(title: String, language: () -> Unit, onDrawer: () -> Unit) {
+    val context=LocalContext.current
     val infiniteTransition = rememberInfiniteTransition()
     val angle by infiniteTransition.animateFloat(
         initialValue = 0F,
@@ -353,7 +357,7 @@ fun TopBar(title: String, language: () -> Unit, onDrawer: () -> Unit) {
     TopAppBar(
         modifier = Modifier,
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer
+            containerColor = MaterialTheme.colorScheme.background
         ),
         title = {
             Text(
@@ -372,7 +376,7 @@ fun TopBar(title: String, language: () -> Unit, onDrawer: () -> Unit) {
             ) {
                 Icon(
                     imageVector = Icons.Default.Settings,
-                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                    tint = MaterialTheme.colorScheme.primary,
                     contentDescription = null,
                     modifier = Modifier.rotate(angle)
                 )
@@ -391,75 +395,24 @@ fun TopBar(title: String, language: () -> Unit, onDrawer: () -> Unit) {
                     },
 
                 )
+            Icon(
+                painter = painterResource(id = R.drawable.ic_share),
+                contentDescription = "",
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier
+                    .size(27.dp)
+                    .padding(4.dp)
+                    .clickable {
 
-            /*if (isMoreOptionPopupShowed) {
-                MoreOptionPopup(
-                    options = listOf(
-                        stringResource(id = R.string.rate),
-                        stringResource(id = R.string.rate),
-                        stringResource(id = R.string.share),
-
-                        ),
-                    onDismissRequest = {
-                        isMoreOptionPopupShowed = false
+                        AppUtil.share(context = context)
                     },
-                    onClick = { i ->
-                        when (i) {
-                            0 -> {
-                                AppUtil.openStore(context)
-                            }
-                            1 -> {
 
-                            }
-                            2 -> {
-                                AppUtil.share(context)
-                            }
-
-                        }
-                    },
-                    modifier = Modifier
-                        .padding(8.dp)
                 )
-            }*/
+            Spacer(modifier = Modifier.width(5.dp))
+
+
+
         }
     )
-}
-
-
-@Composable
-fun MoreOptionPopup(
-    options: List<String>,
-    modifier: Modifier = Modifier,
-    onDismissRequest: () -> Unit,
-    onClick: (Int) -> Unit
-) {
-
-    Popup(
-        alignment = Alignment.BottomCenter,
-        onDismissRequest = onDismissRequest
-    ) {
-        Card(
-            shape = MaterialTheme.shapes.medium,
-            modifier = modifier
-        ) {
-            options.forEachIndexed { i, label ->
-                Row {
-                    Text(
-                        text = label,
-                        style = MaterialTheme.typography.titleMedium.copy(
-                            fontFamily = Inter
-                        ),
-                        modifier = Modifier
-                            .padding(8.dp)
-                            .clickable {
-                                onDismissRequest()
-                                onClick(i)
-                            }
-                    )
-                }
-
-            }
-        }
-    }
 }
 

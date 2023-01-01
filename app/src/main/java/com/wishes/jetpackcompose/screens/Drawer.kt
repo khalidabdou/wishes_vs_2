@@ -13,8 +13,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.wishes.jetpackcompose.admob.showInterstitialAfterClick
@@ -34,35 +36,38 @@ fun NavigationDrawer(onClick: () -> Unit) {
                 modifier = Modifier
                     .height(100.dp)
                     .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.primaryContainer),
+                    .background(MaterialTheme.colorScheme.background),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = context.getString(R.string.app_name),
-                    style = MaterialTheme.typography.headlineLarge,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.primary
                 )
             }
             Spacer(modifier = Modifier.height(20.dp))
-
-            ItemDrawer(stringResource(R.string.invite), Icons.Default.Person) {
+            ItemDrawer(stringResource(R.string.invite), painterResource(id = R.drawable.user)) {
                 AppUtil.share(context)
                 showInterstitialAfterClick(context)
             }
-            ItemDrawer(stringResource(R.string.rate), Icons.Default.Star) {
+            ItemDrawer(stringResource(R.string.rate), painterResource(id = R.drawable.star)) {
                 AppUtil.rateApp(context)
                 showInterstitialAfterClick(context)
             }
-            ItemDrawer(stringResource(R.string.our_app), Icons.Default.List) {
+            ItemDrawer(stringResource(R.string.our_app), painterResource(id = R.drawable.cats)) {
                 AppUtil.openStore("https://play.google.com/store/apps/developer?id=Istickers+Packs", context)
                 showInterstitialAfterClick(context)
             }
-            ItemDrawer(stringResource(R.string.feed), Icons.Default.Email) {
+            ItemDrawer(stringResource(R.string.feed), painterResource(id = R.drawable.feed)) {
                 AppUtil.sendEmail(context)
                 showInterstitialAfterClick(context)
             }
-            ItemDrawer(stringResource(R.string.privacy), Icons.Default.Info) {
+            ItemDrawer(stringResource(R.string.privacy), painterResource(id = R.drawable.policy)) {
                 AppUtil.openStore("https://stickersapi.specialones.online", context)
+                showInterstitialAfterClick(context)
+            }
+            ItemDrawer(stringResource(R.string.site), painterResource(id = R.drawable.mous)) {
+                AppUtil.openStore(context.getString(R.string.site_url), context)
                 showInterstitialAfterClick(context)
             }
             Column(
@@ -76,9 +81,11 @@ fun NavigationDrawer(onClick: () -> Unit) {
                     Icons.Default.ArrowBack,
                     tint = MaterialTheme.colorScheme.onPrimary,
                     contentDescription = "",
-                    modifier = Modifier.size(40.dp)
+                    modifier = Modifier
+                        .size(25.dp)
                         .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.primary).clickable {
+                        .background(MaterialTheme.colorScheme.primary)
+                        .clickable {
                             onClick()
                         }
                 )
@@ -88,7 +95,7 @@ fun NavigationDrawer(onClick: () -> Unit) {
 }
 
 @Composable
-fun ItemDrawer(text: String, icon: ImageVector, onClick: () -> Unit) {
+fun ItemDrawer(text: String, icon: Painter, onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .height(60.dp)
@@ -99,7 +106,8 @@ fun ItemDrawer(text: String, icon: ImageVector, onClick: () -> Unit) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Spacer(modifier = Modifier.width(20.dp))
-        Icon(icon, contentDescription = "")
+        Icon(icon, contentDescription = "",tint=MaterialTheme.colorScheme.primary,
+        modifier = Modifier.size(25.dp))
         Spacer(modifier = Modifier.width(20.dp))
         Text(
             text = text,

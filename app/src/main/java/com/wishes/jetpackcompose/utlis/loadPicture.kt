@@ -16,7 +16,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
 
-const val DEFAULT_RECIPE_IMAGE = R.drawable.holder
+const val DEFAULT_RECIPE_IMAGE = R.drawable.placeholder
 
 @SuppressLint("UnrememberedMutableState")
 @ExperimentalCoroutinesApi
@@ -63,19 +63,7 @@ fun loadPicturetemmp(url: String, @DrawableRes defaultImage: Int): MutableState<
 
     val bitmapState: MutableState<Bitmap?> =mutableStateOf(null)
 
-    // show default image while image loads
-    Glide.with(LocalContext.current)
-        .asBitmap()
-        .load(defaultImage)
-        .into(object : CustomTarget<Bitmap>() {
-            override fun onLoadCleared(placeholder: Drawable?) { }
-            override fun onResourceReady(
-                resource: Bitmap,
-                transition: Transition<in Bitmap>?
-            ) {
-                bitmapState.value = resource
-            }
-        })
+
 
     // get network image
     Glide.with(LocalContext.current)

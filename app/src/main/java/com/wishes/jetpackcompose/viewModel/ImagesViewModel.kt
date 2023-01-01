@@ -72,7 +72,7 @@ class ImagesViewModel @Inject constructor(
                 getImages(id)
             } else {
                 if (imagesList.isEmpty())
-                    imagesList = it.subList(0, 400).shuffled()
+                    imagesList = it.subList(0, 250).shuffled()
             }
             //Log.d("RANDOM", RANDOM.toString())
         }

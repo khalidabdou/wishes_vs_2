@@ -3,10 +3,11 @@
     <string name="app_name">2022년 소원</string>
     <string name="rate">앱 평가</string>
     <string name="share">공유 앱</string>
-    <string name="send_to">최고의 앱 좋은 아침</string>
+    <string name="send_to">🌞 친구들과 사랑하는 사람들과 함께 아름다운 좋은 아침 이미지를 전송하세요 💌</string>
     <string name="rate_title">우리를 평가</string>
-    <string name="sure">종료하시겠습니까?</string>
-    <string name="quit">그만두다</string>
+    <string name="title">감사합니다 💖</string>
+    <string name="dailog_desc">💖 이 앱을 좋아하세요? 🌟 Play Store에서 저희 앱에 대한 평가를 남겨주세요! 🙏 저희를 지지해주시는 것은 정말 큰 의미가 있습니다. 🙌 앱을 사용해주셔서 감사합니다!</string>
+    <string name="exit">나가기</string>
     <string name="morning">좋은 아침</string>
     <string name="afternoon">좋은 오후에요</string>
     <string name="evening">좋은 저녁이에요</string>
@@ -22,4 +23,7 @@
     <string name="share_icon">공유하다</string>
     <string name="Home">집</string>
     <string name="categories">카테고리</string>
+    <string name="select_language">언어 선택</string>
+    <string name="wtsp">WhatsApp</string>
+    <string name="site">저희 웹 사이트</string>
 </resources>
